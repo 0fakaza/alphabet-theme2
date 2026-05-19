@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>064468C5-C4C7-45F5-85CF-782811DB7729@1x</title>
+    <g id="✅-Currencies" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="All-Dropdowns-&amp;-Currencies" transform="translate(-494.000000, -323.000000)">
+            <g id="USD" transform="translate(346.000000, 50.000000)">
+                <g id="Balance-Selector" transform="translate(1.000000, 77.000000)">
+                    <g id="ETH" transform="translate(14.000000, 196.000000)">
+                        <g id="eth" transform="translate(133.000000, 0.000000)">
+                            <path d="M9,0 C4.02943725,0 0,4.02943725 0,9 C0,13.9705627 4.02943725,18 9,18 C13.9705627,18 18,13.9705627 18,9 C18,4.02943725 13.9705627,0 9,0 Z" id="Path" fill="#627EEA"></path>
+                            <polygon id="Path" fill-opacity="0.600000024" fill="#FFFFFF" fill-rule="nonzero" points="9.275625 2.25 9.275625 7.239375 13.4926875 9.12375"></polygon>
+                            <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" points="9.275625 2.25 5.056875 9.12375 9.27 7.239375"></polygon>
+                            <polygon id="Path" fill-opacity="0.600000024" fill="#FFFFFF" fill-rule="nonzero" points="9.275625 12.3525 9.275625 15.73875 13.494375 9.9"></polygon>
+                            <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" points="9.275625 15.744375 9.275625 12.3525 5.056875 9.9"></polygon>
+                            <polygon id="Path" fill-opacity="0.200000003" fill="#FFFFFF" fill-rule="nonzero" points="9.275625 11.5723125 13.4926875 9.1198125 9.275625 7.2354375"></polygon>
+                            <polygon id="Path" fill-opacity="0.600000024" fill="#FFFFFF" fill-rule="nonzero" points="5.0625 9.12375 9.275625 11.570625 9.275625 7.23375"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

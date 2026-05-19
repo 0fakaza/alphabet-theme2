@@ -1,0 +1,139 @@
+/* Swiper — hap pagination (kök: .swiper--pill-pagination + data-pagination-visibility) */
+.swiper--pill-pagination .swiper-pagination {
+  bottom: var(--swiper-pill-pagination-bottom, 14px);
+}
+
+/* mobile: yalnız ≤767px */
+.swiper--pill-pagination[data-pagination-visibility="mobile"] .swiper-pagination {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .swiper--pill-pagination[data-pagination-visibility="mobile"] .swiper-pagination {
+    display: block;
+  }
+}
+
+/* desktop: yalnız ≥768px */
+.swiper--pill-pagination[data-pagination-visibility="desktop"] .swiper-pagination {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .swiper--pill-pagination[data-pagination-visibility="desktop"] .swiper-pagination {
+    display: none;
+  }
+}
+
+.swiper--pill-pagination[data-pagination-visibility="always"] .swiper-pagination {
+  display: block;
+}
+
+.swiper--pill-pagination[data-pagination-visibility="never"] .swiper-pagination {
+  display: none;
+}
+
+.swiper--pill-pagination .swiper-pagination-bullet {
+  width: 13px;
+  height: 5px;
+  border-radius: 99px;
+  background: #d3dae1;
+  opacity: 1;
+  transition: width 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+}
+
+.swiper--pill-pagination .swiper-pagination-bullet-active {
+  width: 26px;
+  background: var(--color-primary, #ac96fd);
+  cursor: pointer;
+}
+
+/* Tıklanabilir Swiper bullet’lar (varsayılan pagination) */
+.swiper-pagination-clickable .swiper-pagination-bullet {
+  cursor: pointer;
+}
+
+/* Swiper varsayılan ok butonları */
+.swiper .swiper-button-next,
+.swiper .swiper-button-prev {
+  cursor: pointer;
+}
+
+/* Casino promos: swiper.css `.swiper { padding: 0 }` pb utility’yi ezer — altta pagination alanı */
+.casino-promo-left.swiper.swiper--pill-pagination,
+.casino-promo-right.swiper.swiper--pill-pagination {
+  padding: 0 0 32px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* İş ortaklığı (partnership) — globals.css dışında tutulur                    */
+/* -------------------------------------------------------------------------- */
+
+:root[data-theme="dark"] {
+  --partnership-image-shade: rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] {
+  --partnership-image-shade: rgba(35, 40, 44, 0.12);
+}
+
+html[data-theme="light"] .partnership-features-grid > article:nth-child(1) .partnership-feature-image {
+  filter: brightness(0.8);
+}
+
+html[data-theme="light"] .partnership-features-grid > article:nth-child(3) .partnership-feature-image {
+  filter: brightness(0);
+}
+
+/* Adım kartları — url() SCSS/CSS’te kalır (Turbopack arbitrary url modül aramaz) */
+.partnership-step-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.partnership-step-card::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition-duration: 500ms;
+  transition-property: opacity, transform;
+}
+
+.partnership-step-card--highlight::before {
+  background-image: url(/images/partnership-light.png);
+}
+
+.partnership-step-card--default::before {
+  background-image: url(/images/partnership-dark.png);
+}
+
+html[data-theme="light"] .partnership-step-card--highlight::before {
+  background-image: url(/images/light-partnership-light.png);
+}
+
+html[data-theme="light"] .partnership-step-card--default::before {
+  background-image: url(/images/light-partnership-dark.png);
+}
+
+.partnership-steps-grid > .partnership-step-card:nth-child(1) {
+  transform: translateX(20px);
+}
+
+.partnership-steps-grid > .partnership-step-card:nth-child(3) {
+  transform: translateX(-20px);
+}
+
+/* Sonner toast — close button sağa taşı */
+[data-sonner-toast] [data-close-button] {
+  left: auto !important;
+  right: 0 !important;
+  top: 0 !important;
+  transform: translate(35%, -35%) !important;
+}

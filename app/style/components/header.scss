@@ -1,0 +1,45 @@
+
+.Header {
+  &-megaMenu {
+
+    &-open {
+      &-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 7px;
+        border-radius: 100%;
+      }
+    }
+
+    &-right {
+      position: relative;
+
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        content: "";
+        display: inline-block;
+        transition: 500ms;
+        width: calc(100vw - ((100vw - 1400px) / 2) + 630px);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("/images/megaMenu-back.png");
+        z-index: -1;
+        filter: brightness(0.3);
+
+        @media (max-width: 767px) {
+          width: 100%;
+          background-size: cover;
+          background-position: center;
+        }
+      }
+    }
+  }
+}
+
+
