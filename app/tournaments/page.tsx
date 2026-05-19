@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import { TurnuvalarContent } from "@/components/turnuvalar/turnuvalar-content"
-import { TurnuvalarHero } from "@/components/turnuvalar/turnuvalar-hero"
+import { TournamentsContent } from "@/components/tournaments/tournaments-content"
+import { TournamentsHero } from "@/components/tournaments/tournaments-hero"
 
 export const metadata: Metadata = {
   title: "Tournaments",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function TournamentsPage() {
   return (
     <main>
-      <TurnuvalarHero />
-      <TurnuvalarContent />
+      <TournamentsHero />
+      <TournamentsContent />
     </main>
   )
 }

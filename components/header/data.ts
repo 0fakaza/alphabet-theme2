@@ -30,7 +30,7 @@ export const categoryTabs = [
   { href: "/tournaments", label: "Turnuvalar", icon: WhistleIcon },
 ]
 
-/** Mevcut sayfa bu kategori sekmesine aitse true (alt rotalar dahil, örn. /casino/saglayicilar). */
+/** True when the current page belongs to this category tab (includes sub-routes, e.g. /casino/providers). */
 export function isCategoryTabActive(pathname: string, href: string): boolean {
   if (pathname === href) return true
   if (href !== "/" && pathname.startsWith(`${href}/`)) return true
@@ -64,10 +64,10 @@ export const sidebarLinks: SidebarLink[] = [
     type: "accordion",
     label: "Ödül Merkezi",
     submenu: [
-      { label: "Görev Merkezi", href: "/odul-merkezi/gorev-merkezi", icon: "task" },
-      { label: "Ödül Yağmuru", href: "/odul-merkezi/odul-yagmuru", icon: "rain" },
-      { label: "Şans Çarkı", href: "/odul-merkezi/sans-carki", icon: "wheel" },
-      { label: "Market", href: "/odul-merkezi/market", icon: "market" },
+      { label: "Görev Merkezi", href: "/rewards-center/task-center", icon: "task" },
+      { label: "Ödül Yağmuru", href: "/rewards-center/reward-rain", icon: "rain" },
+      { label: "Şans Çarkı", href: "/rewards-center/lucky-wheel", icon: "wheel" },
+      { label: "Market", href: "/rewards-center/market", icon: "market" },
     ],
   },
 ]

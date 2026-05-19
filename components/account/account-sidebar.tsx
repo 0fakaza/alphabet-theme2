@@ -28,34 +28,34 @@ const sections = [
   {
     title: "HESAP VE GÜVENLİK",
     items: [
-      { label: "Hesabım", href: "/hesabim", icon: User03Icon },
-      { label: "Bildirimler", href: "/hesabim/bildirimler", icon: Notification01Icon, badge: 24 },
-      { label: "Hesabımı sınırla", href: "/hesabim/sinirlar", icon: Hold03Icon },
+      { label: "Hesabım", href: "/account", icon: User03Icon },
+      { label: "Bildirimler", href: "/account/notifications", icon: Notification01Icon, badge: 24 },
+      { label: "Hesabımı sınırla", href: "/account/limits", icon: Hold03Icon },
     ],
   },
   {
     title: "FİNANSAL İŞLEMLER",
     items: [
-      { label: "Cüzdanlarım", href: "/hesabim/cuzdanlarim", icon: Wallet01Icon },
-      { label: "Bonuslarım", href: "/hesabim/bonuslarim", icon: GiftIcon, badge: 24 },
-      { label: "Geçmiş İşlemlerim", href: "/hesabim/gecmis-islemlerim", icon: FileClockIcon },
-      { label: "Hesap Hareketlerim", href: "/hesabim/hesap-hareketlerim", icon: Activity01Icon },
-      { label: "İstatistikler", href: "/hesabim/istatistikler", icon: Analytics01Icon },
-      { label: "İş Ortaklığım", href: "/hesabim/is-ortakligi", icon: Agreement02Icon },
+      { label: "Cüzdanlarım", href: "/account/wallets", icon: Wallet01Icon },
+      { label: "Bonuslarım", href: "/account/bonuses", icon: GiftIcon, badge: 24 },
+      { label: "Geçmiş İşlemlerim", href: "/account/transaction-history", icon: FileClockIcon },
+      { label: "Hesap Hareketlerim", href: "/account/account-activity", icon: Activity01Icon },
+      { label: "İstatistikler", href: "/account/statistics", icon: Analytics01Icon },
+      { label: "İş Ortaklığım", href: "/account/affiliate", icon: Agreement02Icon },
     ],
   },
   {
     title: "GÜVENLİK VE KİMLİK DOĞRULAMA",
     items: [
-      { label: "KYC", href: "/hesabim/kyc", icon: FaceIdIcon },
-      { label: "İki Aşamalı Doğrulama", href: "/hesabim/iki-asimali-dogrulama", icon: SecurityLockIcon },
+      { label: "KYC", href: "/account/kyc", icon: FaceIdIcon },
+      { label: "İki Aşamalı Doğrulama", href: "/account/two-factor-auth", icon: SecurityLockIcon },
     ],
   },
   {
     title: "DESTEK VE TALEP",
     items: [
-      { label: "Bonus Talep Et", href: "/hesabim/bonus-talep", icon: GiftCardIcon },
-      { label: "Arama Talep Et", href: "/hesabim/arama-talep", icon: Calling02Icon },
+      { label: "Bonus Talep Et", href: "/account/bonus-request", icon: GiftCardIcon },
+      { label: "Arama Talep Et", href: "/account/callback-request", icon: Calling02Icon },
     ],
   },
 ]

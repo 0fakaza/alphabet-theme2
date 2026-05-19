@@ -70,7 +70,7 @@ const lobbyFilterTabs = [
   { id: "roulette", label: "Rulet", icon: Target01Icon },
 ] as const
 
-const CASINO_PROVIDERS_PAGE_HREF = "/casino/saglayicilar" as const
+const CASINO_PROVIDERS_PAGE_HREF = "/casino/providers" as const
 
 /** Figma 5521:7573 — Filtrele sol kolon (2 sütun + altta tam genişlik) */
 const casinoFeatureFilters: FeatureFilterDef[] = [

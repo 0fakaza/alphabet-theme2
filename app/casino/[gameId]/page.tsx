@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getCasinoGameById } from "@/lib/casino-game-detail"
-import { getSonOynadiklarimGames } from "@/lib/son-oynadiklarim-games"
+import { getRecentlyPlayedGames } from "@/lib/recently-played-games"
 import { CasinoGameDetailPage } from "@/components/casino/casino-game-detail-page"
 
 type Props = { params: Promise<{ gameId: string }> }
@@ -24,7 +24,7 @@ export default async function CasinoGamePage({ params }: Props) {
   if (!game) {
     notFound()
   }
-  const recentGames = getSonOynadiklarimGames(gameId)
+  const recentGames = getRecentlyPlayedGames(gameId)
   return (
     <main>
       <CasinoGameDetailPage game={game} recentGames={recentGames} />

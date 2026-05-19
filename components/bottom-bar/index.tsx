@@ -14,11 +14,11 @@ const navItems = [
   { href: "/casino", label: "Casino", icon: Cards02Icon },
   { href: "/spor", label: "Spor", icon: FootballIcon },
   { href: "/promotions", label: "Promosyonlar", icon: GiftIcon },
-  { href: "/hesabim", label: "Profil", icon: User03Icon, isProfile: true },
+  { href: "/account", label: "Profil", icon: User03Icon, isProfile: true },
 ]
 
 /** /casino + (bulk) hediye & profil: primary/secondary; bulk=iki dolgu katmanı, solid·standard=ön dolgu + arka hat */
-const duotoneBarPaths = new Set<string>(["/casino", "/promotions", "/hesabim"])
+const duotoneBarPaths = new Set<string>(["/casino", "/promotions", "/account"])
 
 const duotoneColors = (active: boolean) =>
   active

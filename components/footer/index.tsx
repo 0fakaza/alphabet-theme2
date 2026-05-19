@@ -40,7 +40,7 @@ const casinoLinks = [
   { href: "/rulet", label: "Rulet" },
   { href: "/blackjack", label: "Blackjack" },
   { href: "/poker", label: "Poker" },
-  { href: "/saglayicilar", label: "Sağlayıcılar" },
+  { href: "/casino/providers", label: "Sağlayıcılar" },
 ]
 
 const sporLinks = [
@@ -54,7 +54,7 @@ const sporLinks = [
 
 const vipLinks = [
   { href: "/vip-club", label: "VIP Kulübü" },
-  { href: "/is-ortakligi", label: "İş Ortaklığı" },
+  { href: "/partnership", label: "İş Ortaklığı" },
   { href: "/ayin-mvpleri", label: "Ayın MVP'leri" },
 ]
 
@@ -107,7 +107,7 @@ const Footer = () => {
           <div className="mb-5 flex items-center justify-between">
             <h3 className="text-[18px] font-bold tracking-[0.4px] text-text-title md:text-[20px]">Sağlayıcılar</h3>
             <ButtonLink
-              href="/saglayicilar"
+              href="/casino/providers"
               variant="link"
               className="text-[13px] text-[#999dac] md:text-[14px]"
             >

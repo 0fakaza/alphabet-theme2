@@ -273,7 +273,7 @@ const Header = () => {
           {/* Sağ: Bonus + Promosyonlar */}
           <div className="flex items-center gap-1">
             <ButtonLink
-              href="/hesabim/bonus-talep"
+              href="/account/bonus-request"
               variant="ghost"
               className=" text-sm text-header-text-primary hover:text-primary"
               iconLeft={<HugeiconsIcon icon={GiftIcon} className="size-4 text-header-icon" />}
