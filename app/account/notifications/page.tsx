@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import { HugeiconsIcon, Notification01Icon, GiftIcon, CreditCardIcon, GameController02Icon, More01Icon } from "@/lib/icons"
 import { AccountPageLayout } from "@/components/account/account-page-layout"
@@ -10,11 +10,16 @@ type Category = "all" | "bonus" | "payment" | "new-games" | "other"
 
 const categories = [
   { id: "all" as Category, label: "Tüm Bildirimler" },
-  { id: "bonus" as Category, label: "Bonus / Freespin", count: 0 },
+  { id: "bonus" as Category, label: "Bonus / Freespin" },
   { id: "payment" as Category, label: "Yatırım / Çekim" },
   { id: "new-games" as Category, label: "Yeni Oyunlar" },
-  { id: "other" as Category, label: "Diğer", count: 1 },
+  { id: "other" as Category, label: "Diğer" },
 ]
+
+function getUnreadCount(list: typeof notifications, category: Category): number {
+  if (category === "all") return list.filter((n) => !n.read).length
+  return list.filter((n) => n.category === category && !n.read).length
+}
 
 const notifications = [
   {
@@ -70,6 +75,12 @@ const notifications = [
 export default function BildirimlerPage() {
   const [activeCategory, setActiveCategory] = useState<Category>("all")
 
+  const unreadByCategory = useMemo(() => {
+    return Object.fromEntries(
+      categories.map((cat) => [cat.id, getUnreadCount(notifications, cat.id)]),
+    ) as Record<Category, number>
+  }, [])
+
   const filtered = activeCategory === "all"
     ? notifications
     : notifications.filter((n) => n.category === activeCategory)
@@ -84,45 +95,53 @@ export default function BildirimlerPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="border-element-border bg-background-elements">
-              {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.id}>
-                  <div className="flex items-center gap-2">
-                    {cat.label}
-                    {cat.count != null && cat.count > 0 && (
-                      <span className="flex h-4 min-w-4 items-center justify-center rounded px-1 bg-semantic-info text-[10px] font-bold text-white">
-                        {cat.count}
+              {categories.map((cat) => {
+                const unread = unreadByCategory[cat.id]
+                return (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <span className="flex items-center gap-1.5">
+                        {cat.label}
+                        {unread > 0 && <span className="size-1.5 rounded-full bg-primary" aria-hidden />}
                       </span>
-                    )}
-                  </div>
-                </SelectItem>
-              ))}
+                      {unread > 0 && <span className="text-sm font-medium text-primary">({unread})</span>}
+                    </div>
+                  </SelectItem>
+                )
+              })}
             </SelectContent>
           </Select>
         </div>
 
-        <div className="hidden md:flex w-[200px] shrink-0 flex-col gap-1">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={cn(
-                "flex h-10 items-center justify-between rounded-lg px-3 text-sm font-medium transition-colors",
-                activeCategory === cat.id
-                  ? "bg-background-elements text-text-main"
-                  : "text-text-subtext hover:bg-background-elements/50 hover:text-text-main",
-              )}
-            >
-              <span>{cat.label}</span>
-              {cat.count != null && cat.count > 0 && (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded px-1 bg-semantic-info text-[10px] font-bold text-white">
-                  {cat.count}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[225px_1fr]">
+          <div className="hidden md:block h-fit rounded-2xl bg-background-main p-5">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat.id
+              const unread = unreadByCategory[cat.id]
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={cn(
+                    "mb-1 flex w-full cursor-pointer items-center justify-between gap-2 rounded-md pl-4 pr-2  py-3 text-left text-sm transition-colors",
+                    isActive
+                      ? "bg-background-body text-text-main"
+                      : "text-text-main hover:bg-background-elements/50",
+                  )}
+                >
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="truncate">{cat.label}</span>
+                    {unread > 0 && <span className="size-1 shrink-0 rounded-full bg-primary" aria-hidden />}
+                  </span>
+                  {unread > 0 && (
+                    <span className="shrink-0 text-sm font-medium text-primary">({unread})</span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
 
-        <div className="flex flex-1 flex-col divide-y divide-divider-100 px-5">
+          <div className="flex flex-1 flex-col divide-y divide-divider-100 md:pl-5">
           {filtered.map((n) => (
             <div key={n.id} className="py-4">
               <span className="mb-2 block text-xs text-text-main md:hidden">{n.date}</span>
@@ -141,6 +160,7 @@ export default function BildirimlerPage() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </AccountPageLayout>

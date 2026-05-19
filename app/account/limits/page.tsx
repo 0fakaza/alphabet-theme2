@@ -7,6 +7,7 @@ import { AccountPageLayout } from "@/components/account/account-page-layout"
 import { Button } from "@/components/elements/button"
 import { PencilEdit02Icon, Delete02Icon } from "@/lib/icons"
 import {CheckmarkCircle01Icon} from "@hugeicons-pro/core-bulk-rounded";
+import { InfoTooltip } from "@/components/elements/tooltip"
 
 type TabId = "genel" | "spor" | "casino" | "disla"
 
@@ -50,10 +51,20 @@ function LimitCard({
       <div className="flex items-start justify-between py-5">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-
-            <p className={cn("text-sm font-semibold flex items-center gap-2", saved ? "text-primary" : "text-text-title")}>{title}  {saved && (
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-4  text-semantic-success" />
-            )}</p>
+            <p
+              className={cn(
+                "flex items-center gap-2 text-sm font-semibold",
+                saved ? "text-primary" : "text-text-title"
+              )}
+            >
+              {title}{" "}
+              {saved && (
+                <HugeiconsIcon
+                  icon={CheckmarkCircle01Icon}
+                  className="size-4 text-semantic-success"
+                />
+              )}
+            </p>
           </div>
           <p className="mt-1 text-xs text-text-subtext">{desc}</p>
         </div>
@@ -61,22 +72,28 @@ function LimitCard({
           {saved && (
             <button
               onClick={() => setSaved(false)}
-              className="flex size-8 items-center justify-center rounded-md border border-element-border cursor-pointer hover:border-semantic-error hover:text-semantic-error"
+              className="flex size-8 cursor-pointer items-center justify-center rounded-md border border-element-border hover:border-semantic-error hover:text-semantic-error"
             >
-              <HugeiconsIcon icon={Delete02Icon} className="size-4 text-text-subtext" />
+              <HugeiconsIcon
+                icon={Delete02Icon}
+                className="size-4 text-text-subtext"
+              />
             </button>
           )}
           <button
             onClick={onToggle}
-            className="flex size-8 items-center justify-center rounded-md border border-element-border cursor-pointer hover:border-primary"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-md border border-element-border hover:border-primary"
           >
-            <HugeiconsIcon icon={PencilEdit02Icon} className="size-4 text-text-subtext" />
+            <HugeiconsIcon
+              icon={PencilEdit02Icon}
+              className="size-4 text-text-subtext"
+            />
           </button>
         </div>
       </div>
 
       {expanded && (
-        <div className="border-t border-element-border  pb-5 pt-4">
+        <div className="border-t border-element-border pt-4 pb-5">
           <div className="mb-4 grid grid-cols-3 gap-3">
             {[
               { label: "Günlük", value: gunluk, set: setGunluk },
@@ -89,7 +106,7 @@ function LimitCard({
                   <span className="text-semantic-error">*</span>
                 </label>
                 <div className="relative">
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-text-subtext">
+                  <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-text-subtext">
                     ₺
                   </span>
                   <input
@@ -105,13 +122,11 @@ function LimitCard({
 
           <div className="mb-4 flex flex-col gap-1.5">
             <div className="flex items-center gap-1">
-              <label className="flex items-center gap-0.5 text-xs text-text-subtext">
+              <label className="flex items-center gap-1.5 text-xs text-text-subtext">
                 Gerekçe
                 <span className="text-semantic-error">*</span>
               </label>
-              <span className="flex size-3.5 items-center justify-center rounded-full border border-text-subtext text-[9px] text-text-subtext">
-                ?
-              </span>
+              <InfoTooltip content="Limit belirleme veya değiştirme talebiniz için kısa bir gerekçe yazmanız gerekir." />
             </div>
             <textarea
               required
@@ -133,19 +148,28 @@ function LimitCard({
               <span
                 className={cn(
                   "flex size-4 items-center justify-center rounded border-2 transition-colors",
-                  agreed ? "border-primary bg-primary" : "border-element-border bg-background-elements",
+                  agreed
+                    ? "border-primary bg-primary"
+                    : "border-element-border bg-background-elements"
                 )}
               >
                 {agreed && <span className="text-[10px] text-white">✓</span>}
               </span>
             </span>
             <span className="text-xs text-text-subtext">
-              Bu sınırı 24 saat geçmeden düzenleyemeyeceğimi ve silemeyeceğimi ve sınırların
-              Masaüstü ve Demo modlarında çalıştığını anlıyorum.
+              Bu sınırı 24 saat geçmeden düzenleyemeyeceğimi ve silemeyeceğimi
+              ve sınırların Masaüstü ve Demo modlarında çalıştığını anlıyorum.
             </span>
           </label>
 
-          <Button variant="secondary" size="sm" onClick={() => { setSaved(true); onToggle() }}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              setSaved(true)
+              onToggle()
+            }}
+          >
             Limiti Kaydet
           </Button>
         </div>
@@ -204,10 +228,10 @@ export default function SinirlarPage() {
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
                 className={cn(
-                  "flex w-full items-center cursor-pointer mb-1 justify-between rounded-md px-4 py-3 text-left text-sm font-medium transition-colors",
+                  "flex w-full items-center cursor-pointer mb-1 justify-between rounded-md px-4 py-3 text-left text-sm transition-colors",
                   isActive
-                    ? "bg-background-body text-text-title"
-                    : "text-text-subtext hover:bg-background-elements/50 hover:text-text-main",
+                    ? "bg-background-body text-text-main"
+                    : "text-text-main hover:bg-background-elements/50",
                 )}
               >
                 <span>{tab.label}</span>

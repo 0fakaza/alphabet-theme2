@@ -22,6 +22,7 @@ import { LoginModal } from "@/components/login-modal"
 import { RegisterModal } from "@/components/register-modal"
 import { ForgotPasswordModal } from "@/components/forgot-password-modal"
 import { WalletModal } from "@/components/wallet-modal"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
 
@@ -43,6 +44,7 @@ export default function RootLayout({
     >
       <body className="bg-background-body">
         <ThemeProvider>
+          <TooltipProvider>
           <AuthProvider>
           <LoginModalProvider>
             <RegisterModalProvider>
@@ -82,6 +84,7 @@ export default function RootLayout({
             </RegisterModalProvider>
           </LoginModalProvider>
           </AuthProvider>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
