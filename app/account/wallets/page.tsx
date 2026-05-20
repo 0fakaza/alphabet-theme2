@@ -266,8 +266,8 @@ export default function CuzdanlarimPage() {
 
       {addOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/60" onClick={() => setAddOpen(false)} />
-          <div className="fixed right-0 top-0 z-50 flex h-full w-full max-w-[420px] flex-col bg-background-modal shadow-2xl">
+          <div className="fixed inset-0 z-[200] bg-black/60" onClick={() => setAddOpen(false)} />
+          <div className="fixed right-0 top-0 z-[201] flex h-full w-full max-w-[420px] flex-col bg-background-modal shadow-2xl">
             <div className="flex items-start justify-between border-b border-divider-100 p-5">
               <div className="flex items-center gap-3">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-green-500/20">
@@ -376,7 +376,7 @@ export default function CuzdanlarimPage() {
               </label>
             </div>
 
-            <div className="flex gap-3 border-t border-divider-100 p-5">
+            <div className="flex shrink-0 gap-3 border-t border-divider-100 bg-background-modal p-5 pb-safe md:pb-5">
               <Button variant="outline" className="flex-1" onClick={() => setAddOpen(false)}>Vazgeç</Button>
               <Button variant="secondary" className="flex-1" onClick={handleSave}>{editId !== null ? "Güncelle" : "Kaydet"}</Button>
             </div>

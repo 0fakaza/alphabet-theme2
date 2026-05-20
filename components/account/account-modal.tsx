@@ -13,7 +13,7 @@ export function AccountModal({ title, onClose, children, maxWidth = "max-w-sm" }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div
-        className={`relative w-full ${maxWidth} rounded-2xl border border-element-border bg-background-main p-6 shadow-2xl`}
+        className={`relative w-full ${maxWidth} rounded-2xl border border-element-border bg-background-modal p-6 shadow-2xl`}
       >
         <button
           onClick={onClose}

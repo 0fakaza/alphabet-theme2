@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { HugeiconsIcon, GiftIcon, Cancel01Icon } from "@/lib/icons"
-import { Coupon01Icon } from "@/lib/icons"
+import Image from "next/image"
+import { HugeiconsIcon, GiftIcon, Coupon01Icon } from "@/lib/icons"
 import { AccountPageLayout } from "@/components/account/account-page-layout"
 import { AccountModal } from "@/components/account/account-modal"
 import { BonusCardItem, bonusCards } from "@/components/account/bonus-card"
@@ -39,14 +39,14 @@ export default function BonuslarimPage() {
             ]}
           />
           <TabsContent value="active" className="mt-5">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-[19px] sm:grid-cols-2 xl:grid-cols-3">
               {activeCards.map((card) => (
-                <BonusCardItem key={card.id} card={card} />
+                <BonusCardItem key={card.id} card={card} onRequest={() => setLimitPopup(true)} />
               ))}
             </div>
           </TabsContent>
           <TabsContent value="past" className="mt-5">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-[19px] sm:grid-cols-2 xl:grid-cols-3">
               {bonusCards.map((card) => (
                 <BonusCardItem key={card.id} card={card} />
               ))}
@@ -58,14 +58,14 @@ export default function BonuslarimPage() {
       {limitPopup && (
         <AccountModal title="Kupon Detay" onClose={() => setLimitPopup(false)}>
           <div className="flex flex-col items-center gap-4 py-4 text-center">
-            <div className="flex size-14 items-center justify-center rounded-full bg-semantic-error/20">
-              <span className="text-2xl text-semantic-error">!</span>
-            </div>
+              <span className="inline-flex rounded-full shadow-[0_24px_54px_0_rgba(255,159,152,0.45)]">
+                <Image src="/images/icons/danger.svg" alt="" width={68} height={68} />
+              </span>
             <div>
               <p className="font-semibold text-text-title">Talep alınmadı</p>
               <p className="mt-1 text-sm text-text-subtext">Aynı anda en fazla 1 bonus talep edebilirsiniz.</p>
             </div>
-            <Button variant="outline" className="w-full" onClick={() => setLimitPopup(false)}>
+            <Button variant="outline" className="w-fit" onClick={() => setLimitPopup(false)}>
               Kapat
             </Button>
           </div>
