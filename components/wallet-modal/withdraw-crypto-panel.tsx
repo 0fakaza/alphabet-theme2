@@ -15,10 +15,10 @@ import {
   DetailSubmitButton,
   FormField,
   FormSelect,
-  WalletConfirmCheckbox,
   WithdrawDetailHeader,
   WithdrawDetailHelpLink,
 } from "./shared"
+import { CheckboxField } from "@/components/elements/checkbox"
 
 export function WithdrawCryptoDetailPanel({
   method,
@@ -154,9 +154,12 @@ export function WithdrawCryptoDetailPanel({
           </div>
         </div>
 
-        <WalletConfirmCheckbox
+        <CheckboxField
           checked={accepted}
-          onChange={setAccepted}
+          onCheckedChange={setAccepted}
+          color="secondary"
+          appearance="fill"
+          size="lg"
           label="Çekim işlemini onaylıyorum."
         />
 

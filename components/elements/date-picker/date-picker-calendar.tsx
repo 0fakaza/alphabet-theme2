@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import {
   getCalendarDays,
   isDateDisabled,
+  isInDateRange,
   isSameDay,
   isToday,
   parseDateInputValue,
@@ -29,8 +30,7 @@ const MONTHS = [
   "Aralık",
 ] as const
 
-export type DatePickerCalendarProps = {
-  value: string
+type DatePickerCalendarBaseProps = {
   viewMonth: Date
   onViewMonthChange: (month: Date) => void
   onSelect: (iso: string) => void
@@ -39,16 +39,42 @@ export type DatePickerCalendarProps = {
   className?: string
 }
 
-export function DatePickerCalendar({
-  value,
-  viewMonth,
-  onViewMonthChange,
-  onSelect,
-  min,
-  max,
-  className,
-}: DatePickerCalendarProps) {
-  const selected = parseDateInputValue(value) ?? new Date()
+export type DatePickerCalendarSingleProps = DatePickerCalendarBaseProps & {
+  mode?: "single"
+  value: string
+}
+
+export type DatePickerCalendarRangeProps = DatePickerCalendarBaseProps & {
+  mode: "range"
+  rangeStart: string
+  rangeEnd: string
+}
+
+export type DatePickerCalendarProps =
+  | DatePickerCalendarSingleProps
+  | DatePickerCalendarRangeProps
+
+export function DatePickerCalendar(props: DatePickerCalendarProps) {
+  const {
+    viewMonth,
+    onViewMonthChange,
+    onSelect,
+    min,
+    max,
+    className,
+  } = props
+
+  const isRangeMode = props.mode === "range"
+  const selected = !isRangeMode
+    ? parseDateInputValue(props.value) ?? new Date()
+    : null
+
+  const rangeStart = isRangeMode
+    ? parseDateInputValue(props.rangeStart)
+    : null
+  const rangeEnd = isRangeMode
+    ? parseDateInputValue(props.rangeEnd)
+    : null
 
   const calendarDays = useMemo(
     () => getCalendarDays(viewMonth.getFullYear(), viewMonth.getMonth()),
@@ -66,6 +92,32 @@ export function DatePickerCalendar({
   const handleSelect = (date: Date) => {
     if (isDateDisabled(date, min, max)) return
     onSelect(toDateInputValue(date))
+  }
+
+  const getDayState = (date: Date) => {
+    if (!isRangeMode && selected) {
+      return {
+        isSelected: isSameDay(date, selected),
+        isRangeStart: false,
+        isRangeEnd: false,
+        inRange: false,
+      }
+    }
+
+    const isRangeStart = !!(rangeStart && isSameDay(date, rangeStart))
+    const isRangeEnd = !!(rangeEnd && isSameDay(date, rangeEnd))
+    const inRange =
+      isRangeMode &&
+      props.rangeStart &&
+      props.rangeEnd &&
+      isInDateRange(date, props.rangeStart, props.rangeEnd)
+
+    return {
+      isSelected: isRangeStart || isRangeEnd,
+      isRangeStart,
+      isRangeEnd,
+      inRange: inRange && !isRangeStart && !isRangeEnd,
+    }
   }
 
   return (
@@ -92,6 +144,14 @@ export function DatePickerCalendar({
         </button>
       </div>
 
+      {isRangeMode && (
+        <p className="mb-3 text-center text-[11px] text-text-subtext">
+          {!props.rangeEnd
+            ? "Bitiş tarihini seçin"
+            : "Yeni aralık için başlangıç tarihini seçin"}
+        </p>
+      )}
+
       <div className="mb-2 grid grid-cols-7 gap-1">
         {WEEKDAYS.map((day) => (
           <span
@@ -106,27 +166,39 @@ export function DatePickerCalendar({
       <div className="grid grid-cols-7 gap-1">
         {calendarDays.map((date, i) =>
           date ? (
-            <button
-              key={`${date.toISOString()}-${i}`}
-              type="button"
-              disabled={isDateDisabled(date, min, max)}
-              onClick={() => handleSelect(date)}
-              className={cn(
-                "flex cursor-pointer h-9 items-center justify-center rounded-lg text-sm font-medium transition-colors",
-                isSameDay(date, selected) &&
-                  "bg-primary text-action-primary-on-primary",
-                !isSameDay(date, selected) &&
-                  !isDateDisabled(date, min, max) &&
-                  "text-text-main hover:bg-background-elements",
-                isToday(date) &&
-                  !isSameDay(date, selected) &&
-                  "ring-1 ring-primary ring-inset",
-                isDateDisabled(date, min, max) &&
-                  "cursor-not-allowed text-text-subtext opacity-40"
-              )}
-            >
-              {date.getDate()}
-            </button>
+            (() => {
+              const { isSelected, isRangeStart, isRangeEnd, inRange } =
+                getDayState(date)
+              return (
+                <button
+                  key={`${date.toISOString()}-${i}`}
+                  type="button"
+                  disabled={isDateDisabled(date, min, max)}
+                  onClick={() => handleSelect(date)}
+                  className={cn(
+                    "flex h-9 cursor-pointer items-center justify-center text-sm font-medium transition-colors",
+                    isSelected &&
+                      "bg-primary text-action-primary-on-primary",
+                    isRangeStart && !isRangeEnd && "rounded-lg",
+                    isRangeEnd && !isRangeStart && "rounded-lg",
+                    isRangeStart && isRangeEnd && "rounded-lg",
+                    inRange && "rounded-none bg-primary/15 text-text-main",
+                    !isSelected &&
+                      !inRange &&
+                      !isDateDisabled(date, min, max) &&
+                      "rounded-lg text-text-main hover:bg-background-elements",
+                    isToday(date) &&
+                      !isSelected &&
+                      !inRange &&
+                      "ring-1 ring-primary ring-inset",
+                    isDateDisabled(date, min, max) &&
+                      "cursor-not-allowed rounded-lg text-text-subtext opacity-40"
+                  )}
+                >
+                  {date.getDate()}
+                </button>
+              )
+            })()
           ) : (
             <span key={`empty-${i}`} className="h-9" aria-hidden />
           )

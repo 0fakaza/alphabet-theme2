@@ -12,6 +12,7 @@ import {
   HugeiconsIcon,
 } from "@/lib/icons"
 import { cn } from "@/lib/utils"
+import { Checkbox } from "@/components/elements/checkbox"
 import { useLoginModal } from "@/components/providers/login-modal-provider"
 import { useRegisterModal } from "@/components/providers/register-modal-provider"
 import { useForgotPasswordModal } from "@/components/providers/forgot-password-modal-provider"
@@ -181,21 +182,13 @@ export function LoginModal() {
                     Parolamı Unuttum
                   </button>
                   <label className="flex cursor-pointer items-center gap-2 text-sm text-text-subtext">
-                    <span
-                      onClick={() => setRememberMe((v) => !v)}
-                      className={cn(
-                        "flex size-5 shrink-0 items-center justify-center rounded border-2 transition-colors",
-                        rememberMe
-                          ? "border-primary bg-primary"
-                          : "border-element-border bg-background-element",
-                      )}
-                    >
-                      {rememberMe && (
-                        <svg viewBox="0 0 10 10" className="size-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="1.5,5 4,7.5 8.5,2.5" />
-                        </svg>
-                      )}
-                    </span>
+                    <Checkbox
+                      checked={rememberMe}
+                      onCheckedChange={setRememberMe}
+                      color="primary"
+                      appearance="fill"
+                      size="md"
+                    />
                     Beni Hatırla
                   </label>
                 </div>

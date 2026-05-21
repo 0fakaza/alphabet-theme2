@@ -1,7 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
+import {
+  formatDisplayDateRange,
+  isTransactionInRange,
+  type DateRangeValue,
+} from "@/lib/date"
+import { DatePicker } from "@/components/elements/date-picker"
 import { HugeiconsIcon, Clock01Icon, Cancel01Icon, Copy01Icon, ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
 import { AccountPageLayout } from "@/components/account/account-page-layout"
 import { Button } from "@/components/elements/button"
@@ -122,16 +128,45 @@ function StatCard({
 }
 
 /* ─────────────────────────── Main page ─────────────────────────── */
+const defaultDateRange: DateRangeValue = {
+  start: "2025-02-01",
+  end: "2025-02-28",
+}
+
 export default function GecmisIslemlerimPage() {
   const [mainTab, setMainTab] = useState<MainTab>("spor")
   const [odemeSubTab, setOdemeSubTab] = useState<OdemeSubTab>("yatirimlar")
-  const [startDate] = useState("14/03/24")
-  const [endDate] = useState("14/03/2024")
+  const [dateRange, setDateRange] = useState<DateRangeValue>(defaultDateRange)
   type SelectedKupon = { id: string; tarih: string; isActive: boolean; type: KuponType; status: KuponStatus; game?: string; bahis?: number; oran?: number; maxKazanc?: number }
   const [selectedKupon, setSelectedKupon] = useState<SelectedKupon | null>(null)
   const [cashoutOpen, setCashoutOpen] = useState(false)
   const [cashoutAmount, setCashoutAmount] = useState("1256")
   const isEmpty = false // set to true to see empty state
+
+  const inRange = (tarih: string) => isTransactionInRange(tarih, dateRange)
+
+  const filteredSporActive = useMemo(
+    () => sporActiveKuponlar.filter((k) => inRange(k.tarih)),
+    [dateRange]
+  )
+  const filteredSporGecmis = useMemo(
+    () => sporGecmisKuponlar.filter((k) => inRange(k.tarih)),
+    [dateRange]
+  )
+  const filteredCasino = useMemo(
+    () => casinoIslemler.filter((k) => inRange(k.tarih)),
+    [dateRange]
+  )
+  const filteredYatirim = useMemo(
+    () => yatirimIslemler.filter((k) => inRange(k.tarih)),
+    [dateRange]
+  )
+  const filteredCekim = useMemo(
+    () => cekirIslemler.filter((k) => inRange(k.tarih)),
+    [dateRange]
+  )
+
+  const rangeLabel = formatDisplayDateRange(dateRange) || "Tarih aralığı"
 
   function openSporKupon(k: typeof sporActiveKuponlar[0]) {
     setSelectedKupon({ id: k.id, tarih: k.tarih, isActive: k.isActive, type: k.type, status: k.status, bahis: k.bahis, oran: k.oran, maxKazanc: k.maxKazanc })
@@ -160,12 +195,15 @@ export default function GecmisIslemlerimPage() {
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-2 text-sm text-text-subtext">
-            <span>Tarih aralığı</span>
-            <span className="flex items-center gap-2 rounded-xl border border-element-border bg-background-elements px-3 py-2 text-xs text-text-main">
-              {startDate} – {endDate}
-              <span>📅</span>
-            </span>
+          <div className="flex w-full flex-col gap-1.5 sm:w-auto sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-sm text-text-subtext">Tarih aralığı</span>
+            <DatePicker
+              mode="range"
+              value={dateRange}
+              onChange={setDateRange}
+              aria-label="Tarih aralığı"
+              triggerClassName="h-10 min-w-[220px] sm:min-w-[240px]"
+            />
           </div>
         </div>
 
@@ -194,7 +232,7 @@ export default function GecmisIslemlerimPage() {
                   <StatCard
                     label="Kar/Zarar"
                     amount="+$420.52"
-                    sub="14 Ağu 24 – 14 Tem"
+                    sub={rangeLabel}
                     green
                     className="min-w-0 flex-1"
                   />
@@ -229,7 +267,7 @@ export default function GecmisIslemlerimPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {sporActiveKuponlar.map((k, i) => (
+                        {filteredSporActive.map((k, i) => (
                           <tr
                             key={i}
                             className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
@@ -273,7 +311,7 @@ export default function GecmisIslemlerimPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {sporGecmisKuponlar.map((k, i) => (
+                        {filteredSporGecmis.map((k, i) => (
                           <tr
                             key={i}
                             className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
@@ -332,7 +370,7 @@ export default function GecmisIslemlerimPage() {
                 </tr>
               </thead>
               <tbody>
-                  {casinoIslemler.map((row, i) => (
+                  {filteredCasino.map((row, i) => (
                   <tr
                     key={i}
                     className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
@@ -388,7 +426,7 @@ export default function GecmisIslemlerimPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(odemeSubTab === "yatirimlar" ? yatirimIslemler : cekirIslemler).map((row, i) => (
+                  {(odemeSubTab === "yatirimlar" ? filteredYatirim : filteredCekim).map((row, i) => (
                     <tr key={i} className="border-b border-element-border last:border-0 hover:bg-background-elements/30">
                       <td className="px-5 py-4 text-sm text-text-main">{row.tur}</td>
                       <td className="px-5 py-4">

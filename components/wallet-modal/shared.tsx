@@ -7,7 +7,6 @@ import {
   ViewOffIcon,
   ArrowDown01Icon,
   ArrowLeft01Icon,
-  Tick02Icon,
   HugeiconsIcon,
 } from "@/lib/icons"
 import { PlayCircleIcon } from "@hugeicons-pro/core-solid-sharp"
@@ -85,7 +84,7 @@ export function WalletModalHeader({
       className={cn(
         "relative shrink-0 bg-neutral-100",
         compact
-          ? "px-3 pb-2 pt-5 md:h-[90px] md:pb-0 md:pl-[39px] md:pt-[27px]"
+          ? "px-3 pb-6 pt-6 md:h-[90px] md:pb-0 md:pl-[39px] md:pt-[27px]"
           : "h-[90px] pl-[39px] pt-[27px]"
       )}
     >
@@ -221,43 +220,6 @@ export function DetailPanelShell({
         {children}
       </div>
     </div>
-  )
-}
-
-export function WalletConfirmCheckbox({
-  checked,
-  onChange,
-  label,
-}: {
-  checked: boolean
-  onChange: (checked: boolean) => void
-  label: string
-}) {
-  return (
-    <label className="flex cursor-pointer items-start gap-2">
-      <button
-        type="button"
-        role="checkbox"
-        aria-checked={checked}
-        onClick={() => onChange(!checked)}
-        className={cn(
-          "flex size-[22px] shrink-0 items-center justify-center rounded border-2 border-element-border bg-background-elements p-1.5 transition-colors",
-          checked && "border-primary"
-        )}
-      >
-        <HugeiconsIcon
-          icon={Tick02Icon}
-          className={cn(
-            "size-2.5 text-primary transition-opacity",
-            checked ? "opacity-100" : "opacity-0"
-          )}
-          strokeWidth={2.5}
-        />
-      </button>
-      <span className="pt-0.5 text-sm font-medium leading-5 tracking-wide text-text-subtext">
-        {label}
-      </span>
-    </label>
   )
 }
 

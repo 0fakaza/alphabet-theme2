@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { createPortal } from "react-dom"
 import { cn } from "@/lib/utils"
 import {
@@ -9,20 +10,22 @@ import {
   ViewIcon,
   ViewOffIcon,
 } from "@/lib/icons"
-import { Invoice04Icon, ReverseWithdrawal01Icon } from "@hugeicons-pro/core-solid-sharp"
 import { Button } from "@/components/elements/button"
 import { useWalletModal, type WalletMode } from "@/components/providers/wallet-modal-provider"
 
+const DEPOSIT_ACTION_ICON = "/images/icons/depozit.svg"
+const WITHDRAW_ACTION_ICON = "/images/icons/withdrawal.svg"
+
 const balances = [
-  { key: "main", label: "Bakiye", value: "₺15.520.125,52", showEye: true },
-  { key: "bonus", label: "Bonus Bakiye", value: "₺100" },
+  { key: "main" as const, label: "Bakiye", value: "₺15.520.125,52" },
+  { key: "bonus" as const, label: "Bonus Bakiye", value: "₺100" },
   {
-    key: "freebet",
+    key: "freebet" as const,
     label: "Freebet Bakiye",
     shortLabel: "Freebet",
     value: "₺100",
   },
-] as const
+]
 
 function BalanceValue({
   value,
@@ -58,27 +61,30 @@ function CardIconDecor({ isDeposit }: { isDeposit: boolean }) {
     : "rgba(244,0,0,0.45)"
 
   return (
-    <div className="relative size-[52px] shrink-0">
+    <div className="relative size-[52px] shrink-0 md:size-[80px]">
       <span
-        className="absolute -right-1 -top-1.5 size-8 rounded-full opacity-60 blur-md"
+        className="absolute -top-1.5 -right-1 size-8 rounded-full opacity-60 blur-md md:size-10"
         style={{ backgroundColor: accent }}
         aria-hidden
       />
       <span
-        className="absolute bottom-0 left-1 size-8 rounded-full opacity-50 blur-md"
+        className="absolute bottom-0 left-1 size-8 rounded-full opacity-50 blur-md md:size-10"
         style={{ backgroundColor: accent }}
         aria-hidden
       />
       <div
-        className="relative flex size-[52px] items-center justify-center rounded-full"
+        className="relative flex size-[52px] items-center justify-center rounded-full md:size-[80px]"
         style={{
           backgroundColor: accent,
           boxShadow: `0 12px 32px ${shadow}`,
         }}
       >
-        <HugeiconsIcon
-          icon={isDeposit ? Invoice04Icon : ReverseWithdrawal01Icon}
-          className="size-7 text-white md:size-10"
+        <Image
+          src={isDeposit ? DEPOSIT_ACTION_ICON : WITHDRAW_ACTION_ICON}
+          alt=""
+          width={40}
+          height={40}
+          className="size-10 object-contain md:size-10"
         />
       </div>
     </div>
@@ -147,7 +153,8 @@ function WalletActionCardDesktop({ mode, onSelect }: WalletActionCardProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "relative hidden min-h-[227px] min-w-0 flex-1 cursor-pointer flex-col items-center overflow-hidden rounded-2xl border border-white/10 px-4 pb-6 pt-4 text-center outline-none transition-all md:flex md:max-w-[341px]",
+        "relative hidden min-h-[227px] min-w-0 flex-1 cursor-pointer flex-col items-center overflow-hidden rounded-2xl border " +
+        "border-white/10 px-4 pb-5 pt-1.5 text-center outline-none transition-all md:flex md:max-w-[341px]",
         "bg-[#22272c] shadow-[inset_1px_1px_1px_rgba(255,255,255,0.1)]",
         "before:pointer-events-none before:absolute before:inset-0 before:rounded-2xl before:opacity-20",
         "ring-0 ring-transparent focus-visible:ring-0",
@@ -176,7 +183,7 @@ function WalletActionCardDesktop({ mode, onSelect }: WalletActionCardProps) {
         <CardIconDecor isDeposit={isDeposit} />
       </div>
 
-      <div className="relative z-10 mt-6 flex max-w-[263px] flex-col gap-1.5">
+      <div className="relative z-10 mt-6 flex max-w-[270px] flex-col gap-1.5">
         <p className="text-[15px] font-medium tracking-wide text-white">
           {isDeposit ? "Para yatırmak istiyorum" : "Para çekmek istiyorum"}
         </p>
@@ -207,17 +214,31 @@ function WalletActionCard(props: WalletActionCardProps) {
 
 export type WalletActionPopoverProps = {
   children: React.ReactNode
-  hideBalances: boolean
-  onToggleHide: () => void
+  hideMain: boolean
+  onToggleMain: () => void
 }
 
 export function WalletActionPopover({
   children,
-  hideBalances,
-  onToggleHide,
+  hideMain,
+  onToggleMain,
 }: WalletActionPopoverProps) {
   const [open, setOpen] = useState(false)
+  const [hideBonus, setHideBonus] = useState(false)
+  const [hideFreebet, setHideFreebet] = useState(false)
   const { open: openWalletModal } = useWalletModal()
+
+  const hiddenByKey = {
+    main: hideMain,
+    bonus: hideBonus,
+    freebet: hideFreebet,
+  } as const
+
+  const toggleHidden = (key: keyof typeof hiddenByKey) => {
+    if (key === "main") onToggleMain()
+    if (key === "bonus") setHideBonus((v) => !v)
+    if (key === "freebet") setHideFreebet((v) => !v)
+  }
 
   const handleSelectMode = (mode: WalletMode) => {
     setOpen(false)
@@ -249,7 +270,7 @@ export function WalletActionPopover({
   const panel = open ? (
     <>
       <div
-        className="fixed inset-0 z-[59] bg-black/40"
+        className="fixed inset-0 z-[59] bg-black/60 backdrop-blur-sm"
         aria-hidden
         onClick={close}
       />
@@ -258,9 +279,10 @@ export function WalletActionPopover({
         aria-modal="true"
         aria-label="Bakiye"
         className={cn(
-          "fixed z-[60] flex w-full flex-col overflow-y-auto border-divider-100 bg-background-modal shadow-2xl",
-          "inset-x-0 bottom-0 top-auto max-h-[min(467px,90dvh)] rounded-t-2xl border-x-0 border-b-0",
-          "md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:max-h-[calc(100dvh-32px)] md:w-[min(773px,calc(100vw-24px))] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md:border"
+          "fixed z-[60] flex w-full flex-col overflow-y-auto bg-background-modal shadow-2xl",
+          "inset-x-0 top-auto bottom-0 max-h-[min(467px,90dvh)] rounded-t-2xl",
+          "md:inset-x-auto md:top-1/2 md:bottom-auto md:left-1/2 md:max-h-[calc(100dvh-32px)] md:w-[min(773px,calc(100vw-24px))] md:-translate-x-1/2 " +
+            "md:-translate-y-1/2 md:rounded-2xl"
         )}
       >
         {/* Mobil: başlık + kapat */}
@@ -277,45 +299,43 @@ export function WalletActionPopover({
         </div>
 
         {/* Bakiyeler */}
-        <div className="relative bg-neutral-100 p-3 md:px-6 md:py-6">
+        <div className="relative bg-neutral-100 p-3 md:px-10 md:py-6">
           <div className="flex flex-wrap gap-x-8 gap-y-3 md:gap-x-[61px] md:pr-10">
-            {balances.map((item) => (
-              <div key={item.key} className="flex min-w-0 flex-col gap-0.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-text-subtext">
-                    <span className="md:hidden">
-                      {"shortLabel" in item ? item.shortLabel : item.label}
+            {balances.map((item) => {
+              const hidden = hiddenByKey[item.key]
+              return (
+                <div key={item.key} className="flex min-w-0 flex-col gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-text-subtext">
+                      <span className="md:hidden">
+                        {"shortLabel" in item ? item.shortLabel : item.label}
+                      </span>
+                      <span className="hidden md:inline">{item.label}</span>
                     </span>
-                    <span className="hidden md:inline">{item.label}</span>
-                  </span>
-                  {"showEye" in item && item.showEye && (
                     <button
                       type="button"
-                      onClick={onToggleHide}
+                      onClick={() => toggleHidden(item.key)}
                       className="text-text-subtext transition-colors hover:text-text-main"
                       aria-label={
-                        hideBalances ? "Bakiyeleri göster" : "Bakiyeleri gizle"
+                        hidden ? `${item.label} göster` : `${item.label} gizle`
                       }
                     >
                       <HugeiconsIcon
-                        icon={hideBalances ? ViewOffIcon : ViewIcon}
+                        icon={hidden ? ViewOffIcon : ViewIcon}
                         className="size-4"
                       />
                     </button>
-                  )}
+                  </div>
+                  <BalanceValue value={item.value} hidden={hidden} />
                 </div>
-                <BalanceValue
-                  value={item.value}
-                  hidden={"showEye" in item && item.showEye ? hideBalances : false}
-                />
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <button
             type="button"
             onClick={close}
-            className="absolute right-3 top-3 hidden size-8 items-center justify-center rounded-lg border border-element-border bg-background-elements text-icon transition-colors hover:border-primary hover:text-text-main md:flex md:right-6 md:top-6"
+            className="absolute top-3 right-3 hidden size-8 items-center justify-center rounded-lg border border-element-border bg-background-elements text-icon transition-colors hover:border-primary hover:text-text-main md:top-6 md:right-6 md:flex"
             aria-label="Kapat"
           >
             <HugeiconsIcon icon={Cancel01Icon} className="size-4" />
@@ -323,7 +343,7 @@ export function WalletActionPopover({
         </div>
 
         {/* Kartlar */}
-        <div className="flex flex-col gap-4 px-3 pb-6 pt-4 md:mx-auto md:w-full md:max-w-[697px] md:flex-row md:items-stretch md:justify-center md:gap-4 md:px-6 md:pb-8 md:pt-6">
+        <div className="flex flex-col gap-4 px-3 pt-4 pb-6 md:mx-auto md:w-full md:flex-row md:items-stretch md:justify-center md:gap-4 md:px-6 md:pt-6 md:pb-6">
           <WalletActionCard
             mode="deposit"
             onSelect={() => handleSelectMode("deposit")}

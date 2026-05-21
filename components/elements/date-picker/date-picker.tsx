@@ -2,15 +2,19 @@
 
 import { useId, useState } from "react"
 import { cn } from "@/lib/utils"
-import { formatDisplayDate, parseDateInputValue } from "@/lib/date"
+import {
+  formatDisplayDate,
+  formatDisplayDateRange,
+  normalizeDateRange,
+  parseDateInputValue,
+  toDateInputValue,
+  type DateRangeValue,
+} from "@/lib/date"
 import { HugeiconsIcon, Calendar04Icon } from "@/lib/icons"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { DatePickerCalendar } from "./date-picker-calendar"
 
-export type DatePickerProps = {
-  /** ISO format: yyyy-MM-dd */
-  value: string
-  onChange: (value: string) => void
+type DatePickerSharedProps = {
   min?: string
   max?: string
   label?: string
@@ -25,47 +29,118 @@ export type DatePickerProps = {
   "aria-label"?: string
 }
 
+export type DatePickerSingleProps = DatePickerSharedProps & {
+  mode?: "single"
+  value: string
+  onChange: (value: string) => void
+}
+
+export type DatePickerRangeProps = DatePickerSharedProps & {
+  mode: "range"
+  value: DateRangeValue
+  onChange: (value: DateRangeValue) => void
+  /** Popover kapanır (varsayılan: true) */
+  closeOnRangeComplete?: boolean
+}
+
+export type DatePickerProps = DatePickerSingleProps | DatePickerRangeProps
+
+export type { DateRangeValue }
+
 const defaultTriggerCls =
   "relative flex h-12 w-full min-w-0 cursor-pointer items-center gap-1.5 rounded-xl border border-element-border bg-background-elements pl-4 pr-3 text-left transition-colors hover:border-primary/50 focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 
-export function DatePicker({
-  value,
-  onChange,
-  min,
-  max,
-  label,
-  placeholder = "gg/aa/yy",
-  disabled = false,
-  className,
-  triggerClassName,
-  contentClassName,
-  align = "end",
-  side = "bottom",
-  id: idProp,
-  "aria-label": ariaLabel,
-}: DatePickerProps) {
+function getAnchorDate(props: DatePickerProps): Date {
+  if (props.mode === "range") {
+    const { start, end } = props.value
+    return (
+      parseDateInputValue(end) ??
+      parseDateInputValue(start) ??
+      new Date()
+    )
+  }
+  return parseDateInputValue(props.value) ?? new Date()
+}
+
+export function DatePicker(props: DatePickerProps) {
+  const {
+    min,
+    max,
+    label,
+    disabled = false,
+    className,
+    triggerClassName,
+    contentClassName,
+    align = "end",
+    side = "bottom",
+    id: idProp,
+    "aria-label": ariaLabel,
+  } = props
+
+  const mode = props.mode ?? "single"
+  const isRange = mode === "range"
+
+  const placeholder = isRange
+    ? (props.placeholder ?? "gg/aa/yy – gg/aa/yy")
+    : (props.placeholder ?? "gg/aa/yy")
+
   const autoId = useId()
   const id = idProp ?? autoId
-  const selected = parseDateInputValue(value) ?? new Date()
+  const anchor = getAnchorDate(props)
   const [open, setOpen] = useState(false)
   const [viewMonth, setViewMonth] = useState(
-    () => new Date(selected.getFullYear(), selected.getMonth(), 1)
+    () => new Date(anchor.getFullYear(), anchor.getMonth(), 1)
   )
 
-  const displayText = value ? formatDisplayDate(value) : placeholder
-  const accessibleName = ariaLabel ?? label ?? "Tarih seç"
+  const hasRangeValue =
+    props.mode === "range" &&
+    !!(props.value.start || props.value.end)
+  const hasSingleValue = props.mode !== "range" && !!props.value
+
+  const displayText =
+    props.mode === "range"
+      ? formatDisplayDateRange(props.value) || placeholder
+      : props.value
+        ? formatDisplayDate(props.value)
+        : placeholder
+
+  const accessibleName =
+    ariaLabel ?? label ?? (isRange ? "Tarih aralığı seç" : "Tarih seç")
 
   const handleOpenChange = (next: boolean) => {
     if (disabled) return
     setOpen(next)
     if (next) {
-      setViewMonth(new Date(selected.getFullYear(), selected.getMonth(), 1))
+      setViewMonth(new Date(anchor.getFullYear(), anchor.getMonth(), 1))
     }
   }
 
   const handleSelect = (iso: string) => {
-    onChange(iso)
-    setOpen(false)
+    if (props.mode !== "range") {
+      props.onChange(iso)
+      setOpen(false)
+      return
+    }
+
+    const { start, end } = props.value
+    const closeOnComplete = props.closeOnRangeComplete ?? true
+
+    if (!start || (start && end)) {
+      props.onChange({ start: iso, end: "" })
+      return
+    }
+
+    const normalized = normalizeDateRange({ start, end: iso })
+    if (!normalized) return
+
+    props.onChange({
+      start: toDateInputValue(normalized.start),
+      end: toDateInputValue(normalized.end),
+    })
+
+    if (closeOnComplete) {
+      setOpen(false)
+    }
   }
 
   const field = (
@@ -81,7 +156,9 @@ export function DatePicker({
           <span
             className={cn(
               "min-w-0 flex-1 truncate text-sm font-medium tracking-wide",
-              value ? "text-text-main" : "text-text-subtext"
+              hasSingleValue || hasRangeValue
+                ? "text-text-main"
+                : "text-text-subtext"
             )}
           >
             {displayText}
@@ -102,14 +179,28 @@ export function DatePicker({
           contentClassName
         )}
       >
-        <DatePickerCalendar
-          value={value}
-          viewMonth={viewMonth}
-          onViewMonthChange={setViewMonth}
-          onSelect={handleSelect}
-          min={min}
-          max={max}
-        />
+        {props.mode === "range" ? (
+          <DatePickerCalendar
+            mode="range"
+            rangeStart={props.value.start}
+            rangeEnd={props.value.end}
+            viewMonth={viewMonth}
+            onViewMonthChange={setViewMonth}
+            onSelect={handleSelect}
+            min={min}
+            max={max}
+          />
+        ) : (
+          <DatePickerCalendar
+            mode="single"
+            value={props.value}
+            viewMonth={viewMonth}
+            onViewMonthChange={setViewMonth}
+            onSelect={handleSelect}
+            min={min}
+            max={max}
+          />
+        )}
       </PopoverContent>
     </Popover>
   )

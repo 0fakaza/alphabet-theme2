@@ -68,3 +68,86 @@ export function isDateDisabled(
   }
   return false
 }
+
+export type DateRangeValue = {
+  /** ISO yyyy-MM-dd */
+  start: string
+  /** ISO yyyy-MM-dd */
+  end: string
+}
+
+/** Sıralı başlangıç / bitiş (aynı gün dahil) */
+export function normalizeDateRange(range: DateRangeValue): {
+  start: Date
+  end: Date
+} | null {
+  const start = parseDateInputValue(range.start)
+  const end = parseDateInputValue(range.end)
+  if (!start || !end) return null
+  const a = startOfDay(start).getTime()
+  const b = startOfDay(end).getTime()
+  if (a <= b) return { start: startOfDay(start), end: startOfDay(end) }
+  return { start: startOfDay(end), end: startOfDay(start) }
+}
+
+export function isInDateRange(
+  date: Date,
+  startIso: string,
+  endIso: string
+): boolean {
+  const normalized = normalizeDateRange({ start: startIso, end: endIso })
+  if (!normalized) return false
+  const t = startOfDay(date).getTime()
+  return (
+    t >= normalized.start.getTime() && t <= normalized.end.getTime()
+  )
+}
+
+export function formatDisplayDateRange(range: DateRangeValue): string {
+  const { start, end } = range
+  if (start && end) {
+    return `${formatDisplayDate(start)} – ${formatDisplayDate(end)}`
+  }
+  if (start) return `${formatDisplayDate(start)} – …`
+  if (end) return `… – ${formatDisplayDate(end)}`
+  return ""
+}
+
+/** Geçmiş işlemler: "14.02.2025 14:30" */
+export function parseTransactionDateTime(value: string): Date | null {
+  const m = value.trim().match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?/)
+  if (!m) return null
+  const [, d, mo, y, h = "0", mi = "0"] = m
+  const date = new Date(
+    Number(y),
+    Number(mo) - 1,
+    Number(d),
+    Number(h),
+    Number(mi)
+  )
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+export function isTransactionInRange(
+  tarih: string,
+  range: DateRangeValue
+): boolean {
+  const parsed = parseTransactionDateTime(tarih)
+  if (!parsed) return true
+  if (range.start && range.end) {
+    return isInDateRange(parsed, range.start, range.end)
+  }
+  if (range.start) {
+    const start = parseDateInputValue(range.start)
+    if (start && startOfDay(parsed).getTime() < startOfDay(start).getTime()) {
+      return false
+    }
+  }
+  if (range.end) {
+    const end = parseDateInputValue(range.end)
+    if (end && startOfDay(parsed).getTime() > startOfDay(end).getTime()) {
+      return false
+    }
+  }
+  return true
+}

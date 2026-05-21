@@ -45,7 +45,7 @@ import { useRegisterModal } from "@/components/providers/register-modal-provider
 import { useAuth } from "@/components/providers/auth-provider"
 const Header = () => {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false)
-  const [hideBalances, setHideBalances] = useState(false)
+  const [hideMainBalance, setHideMainBalance] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const { isOpen: accountPanelOpen, open: openAccountPanel, close: closeAccountPanel } = useAccountPanel()
@@ -98,14 +98,14 @@ const Header = () => {
 
           <div>
             <WalletActionPopover
-              hideBalances={hideBalances}
-              onToggleHide={() => setHideBalances((v) => !v)}
+              hideMain={hideMainBalance}
+              onToggleMain={() => setHideMainBalance((v) => !v)}
             >
               <div className="flex h-[40px] w-[163px] cursor-pointer items-center justify-between rounded-full border border-neutral-300 bg-neutral-100 pl-[9px] pr-[6px] py-[6px] md:h-auto md:border-transparent md:bg-header-wallet md:py-1.5 md:pl-1.5 md:pr-1.5">
                 <div className="flex items-center gap-1.5">
                   <CurrencyBadge currency="TRY" />
                   <span className="text-[13px] font-medium tracking-[0.26px] text-header-text-primary">
-                    {hideBalances ? "••••" : "3.520,52"}
+                    {hideMainBalance ? "••••" : "3.520,52"}
                   </span>
                 </div>
                 <span className="flex size-7 items-center justify-center rounded-full bg-deposit text-white transition-colors duration-400 group-hover:brightness-110">
