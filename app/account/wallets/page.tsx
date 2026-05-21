@@ -3,11 +3,12 @@
 import { useState } from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { HugeiconsIcon, Wallet01Icon, Cancel01Icon, Add01Icon } from "@/lib/icons"
+import { HugeiconsIcon, Wallet01Icon, Cancel01Icon, Add01Icon, ArrowDown01Icon } from "@/lib/icons"
 import { AccountPageLayout } from "@/components/account/account-page-layout"
 import { Button } from "@/components/elements/button"
 import { More02Icon, Delete02Icon, PencilEdit02Icon, Copy01Icon } from "@/lib/icons"
 import { CurrencyBadge } from "@/components/elements/currency-badge"
+import { useConfirm } from "@/components/elements/use-confirm"
 import { toast } from "sonner"
 import {MoreVerticalIcon} from "@hugeicons-pro/core-stroke-rounded";
 
@@ -43,7 +44,43 @@ const cryptos = [
   },
 ]
 
-const inputCls = "w-full rounded-xl border border-element-border bg-background-elements px-4 py-3 text-sm text-text-main placeholder:text-text-subtext focus:outline-none focus:border-primary transition-colors"
+const inputCls =
+  "w-full rounded-xl border border-element-border bg-background-elements px-4 py-3 text-sm text-text-main placeholder:text-text-subtext focus:outline-none focus:border-primary transition-colors"
+
+function RequiredLabel({ children }: { children: string }) {
+  return (
+    <label className="flex items-center gap-1.5 text-xs font-medium text-text-subtext">
+      {children}
+      <span className="text-semantic-error">*</span>
+    </label>
+  )
+}
+
+function WalletSelect({
+  value,
+  onChange,
+  children,
+}: {
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  children: React.ReactNode
+}) {
+  return (
+    <div className="relative">
+      <select
+        value={value}
+        onChange={onChange}
+        className={cn(inputCls, "appearance-none pr-11")}
+      >
+        {children}
+      </select>
+      <HugeiconsIcon
+        icon={ArrowDown01Icon}
+        className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-icon"
+      />
+    </div>
+  )
+}
 
 export default function CuzdanlarimPage() {
   const [bankList, setBankList] = useState(banks)
@@ -55,8 +92,25 @@ export default function CuzdanlarimPage() {
   const [agreed, setAgreed] = useState(false)
   const [form, setForm] = useState({ sirket: "Papara", iban: "TR", accountNo: "" })
   const [cryptoForm, setCryptoForm] = useState({ coin: "Bitcoin (BTC)", address: "", network: "ERC-20" })
+  const { confirm, ConfirmDialog } = useConfirm()
 
   const isEmpty = bankList.length === 0 && cryptoList.length === 0
+
+  async function requestDeleteBank(id: number) {
+    const ok = await confirm({
+      description: "Bu banka cüzdanını silmek istediğinize emin misiniz?",
+      confirmLabel: "Evet, sil",
+    })
+    if (ok) deleteBank(id)
+  }
+
+  async function requestDeleteCrypto(id: number) {
+    const ok = await confirm({
+      description: "Bu kripto cüzdanını silmek istediğinize emin misiniz?",
+      confirmLabel: "Evet, sil",
+    })
+    if (ok) deleteCrypto(id)
+  }
 
   function openAdd() {
     setEditId(null)
@@ -154,7 +208,10 @@ export default function CuzdanlarimPage() {
                         </button>
                         {openMenuId === bank.id && (
                           <div className="absolute right-0 top-9 z-10 min-w-[120px] rounded-lg bg-background-elements shadow-lg ring-1 ring-divider-100">
-                            <button onClick={() => deleteBank(bank.id)} className="flex cursor-pointer w-full cursor-pointer  items-center rounded-t-lg justify-end gap-3 px-4 py-2.5 text-sm text-semantic-error hover:bg-background-body/50">
+                            <button
+                              onClick={() => requestDeleteBank(bank.id)}
+                              className="flex w-full cursor-pointer items-center justify-end gap-3 rounded-t-lg px-4 py-2.5 text-sm text-semantic-error hover:bg-background-body/50"
+                            >
                               Sil
                               <HugeiconsIcon icon={Delete02Icon} className="size-4" />
                             </button>
@@ -217,7 +274,10 @@ export default function CuzdanlarimPage() {
                         </button>
                         {openMenuId === crypto.id + 1000 && (
                           <div className="absolute right-0 top-9 z-10 min-w-[120px] rounded-xl bg-background-elements shadow-lg ring-1 ring-divider-100">
-                            <button onClick={() => deleteCrypto(crypto.id)} className="flex w-full items-center justify-end cursor-pointer gap-3 px-4 py-2.5 text-sm text-semantic-error hover:bg-background-body/50">
+                            <button
+                              onClick={() => requestDeleteCrypto(crypto.id)}
+                              className="flex w-full cursor-pointer items-center justify-end gap-3 px-4 py-2.5 text-sm text-semantic-error hover:bg-background-body/50"
+                            >
                               Sil
                               <HugeiconsIcon icon={Delete02Icon} className="size-4" />
                             </button>
@@ -304,22 +364,19 @@ export default function CuzdanlarimPage() {
               {activeTab === "bank" ? (
                 <>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">Şirket *</label>
-                    <div className="relative">
-                      <select
-                        value={form.sirket}
-                        onChange={(e) => setForm((p) => ({ ...p, sirket: e.target.value }))}
-                        className={inputCls}
-                      >
-                        <option>Papara</option>
-                        <option>Ziraat Bankası</option>
-                        <option>İş Bankası</option>
-                        <option>Garanti</option>
-                      </select>
-                    </div>
+                    <RequiredLabel>Şirket</RequiredLabel>
+                    <WalletSelect
+                      value={form.sirket}
+                      onChange={(e) => setForm((p) => ({ ...p, sirket: e.target.value }))}
+                    >
+                      <option>Papara</option>
+                      <option>Ziraat Bankası</option>
+                      <option>İş Bankası</option>
+                      <option>Garanti</option>
+                    </WalletSelect>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">İban *</label>
+                    <RequiredLabel>İban</RequiredLabel>
                     <input
                       value={form.iban}
                       onChange={(e) => setForm((p) => ({ ...p, iban: e.target.value }))}
@@ -328,7 +385,7 @@ export default function CuzdanlarimPage() {
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">Hesap Numarası *</label>
+                    <RequiredLabel>Hesap Numarası</RequiredLabel>
                     <input
                       value={form.accountNo}
                       onChange={(e) => setForm((p) => ({ ...p, accountNo: e.target.value }))}
@@ -340,24 +397,30 @@ export default function CuzdanlarimPage() {
               ) : (
                 <>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">Kripto Para *</label>
-                    <select value={cryptoForm.coin} onChange={(e) => setCryptoForm((p) => ({ ...p, coin: e.target.value }))} className={inputCls}>
+                    <RequiredLabel>Kripto Para</RequiredLabel>
+                    <WalletSelect
+                      value={cryptoForm.coin}
+                      onChange={(e) => setCryptoForm((p) => ({ ...p, coin: e.target.value }))}
+                    >
                       <option>Bitcoin (BTC)</option>
                       <option>Tether (USDT)</option>
                       <option>Tron (TRX)</option>
-                    </select>
+                    </WalletSelect>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">Cüzdan Adresi *</label>
+                    <RequiredLabel>Cüzdan Adresi</RequiredLabel>
                     <input value={cryptoForm.address} onChange={(e) => setCryptoForm((p) => ({ ...p, address: e.target.value }))} className={inputCls} placeholder="0x..." />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-text-subtext">Ağ *</label>
-                    <select value={cryptoForm.network} onChange={(e) => setCryptoForm((p) => ({ ...p, network: e.target.value }))} className={inputCls}>
+                    <RequiredLabel>Ağ</RequiredLabel>
+                    <WalletSelect
+                      value={cryptoForm.network}
+                      onChange={(e) => setCryptoForm((p) => ({ ...p, network: e.target.value }))}
+                    >
                       <option>ERC-20</option>
                       <option>TRC-20</option>
                       <option>BEP-20</option>
-                    </select>
+                    </WalletSelect>
                   </div>
                 </>
               )}
@@ -383,6 +446,7 @@ export default function CuzdanlarimPage() {
           </div>
         </>
       )}
+      <ConfirmDialog />
     </>
   )
 }

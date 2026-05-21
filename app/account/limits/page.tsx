@@ -8,6 +8,7 @@ import { Button } from "@/components/elements/button"
 import { PencilEdit02Icon, Delete02Icon } from "@/lib/icons"
 import {CheckmarkCircle01Icon} from "@hugeicons-pro/core-bulk-rounded";
 import { InfoTooltip } from "@/components/elements/tooltip"
+import { DeleteConfirmButton } from "@/components/elements/delete-confirm-button"
 
 type TabId = "genel" | "spor" | "casino" | "disla"
 
@@ -70,15 +71,16 @@ function LimitCard({
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {saved && (
-            <button
-              onClick={() => setSaved(false)}
+            <DeleteConfirmButton
+              onConfirm={() => setSaved(false)}
+              confirmOptions={{
+                description: "Bu limiti silmek istediğinize emin misiniz?",
+                confirmLabel: "Evet, sil",
+              }}
               className="flex size-8 cursor-pointer items-center justify-center rounded-md border border-element-border hover:border-semantic-error hover:text-semantic-error"
             >
-              <HugeiconsIcon
-                icon={Delete02Icon}
-                className="size-4 text-text-subtext"
-              />
-            </button>
+              <HugeiconsIcon icon={Delete02Icon} className="size-4 text-icon" />
+            </DeleteConfirmButton>
           )}
           <button
             onClick={onToggle}
@@ -86,7 +88,7 @@ function LimitCard({
           >
             <HugeiconsIcon
               icon={PencilEdit02Icon}
-              className="size-4 text-text-subtext"
+              className="size-4 text-icon"
             />
           </button>
         </div>
@@ -94,7 +96,7 @@ function LimitCard({
 
       {expanded && (
         <div className="border-t border-element-border pt-4 pb-5">
-          <div className="mb-4 grid grid-cols-3 gap-3">
+          <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-3">
             {[
               { label: "Günlük", value: gunluk, set: setGunluk },
               { label: "Haftalık", value: haftalik, set: setHaftalik },

@@ -22,10 +22,10 @@ export function AccountPageLayout({
 }: AccountPageLayoutProps) {
   return (
     <main className="min-h-screen bg-background-body">
-      <div className="border-b border-divider-100 md: md:bg-background-main ">
+      <div className="md: border-b border-divider-100 md:bg-background-main">
         <div className="container py-4">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr] md:items-center">
-            <div className="md:flex  items-center gap-3 hidden">
+            <div className="hidden items-center gap-3 md:flex">
               <div
                 className="flex size-12 shrink-0 items-center justify-center rounded-lg text-xl font-bold text-white"
                 style={{
@@ -36,19 +36,25 @@ export function AccountPageLayout({
                 S
               </div>
               <div>
-                <p className="text-sm font-semibold text-text-title">salazar42</p>
+                <p className="text-sm font-semibold text-text-title">
+                  salazar42
+                </p>
                 <p className="text-xs text-text-subtext">ID: 336605487</p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-4 ">
+            <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                    <HugeiconsIcon icon={icon} className="size-5 text-primary" />
-                  <h1 className="text-base font-semibold text-text-title">{title}</h1>
+                  <HugeiconsIcon icon={icon} className="size-5 text-primary" />
+                  <h1 className="text-base font-semibold text-text-title">
+                    {title}
+                  </h1>
                 </div>
-                <nav className="mt-1 flex items-center gap-1.5  text-xs text-text-subtext">
-                  <Link href="/" className="hover:text-primary">Anasayfa</Link>
+                <nav className="mt-1 flex items-center gap-1.5 text-xs text-text-subtext">
+                  <Link href="/" className="hover:text-primary">
+                    Anasayfa
+                  </Link>
                   <HugeiconsIcon icon={ArrowRight01Icon} className="size-3" />
                   <span>Profil</span>
                   <HugeiconsIcon icon={ArrowRight01Icon} className="size-3" />
@@ -61,7 +67,7 @@ export function AccountPageLayout({
         </div>
       </div>
 
-      <div className="container py-8">
+      <div className="container py-6 md:py-8 ">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr]">
           <div className="hidden md:block">
             <AccountSidebar />

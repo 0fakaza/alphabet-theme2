@@ -99,9 +99,21 @@ function Coin({ amount }: { amount: number }) {
   )
 }
 
-function StatCard({ label, amount, sub, green }: { label: string; amount: string; sub?: string; green?: boolean }) {
+function StatCard({
+  label,
+  amount,
+  sub,
+  green,
+  className,
+}: {
+  label: string
+  amount: string
+  sub?: string
+  green?: boolean
+  className?: string
+}) {
   return (
-    <div className="rounded-xl bg-background-elements px-4 py-3 min-w-[120px]">
+    <div className={cn("min-w-[120px] rounded-xl bg-background-elements px-4 py-5", className)}>
       <p className="mb-1 text-xs text-text-subtext">{label}</p>
       <p className={cn("text-sm font-bold", green ? "text-green-400" : "text-text-title")}>{amount}</p>
       {sub && <p className="mt-0.5 text-[10px] text-text-subtext">{sub}</p>}
@@ -162,19 +174,30 @@ export default function GecmisIslemlerimPage() {
             <div className="mb-5 flex flex-wrap gap-2">
               {isEmpty ? (
                 <>
-                  <StatCard label="Kazanç"  amount="0,00TRY" sub="8 kupon" />
-                  <StatCard label="Kaybı"   amount="0,00TRY" sub="8 kupon" />
-                  <StatCard label="Satılık" amount="0,00TRY" sub="8 kupon" />
-                  <StatCard label="İade"    amount="0,00TRY" sub="8 kupon" />
-                  <StatCard label="Kar/Zarar" amount="0,00TRY" sub="14 Ağustos 24 – 14 Temmuz tarihleri arası net" />
+                  <StatCard label="Kazanç" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="Kaybı" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="Satılık" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="İade" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard
+                    label="Kar/Zarar"
+                    amount="0,00TRY"
+                    sub="14 Ağustos 24 – 14 Temmuz tarihleri arası net"
+                    className="min-w-0 flex-1"
+                  />
                 </>
               ) : (
                 <>
-                  <StatCard label="Kazanç"    amount="$14.520" sub="8 kupon" />
-                  <StatCard label="Kaybı"     amount="$14.520" sub="8 kupon" />
-                  <StatCard label="Satılık"   amount="$14.520" sub="8 kupon" />
-                  <StatCard label="İade"      amount="$14.520" sub="8 kupon" />
-                  <StatCard label="Kar/Zarar" amount="+$420.52" sub="14 Ağu 24 – 14 Tem" green />
+                  <StatCard label="Kazanç" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="Kaybı" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="Satılık" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard label="İade" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
+                  <StatCard
+                    label="Kar/Zarar"
+                    amount="+$420.52"
+                    sub="14 Ağu 24 – 14 Tem"
+                    green
+                    className="min-w-0 flex-1"
+                  />
                 </>
               )}
             </div>
@@ -192,7 +215,7 @@ export default function GecmisIslemlerimPage() {
               <div className="flex flex-col gap-5">
                 <div>
                   <p className="mb-3 text-sm font-semibold text-text-title">Aktif Kuponlar</p>
-                  <div className="overflow-hidden rounded-2xl bg-background-main border border-element-border">
+                  <div className="overflow-hidden rounded-2xl ">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-element-border">
@@ -236,7 +259,7 @@ export default function GecmisIslemlerimPage() {
 
                 <div>
                   <p className="mb-3 text-sm font-semibold text-text-title">Geçmiş Kuponlar</p>
-                  <div className="overflow-hidden rounded-2xl bg-background-main border border-element-border">
+                  <div className="overflow-hidden ">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-element-border">
