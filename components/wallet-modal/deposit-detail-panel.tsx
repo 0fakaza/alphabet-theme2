@@ -28,7 +28,15 @@ function InfoBadge({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function DepositDetailPanel({ method }: { method: PaymentMethod }) {
+export function DepositDetailPanel({
+  method,
+  onBack,
+  mobileSheet,
+}: {
+  method: PaymentMethod
+  onBack?: () => void
+  mobileSheet?: boolean
+}) {
   const networks = method.networks ?? []
   const isCrypto = networks.length > 0
   const [network, setNetwork] = useState(networks[0] ?? "")
@@ -59,9 +67,13 @@ export function DepositDetailPanel({ method }: { method: PaymentMethod }) {
   }
 
   return (
-    <DetailPanelShell>
-      <div className="flex w-full flex-col gap-2">
-        <WithdrawDetailHeader method={method} mode="deposit" />
+    <DetailPanelShell mobileSheet={mobileSheet}>
+      <div className="flex min-h-full w-full flex-1 flex-col gap-2">
+        <WithdrawDetailHeader
+          method={method}
+          mode="deposit"
+          onBack={onBack}
+        />
 
         {isCrypto && (
           <FormField label="Ağ seçin" required>
@@ -79,34 +91,34 @@ export function DepositDetailPanel({ method }: { method: PaymentMethod }) {
         )}
 
         {isCrypto && (
-        <div className="relative mx-auto flex w-full max-w-[258px] flex-col items-center py-2">
-          <div
-            className="pointer-events-none absolute inset-x-4 top-6 h-[182px] opacity-40"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, rgba(172,150,253,0.35) 1px, transparent 1px)",
-              backgroundSize: "10px 10px",
-            }}
-            aria-hidden
-          />
-          <div className="relative  flex size-[148px] items-center justify-center rounded-[18px] border border-divider-100 bg-white/10 p-3 backdrop-blur-[2px]">
-            <Image
-              src={qrSrc}
-              alt={`${method.name} yatırım QR kodu`}
-              width={124}
-              height={124}
-              className="size-[124px] rounded-xl bg-white object-contain"
-              unoptimized
+          <div className="relative mx-auto flex w-full max-w-[258px] flex-col items-center py-2 max-md:max-w-none">
+            <div
+              className="pointer-events-none absolute inset-x-2 top-4 h-[200px] opacity-40 max-md:inset-x-0 max-md:top-2"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, rgba(172,150,253,0.35) 1px, transparent 1px)",
+                backgroundSize: "10px 10px",
+              }}
+              aria-hidden
             />
+            <div className="relative flex size-[148px] items-center justify-center rounded-[18px] border border-divider-100 bg-white/10 p-3 backdrop-blur-[2px] max-md:size-[215px] max-md:p-3">
+              <Image
+                src={qrSrc}
+                alt={`${method.name} yatırım QR kodu`}
+                width={124}
+                height={124}
+                className="size-[124px] rounded-xl bg-white object-contain max-md:size-[191px]"
+                unoptimized
+              />
+            </div>
           </div>
-        </div>
         )}
 
         {isCrypto && (
-        <div className="flex flex-wrap justify-center gap-2">
-          <InfoBadge label="Network" value={networkShort} />
-          <InfoBadge label="Minimum" value={minLabel} />
-        </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            <InfoBadge label="Network" value={networkShort} />
+            <InfoBadge label="Minimum" value={minLabel} />
+          </div>
         )}
 
         {isCrypto ? (
@@ -138,6 +150,8 @@ export function DepositDetailPanel({ method }: { method: PaymentMethod }) {
             <InfoBadge label="Süre" value={method.duration} />
           </div>
         )}
+
+        {mobileSheet && <div className="min-h-0 flex-1 md:hidden" aria-hidden />}
       </div>
     </DetailPanelShell>
   )

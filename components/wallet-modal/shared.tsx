@@ -6,6 +6,7 @@ import {
   ViewIcon,
   ViewOffIcon,
   ArrowDown01Icon,
+  ArrowLeft01Icon,
   Tick02Icon,
   HugeiconsIcon,
 } from "@/lib/icons"
@@ -64,12 +65,15 @@ function BalanceColumn({
 }
 
 export function WalletModalHeader({
+  compact,
   hideMain,
   hideBonus,
   onToggleMain,
   onToggleBonus,
   onClose,
 }: {
+  /** Para çek yöntem seçici — mobil bottom sheet (Figma 5062-16808) */
+  compact?: boolean
   hideMain: boolean
   hideBonus: boolean
   onToggleMain: () => void
@@ -77,8 +81,20 @@ export function WalletModalHeader({
   onClose: () => void
 }) {
   return (
-    <div className="relative h-[90px] shrink-0  bg-neutral-100">
-      <div className="flex gap-[61px] pl-[39px] pt-[27px]">
+    <div
+      className={cn(
+        "relative shrink-0 bg-neutral-100",
+        compact
+          ? "px-3 pb-2 pt-5 md:h-[90px] md:pb-0 md:pl-[39px] md:pt-[27px]"
+          : "h-[90px] pl-[39px] pt-[27px]"
+      )}
+    >
+      <div
+        className={cn(
+          "flex gap-[61px]",
+          compact && "max-md:pr-10"
+        )}
+      >
         <BalanceColumn
           label="Bakiye"
           value={WALLET_BALANCE}
@@ -95,7 +111,12 @@ export function WalletModalHeader({
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-[23px] top-[29px] flex size-8 items-center justify-center rounded-lg border border-element-border p-2 text-text-subtext transition-colors hover:text-text-main"
+        className={cn(
+          "absolute flex size-8 items-center justify-center rounded-lg border border-element-border p-2 text-text-subtext transition-colors hover:text-text-main",
+          compact
+            ? "right-3 top-5 md:right-[23px] md:top-[29px]"
+            : "right-[23px] top-[29px]"
+        )}
         aria-label="Kapat"
       >
         <HugeiconsIcon icon={Cancel01Icon} className="size-4" />
@@ -171,11 +192,32 @@ export function MethodChip({
   )
 }
 
-/** Figma sağ panel: 313px içerik + ~21px sol padding */
-export function DetailPanelShell({ children }: { children: React.ReactNode }) {
+/** Figma sağ panel (masaüstü) / tam genişlik form (mobil çekim detayı) */
+export function DetailPanelShell({
+  children,
+  mobileSheet,
+}: {
+  children: React.ReactNode
+  /** Mobil para çek detay — Figma 5062-18940 */
+  mobileSheet?: boolean
+}) {
   return (
-    <div className="flex w-[350px] shrink-0 flex-col border-l border-divider-100">
-      <div className="flex flex-col overflow-y-auto pl-5 pr-4 py-3 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border">
+    <div
+      className={cn(
+        "flex w-full flex-col",
+        mobileSheet
+          ? "max-md:min-h-0 max-md:flex-1 border-0 md:w-[350px] md:shrink-0 md:flex-none md:border-l md:border-divider-100"
+          : "w-[350px] shrink-0 border-l border-divider-100"
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-1 flex-col overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border",
+          mobileSheet
+            ? "min-h-full px-3 pb-6 pt-2 md:min-h-0 md:flex-none md:px-5 md:py-3"
+            : "py-3 pl-5 pr-4"
+        )}
+      >
         {children}
       </div>
     </div>
@@ -222,15 +264,18 @@ export function WalletConfirmCheckbox({
 export function WithdrawDetailHeader({
   method,
   mode,
+  onBack,
 }: {
   method: PaymentMethod
   mode: WalletMode
+  /** Mobil: yöntem listesine dön (Figma 5062-18940) */
+  onBack?: () => void
 }) {
   const title =
-    mode === "withdraw" ? `${method.name} Çek` : `${method.name} yatır`
+    mode === "withdraw" ? `${method.name} Çek` : `${method.name} Yatır`
 
   return (
-    <div className="flex items-start justify-between gap-3 py-3">
+    <div className="flex items-center justify-between gap-3 py-3 max-md:py-0 max-md:pb-4 max-md:pt-1">
       <div className="flex min-w-0 items-center gap-3">
         <div
           className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full"
@@ -248,14 +293,26 @@ export function WithdrawDetailHeader({
           <h2 className="text-base font-bold tracking-wide text-text-main">
             {title}
           </h2>
-          <p className="text-[10px] font-medium text-text-subtext">
+          <p className="text-[10px] font-medium leading-[1.16] text-text-subtext">
             {method.categoryLabel}
           </p>
         </div>
       </div>
+
+      {onBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex shrink-0 items-center gap-2 py-1 text-[13px] tracking-wide text-text-main transition-colors hover:text-primary md:hidden"
+        >
+          <HugeiconsIcon icon={ArrowLeft01Icon} className="size-2" />
+          Geri dön
+        </button>
+      )}
+
       <button
         type="button"
-        className="flex shrink-0 items-center gap-1 py-2 text-[10px] font-medium text-text-subtext transition-colors hover:text-primary"
+        className="hidden shrink-0 items-center gap-1 py-2 text-[10px] font-medium text-text-subtext transition-colors hover:text-primary md:flex"
       >
         {mode === "withdraw"
           ? "Nasıl çekim yapılır?"
@@ -263,6 +320,21 @@ export function WithdrawDetailHeader({
         <HugeiconsIcon icon={PlayCircleIcon} className="size-4" />
       </button>
     </div>
+  )
+}
+
+/** Mobil detay altı — Figma 5062-19624 */
+export function WithdrawDetailHelpLink({ mode }: { mode: WalletMode }) {
+  return (
+    <button
+      type="button"
+      className="flex items-center gap-1 py-2 text-[10px] font-medium text-text-subtext transition-colors hover:text-primary"
+    >
+      {mode === "withdraw"
+        ? "Nasıl çekim yapılır?"
+        : "Nasıl yatırım yapılır?"}
+      <HugeiconsIcon icon={PlayCircleIcon} className="size-4" />
+    </button>
   )
 }
 
@@ -299,7 +371,7 @@ export function FormField({
   className?: string
 }) {
   return (
-    <div className={cn("flex w-full flex-col gap-0.5", className)}>
+    <div className={cn("flex w-full flex-col gap-1", className)}>
       <FormFieldLabel required={required}>{label}</FormFieldLabel>
       {children}
     </div>
@@ -343,7 +415,7 @@ export function DetailInput({
   return (
     <input
       className={cn(
-        "h-12 w-full rounded-xl border border-element-border bg-background-elements px-4 text-sm text-text-main outline-none placeholder:text-text-subtext focus:border-primary",
+        "h-12 w-full rounded-xl border mb-1 border-element-border bg-background-elements px-4 text-sm text-text-main outline-none placeholder:text-text-subtext focus:border-primary",
         className
       )}
       {...props}
@@ -382,7 +454,7 @@ export function AmountPercentChips({
           key={pct}
           type="button"
           onClick={() => onSelect(pct)}
-          className="h-8 flex-1 rounded-lg border border-element-border bg-background-elements text-xs font-medium text-text-subtext transition-colors hover:border-primary hover:text-text-main"
+          className="h-8 flex-1 rounded-lg border border-element-border bg-background-elements cursor-pointer text-xs font-medium text-text-subtext transition-colors hover:border-primary hover:text-text-main"
         >
           %{pct}
         </button>

@@ -17,14 +17,19 @@ import {
   FormSelect,
   WalletConfirmCheckbox,
   WithdrawDetailHeader,
+  WithdrawDetailHelpLink,
 } from "./shared"
 
 export function WithdrawCryptoDetailPanel({
   method,
   country,
+  onBack,
+  mobileSheet,
 }: {
   method: PaymentMethod
   country: WalletCountry
+  onBack?: () => void
+  mobileSheet?: boolean
 }) {
   const networks = method.networks ?? []
   const [network, setNetwork] = useState(networks[0] ?? "")
@@ -74,9 +79,13 @@ export function WithdrawCryptoDetailPanel({
   }
 
   return (
-    <DetailPanelShell>
-      <div className="flex w-full flex-col gap-2">
-        <WithdrawDetailHeader method={method} mode="withdraw" />
+    <DetailPanelShell mobileSheet={mobileSheet}>
+      <div className="flex min-h-full w-full flex-1 flex-col gap-2">
+        <WithdrawDetailHeader
+          method={method}
+          mode="withdraw"
+          onBack={onBack}
+        />
 
         <div className="flex w-full flex-col gap-2">
           {networks.length > 0 && (
@@ -161,6 +170,14 @@ export function WithdrawCryptoDetailPanel({
         >
           Para Çek
         </DetailSubmitButton>
+
+        {mobileSheet && <div className="min-h-0 flex-1 md:hidden" aria-hidden />}
+
+        {mobileSheet && (
+          <div className="mt-auto flex justify-center pb-2 pt-6 md:hidden">
+            <WithdrawDetailHelpLink mode="withdraw" />
+          </div>
+        )}
       </div>
     </DetailPanelShell>
   )

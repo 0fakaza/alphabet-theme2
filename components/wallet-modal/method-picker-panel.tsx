@@ -4,12 +4,14 @@ import { Search01Icon, HugeiconsIcon } from "@/lib/icons"
 import type { PaymentMethod } from "@/data/wallet"
 import type { WalletCountry } from "@/data/wallet-countries"
 import type { WalletMode } from "@/components/providers/wallet-modal-provider"
+import { cn } from "@/lib/utils"
 import { CountrySelector } from "./country-selector"
 import { MethodChip } from "./shared"
 
 export function MethodPickerPanel({
   mode,
   compact,
+  className,
   search,
   onSearchChange,
   countries,
@@ -24,6 +26,7 @@ export function MethodPickerPanel({
 }: {
   mode: WalletMode
   compact?: boolean
+  className?: string
   search: string
   onSearchChange: (v: string) => void
   countries: WalletCountry[]
@@ -37,20 +40,35 @@ export function MethodPickerPanel({
   dimFiat?: boolean
 }) {
   const cryptoTitle =
-    mode === "withdraw" ? "Kripto Paralar ile çek" : "Kripto Paralar"
+    mode === "withdraw"
+      ? compact
+        ? "Kripto Paralar"
+        : "Kripto Paralar ile çek"
+      : "Kripto Paralar"
   const fiatTitle =
-    mode === "withdraw" ? "Havale / EFT ile çek" : "Havale / EFT"
+    mode === "withdraw"
+      ? compact
+        ? "Havale / EFT"
+        : "Havale / EFT ile çek"
+      : "Havale / EFT"
 
   return (
     <div
-      className={
+      className={cn(
         compact
-          ? "flex w-full shrink-0 flex-col gap-[33px] overflow-y-auto px-[23px] pb-6 pt-6 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border"
-          : "flex w-[424px] shrink-0 flex-col gap-8 overflow-y-auto px-[23px] pb-6 pt-6 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border"
-      }
+          ? "flex min-h-full w-full flex-1 flex-col gap-[33px] overflow-y-auto px-3 pb-6 pt-4 md:shrink-0 md:flex-none md:px-[23px] md:pt-6 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border"
+          : "flex w-[424px] shrink-0 flex-col gap-8 overflow-y-auto px-[23px] pb-6 pt-6 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-element-border",
+        className
+      )}
     >
-      <div className="flex items-center justify-between gap-3">
-        <div className="relative w-[203px] shrink-0">
+      <div className="flex w-full items-center justify-between gap-3">
+        <div
+          className={
+            compact
+              ? "relative min-w-0 flex-1 md:w-[203px] md:shrink-0 md:flex-none"
+              : "relative w-[203px] shrink-0"
+          }
+        >
           <HugeiconsIcon
             icon={Search01Icon}
             className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-text-subtext"
@@ -59,7 +77,7 @@ export function MethodPickerPanel({
             type="search"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Yöntem Ara"
+            placeholder="Yöntem ara"
             className="h-12 w-full rounded-xl border border-element-border bg-background-elements pl-11 pr-4 text-sm font-medium text-text-main outline-none placeholder:text-text-subtext focus:border-primary"
           />
         </div>
@@ -117,6 +135,8 @@ export function MethodPickerPanel({
           </div>
         </section>
       )}
+
+      {compact && <div className="min-h-0 flex-1 md:hidden" aria-hidden />}
     </div>
   )
 }

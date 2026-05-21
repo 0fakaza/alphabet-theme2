@@ -9,13 +9,22 @@ import {
   DetailSubmitButton,
   FormField,
   WithdrawDetailHeader,
+  WithdrawDetailHelpLink,
 } from "./shared"
 import { DepositDetailPanel } from "./deposit-detail-panel"
 import { WithdrawCryptoDetailPanel } from "./withdraw-crypto-panel"
 
 export { WithdrawCryptoDetailPanel, DepositDetailPanel }
 
-export function WithdrawFiatDetailPanel({ method }: { method: PaymentMethod }) {
+export function WithdrawFiatDetailPanel({
+  method,
+  onBack,
+  mobileSheet,
+}: {
+  method: PaymentMethod
+  onBack?: () => void
+  mobileSheet?: boolean
+}) {
   const [amount, setAmount] = useState("")
 
   const applyPercent = (pct: number) => {
@@ -30,9 +39,13 @@ export function WithdrawFiatDetailPanel({ method }: { method: PaymentMethod }) {
   }
 
   return (
-    <DetailPanelShell>
-      <div className="flex w-full flex-col gap-2">
-        <WithdrawDetailHeader method={method} mode="withdraw" />
+    <DetailPanelShell mobileSheet={mobileSheet}>
+      <div className="flex min-h-full w-full flex-1 flex-col gap-2">
+        <WithdrawDetailHeader
+          method={method}
+          mode="withdraw"
+          onBack={onBack}
+        />
 
         <FormField label="Çekmek istediğiniz tutar" required>
           <DetailInput
@@ -50,6 +63,14 @@ export function WithdrawFiatDetailPanel({ method }: { method: PaymentMethod }) {
         </p>
 
         <DetailSubmitButton disabled={!amount}>Para Çek</DetailSubmitButton>
+
+        {mobileSheet && <div className="min-h-0 flex-1 md:hidden" aria-hidden />}
+
+        {mobileSheet && (
+          <div className="mt-auto flex justify-center pb-2 pt-6 md:hidden">
+            <WithdrawDetailHelpLink mode="withdraw" />
+          </div>
+        )}
       </div>
     </DetailPanelShell>
   )

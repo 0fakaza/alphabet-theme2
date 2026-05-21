@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 import { useWalletModal } from "@/components/providers/wallet-modal-provider"
 import {
   PICKER_CRYPTO_METHODS,
@@ -31,6 +32,11 @@ const defaultCountry =
   WALLET_COUNTRIES.find((c) => c.id === DEFAULT_WALLET_COUNTRY_ID) ??
   WALLET_COUNTRIES[0]
 
+function isMobileViewport() {
+  if (typeof window === "undefined") return false
+  return window.matchMedia("(max-width: 767px)").matches
+}
+
 export function WalletModal() {
   const { isOpen, mode, close } = useWalletModal()
   const [hideMain, setHideMain] = useState(false)
@@ -47,11 +53,21 @@ export function WalletModal() {
     setSearch("")
     setSelectedCountry(defaultCountry)
     if (mode === "deposit") {
-      setSelectedMethod(DEFAULT_DEPOSIT)
+      // Mobil: önce yöntem listesi; masaüstü: varsayılan Tether ile split görünüm
+      setSelectedMethod(isMobileViewport() ? null : DEFAULT_DEPOSIT)
     } else {
       setSelectedMethod(null)
     }
   }, [isOpen, mode])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [isOpen])
 
   const fiatSource = isFiatCountry(selectedCountry.id)
     ? PICKER_FIAT_METHODS
@@ -63,7 +79,16 @@ export function WalletModal() {
   const showDetail = selectedMethod !== null
   const isFiat = selectedMethod ? isFiatMethod(selectedMethod) : false
   const isCrypto = selectedMethod ? !isFiat : false
-  const isCompactPicker = mode === "withdraw" && !showDetail
+  const isWithdrawFlow = mode === "withdraw"
+  const isDepositFlow = mode === "deposit"
+  const isMobileSheetFlow = isWithdrawFlow || isDepositFlow
+  const isCompactPicker =
+    (isWithdrawFlow || isDepositFlow) && !showDetail
+  const isSplitDetail = showDetail && (isWithdrawFlow || isDepositFlow)
+  const isMobileDetailSheet = isMobileSheetFlow && showDetail
+  /** Bakiye popover hariç — wallet modal mobil sheet’leri yüksek */
+  const isMobileTallSheet =
+    isMobileSheetFlow && (isCompactPicker || isMobileDetailSheet)
 
   const modalWidth = isCompactPicker ? 421 : 775
 
@@ -78,18 +103,37 @@ export function WalletModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className={cn(
+        "fixed inset-0 z-[200] flex bg-black/60 backdrop-blur-sm",
+        isMobileSheetFlow
+          ? "items-end p-0 md:items-center md:justify-center md:p-4"
+          : "items-center justify-center p-4"
+      )}
       onClick={close}
     >
       <div
-        className="relative flex w-full flex-col overflow-hidden rounded-[20px] bg-background-modal shadow-2xl"
-        style={{
-          maxWidth: modalWidth,
-          maxHeight: "calc(100dvh - 32px)",
-        }}
+        className={cn(
+          "relative flex w-full flex-col overflow-hidden bg-background-modal shadow-2xl",
+          isMobileSheetFlow &&
+            "rounded-t-2xl md:max-h-[calc(100dvh-32px)] md:rounded-[20px]",
+          isMobileTallSheet &&
+            "max-md:min-h-[80dvh] max-md:max-h-[96dvh]",
+          isCompactPicker && "md:max-w-[421px]",
+          isSplitDetail && "md:max-w-[775px]",
+          !isMobileSheetFlow && "rounded-[20px]"
+        )}
+        style={
+          isMobileSheetFlow
+            ? undefined
+            : {
+                maxWidth: modalWidth,
+                maxHeight: "calc(100dvh - 32px)",
+              }
+        }
         onClick={(e) => e.stopPropagation()}
       >
         <WalletModalHeader
+          compact={isMobileSheetFlow}
           hideMain={hideMain}
           hideBonus={hideBonus}
           onToggleMain={() => setHideMain((v) => !v)}
@@ -97,7 +141,17 @@ export function WalletModal() {
           onClose={close}
         />
 
-        <div className="flex min-h-0 flex-1 overflow-hidden max-h-[737px]">
+        <div
+          className={cn(
+            "flex flex-1 flex-col",
+            isMobileSheetFlow
+              ? cn(
+                  "min-h-0 overflow-y-auto md:max-h-[737px] md:flex-row md:overflow-hidden",
+                  isMobileTallSheet && "max-md:min-h-0"
+                )
+              : "max-h-[737px] overflow-hidden"
+          )}
+        >
           <MethodPickerPanel
             mode={mode}
             compact={isCompactPicker}
@@ -112,21 +166,32 @@ export function WalletModal() {
             onSelect={setSelectedMethod}
             dimCrypto={showDetail && isFiat}
             dimFiat={showDetail && isCrypto}
+            className={cn(isSplitDetail && "hidden md:flex")}
           />
 
           {showDetail && selectedMethod && (
             <>
               {mode === "deposit" && (
-                <DepositDetailPanel method={selectedMethod} />
+                <DepositDetailPanel
+                  method={selectedMethod}
+                  mobileSheet
+                  onBack={() => setSelectedMethod(null)}
+                />
               )}
               {mode === "withdraw" && isCrypto && (
                 <WithdrawCryptoDetailPanel
                   method={selectedMethod}
                   country={selectedCountry}
+                  mobileSheet
+                  onBack={() => setSelectedMethod(null)}
                 />
               )}
               {mode === "withdraw" && isFiat && (
-                <WithdrawFiatDetailPanel method={selectedMethod} />
+                <WithdrawFiatDetailPanel
+                  method={selectedMethod}
+                  mobileSheet
+                  onBack={() => setSelectedMethod(null)}
+                />
               )}
             </>
           )}
