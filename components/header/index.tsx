@@ -22,7 +22,7 @@ import {
 import { Button, ButtonLink } from "@/components/elements/button"
 import { CurrencyBadge } from "@/components/elements/currency-badge"
 import { ComingSoonBadge } from "@/components/elements/coming-soon-badge"
-import { WalletDropdown } from "./wallet-dropdown"
+import { WalletActionPopover } from "./wallet-action-popover"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,7 +42,6 @@ import {
 } from "@hugeicons-pro/core-solid-rounded"
 import { useLoginModal } from "@/components/providers/login-modal-provider"
 import { useRegisterModal } from "@/components/providers/register-modal-provider"
-import { useWalletModal } from "@/components/providers/wallet-modal-provider"
 import { useAuth } from "@/components/providers/auth-provider"
 const Header = () => {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false)
@@ -52,7 +51,6 @@ const Header = () => {
   const { isOpen: accountPanelOpen, open: openAccountPanel, close: closeAccountPanel } = useAccountPanel()
   const { open: openLoginModal } = useLoginModal()
   const { open: openRegisterModal } = useRegisterModal()
-  const { open: openWalletModal } = useWalletModal()
   const { isLoggedIn } = useAuth()
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -99,22 +97,22 @@ const Header = () => {
           </div>
 
           <div>
-            <WalletDropdown hideBalances={hideBalances} onToggleHide={() => setHideBalances((v) => !v)}>
-              <div className="flex h-[40px] cursor-pointer items-center justify-between rounded-full border border-neutral-300 bg-neutral-100 pl-[9px] pr-[6px] py-[6px] w-[163px] md:border-transparent md:bg-header-wallet md:h-auto md:py-1.5 md:pl-1.5 md:pr-1.5">
+            <WalletActionPopover
+              hideBalances={hideBalances}
+              onToggleHide={() => setHideBalances((v) => !v)}
+            >
+              <div className="flex h-[40px] w-[163px] cursor-pointer items-center justify-between rounded-full border border-neutral-300 bg-neutral-100 pl-[9px] pr-[6px] py-[6px] md:h-auto md:border-transparent md:bg-header-wallet md:py-1.5 md:pl-1.5 md:pr-1.5">
                 <div className="flex items-center gap-1.5">
                   <CurrencyBadge currency="TRY" />
                   <span className="text-[13px] font-medium tracking-[0.26px] text-header-text-primary">
                     {hideBalances ? "••••" : "3.520,52"}
                   </span>
                 </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); openWalletModal("deposit") }}
-                  className="cursor-pointer flex size-7 items-center justify-center rounded-full bg-deposit text-white transition-colors duration-400 hover:brightness-110"
-                >
+                <span className="flex size-7 items-center justify-center rounded-full bg-deposit text-white transition-colors duration-400 group-hover:brightness-110">
                   <HugeiconsIcon icon={PlusSignIcon} className="size-3" />
-                </button>
+                </span>
               </div>
-            </WalletDropdown>
+            </WalletActionPopover>
           </div>
 
 
