@@ -48,7 +48,7 @@ export type DatePickerProps = DatePickerSingleProps | DatePickerRangeProps
 export type { DateRangeValue }
 
 const defaultTriggerCls =
-  "relative flex h-12 w-full min-w-0 cursor-pointer items-center gap-1.5 rounded-xl border border-element-border bg-background-elements pl-4 pr-3 text-left transition-colors hover:border-primary/50 focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+  "relative flex h-12 w-full min-w-0 cursor-pointer items-center gap-1.5 rounded-lg border border-element-border bg-background-elements pl-4 pr-3 text-left transition-colors hover:border-primary/50 focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 
 function getAnchorDate(props: DatePickerProps): Date {
   if (props.mode === "range") {
@@ -91,11 +91,6 @@ export function DatePicker(props: DatePickerProps) {
   const [viewMonth, setViewMonth] = useState(
     () => new Date(anchor.getFullYear(), anchor.getMonth(), 1)
   )
-
-  const hasRangeValue =
-    props.mode === "range" &&
-    !!(props.value.start || props.value.end)
-  const hasSingleValue = props.mode !== "range" && !!props.value
 
   const displayText =
     props.mode === "range"
@@ -153,14 +148,7 @@ export function DatePicker(props: DatePickerProps) {
           aria-label={accessibleName}
           className={cn(defaultTriggerCls, triggerClassName)}
         >
-          <span
-            className={cn(
-              "min-w-0 flex-1 truncate text-sm font-medium tracking-wide",
-              hasSingleValue || hasRangeValue
-                ? "text-text-main"
-                : "text-text-subtext"
-            )}
-          >
+          <span className="min-w-0 flex-1 truncate text-sm font-medium tracking-wide text-text-subtext">
             {displayText}
           </span>
           <HugeiconsIcon

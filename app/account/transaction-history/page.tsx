@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import {
   formatDisplayDateRange,
@@ -8,7 +9,16 @@ import {
   type DateRangeValue,
 } from "@/lib/date"
 import { DatePicker } from "@/components/elements/date-picker"
-import { HugeiconsIcon, Clock01Icon, Cancel01Icon, Copy01Icon, ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
+import {
+  HugeiconsIcon,
+  Clock01Icon,
+  Cancel01Icon,
+  Copy01Icon,
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  ArrowUpRight01Icon,
+  Folder02Icon,
+} from "@/lib/icons"
 import { AccountPageLayout } from "@/components/account/account-page-layout"
 import { Button } from "@/components/elements/button"
 
@@ -21,16 +31,54 @@ type OdemeStatus = "onaylandi" | "reddedildi" | "bekliyor" | "kyc"
 
 /* ─────────────────────────── Status helpers ─────────────────── */
 function KuponStatusBadge({ s }: { s: KuponStatus }) {
-  const map: Record<KuponStatus, { label: string; cls: string }> = {
-    beklemede: { label: "+ Beklemede", cls: "bg-amber-500/15 text-amber-400" },
-    kazandi:   { label: "+ Kazandı",   cls: "bg-green-500/15 text-green-400" },
-    kaybetti:  { label: "+ Kaybetti",  cls: "bg-red-500/15 text-red-400" },
-    satildi:   { label: "+ Satıldı",   cls: "bg-orange-500/15 text-orange-400" },
-    freebet:   { label: "+ Freebet",   cls: "bg-blue-500/15 text-blue-400" },
-    iptal:     { label: "+ İptal",     cls: "bg-neutral-500/30 text-text-subtext" },
+  const map: Record<KuponStatus, { label: string; cls: string; dotCls: string }> = {
+    beklemede: {
+      label: "Beklemede",
+      cls: "bg-amber-500/15 text-amber-400",
+      dotCls: "bg-amber-400",
+    },
+    kazandi: {
+      label: "Kazandı",
+      cls: "bg-green-500/15 text-green-400",
+      dotCls: "bg-green-400",
+    },
+    kaybetti: {
+      label: "Kaybetti",
+      cls: "bg-red-500/15 text-red-400",
+      dotCls: "bg-red-400",
+    },
+    satildi: {
+      label: "Satıldı",
+      cls: "bg-orange-500/15 text-orange-400",
+      dotCls: "bg-orange-400",
+    },
+    freebet: {
+      label: "Freebet",
+      cls: "bg-blue-500/15 text-blue-400",
+      dotCls: "bg-blue-400",
+    },
+    iptal: {
+      label: "İptal",
+      cls: "bg-neutral-500/30 text-text-subtext",
+      dotCls: "bg-text-subtext",
+    },
   }
-  const { label, cls } = map[s]
-  return <span className={cn("rounded-md px-2 py-0.5 text-[11px] font-semibold", cls)}>{label}</span>
+  const { label, cls, dotCls } = map[s]
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-[7px] px-2 py-1 text-[11px] font-semibold",
+        historyTableCellNowrap,
+        cls
+      )}
+    >
+      <span
+        className={cn("size-1.5 shrink-0 rounded-full", dotCls)}
+        aria-hidden
+      />
+      {label}
+    </span>
+  )
 }
 
 function KuponTypeBadge({ t }: { t: KuponType }) {
@@ -43,6 +91,41 @@ function KuponTypeBadge({ t }: { t: KuponType }) {
   return <span className={cn("rounded-md px-2 py-0.5 text-[11px] font-medium", cls)}>{label}</span>
 }
 
+const kuponTypeCellConfig: Record<
+  KuponType,
+  { label: string; icon?: string }
+> = {
+  tekli: {
+    label: "Tekli Bahis",
+    icon: "/images/icons/kuponTipi-tekli.svg",
+  },
+  kombine: {
+    label: "Kombine",
+    icon: "/images/icons/kuponTipi-kombine.svg",
+  },
+  coklu: {
+    label: "Çoklu",
+    icon: "/images/icons/kuponTipi-multi.svg",
+  },
+}
+
+function KuponTypeCell({ t }: { t: KuponType }) {
+  const { label, icon } = kuponTypeCellConfig[t]
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-1.5 text-xs font-medium text-text-main",
+        historyTableCellNowrap
+      )}
+    >
+      {icon && (
+        <Image src={icon} alt="" width={24} height={24} className="shrink-0" />
+      )}
+      <span>{label}</span>
+    </div>
+  )
+}
+
 function OdemeBadge({ s }: { s: OdemeStatus }) {
   const map: Record<OdemeStatus, { label: string; cls: string }> = {
     onaylandi: { label: "✓ Onaylandı",     cls: "bg-green-500/15 text-green-400" },
@@ -51,7 +134,7 @@ function OdemeBadge({ s }: { s: OdemeStatus }) {
     kyc:       { label: "KYC İzlendi",     cls: "bg-primary/15 text-primary" },
   }
   const { label, cls } = map[s]
-  return <span className={cn("rounded-md px-2.5 py-1 text-[11px] font-medium", cls)}>{label}</span>
+  return <span className={cn("rounded-md px-2.5 text-nowrap py-1 text-[11px] font-medium", cls)}>{label}</span>
 }
 
 /* ─────────────────────────── Data ─────────────────────────── */
@@ -98,32 +181,232 @@ const sporMatchRows = [
 /* ─────────────────────────── Helpers ─────────────────────────── */
 function Coin({ amount }: { amount: number }) {
   return (
-    <div className="flex items-center gap-1">
-      <span className="flex size-4 items-center justify-center rounded-full bg-amber-400 text-[9px] font-bold text-black">₮</span>
+    <div className={cn("flex items-center gap-1", historyTableCellNowrap)}>
+      <Image
+        src="/images/currency/try.svg"
+        alt="TRY"
+        width={16}
+        height={16}
+        className="size-4 shrink-0"
+      />
       <span className="text-sm font-medium text-text-main">{amount.toLocaleString()}</span>
     </div>
   )
 }
+
+function getOranPillClass(status: KuponStatus) {
+  const base = cn(
+    "inline-flex items-center rounded-[30px] px-2.5 py-0.5 text-sm font-medium",
+    historyTableCellNowrap
+  )
+  if (status === "kaybetti") {
+    return cn(base, "bg-semantic-error-bg text-semantic-error")
+  }
+  return cn(base, "bg-semantic-success-bg text-semantic-success")
+}
+
+const statCardLabelToneClass = {
+  kazanc: "text-[#9BBC14]",
+  kayip: "text-[#F82E2E]",
+  satildi: "text-[#FB8C4B]",
+  iade: "text-[#AC96FD]",
+  karZarar: "text-text-main",
+  default: "text-text-subtext",
+} as const
+
+type StatCardLabelTone = keyof typeof statCardLabelToneClass
 
 function StatCard({
   label,
   amount,
   sub,
   green,
+  labelTone = "default",
   className,
 }: {
   label: string
   amount: string
   sub?: string
   green?: boolean
+  labelTone?: StatCardLabelTone
   className?: string
 }) {
   return (
-    <div className={cn("min-w-[120px] rounded-xl bg-background-elements px-4 py-5", className)}>
-      <p className="mb-1 text-xs text-text-subtext">{label}</p>
-      <p className={cn("text-sm font-bold", green ? "text-green-400" : "text-text-title")}>{amount}</p>
+    <div className={cn("min-w-[120px] rounded-md bg-background-elements px-4 py-5", className)}>
+      <p className={cn("mb-1 text-xs", statCardLabelToneClass[labelTone])}>{label}</p>
+      <p
+        className={cn(
+          "text-sm font-bold",
+          green ? "text-[#9BBC14]" : "text-text-title"
+        )}
+      >
+        {amount}
+      </p>
       {sub && <p className="mt-0.5 text-[10px] text-text-subtext">{sub}</p>}
     </div>
+  )
+}
+
+const historyTableClass =
+  "w-full border-separate border-spacing-y-2 max-md:[&_th]:whitespace-nowrap max-md:[&_td]:whitespace-nowrap"
+const historyTableCellNowrap = "max-md:whitespace-nowrap"
+const historyTableBodyRowClass =
+  "cursor-pointer transition-colors [&>td]:bg-neutral-300 [&>td:first-child]:rounded-l-lg [&>td:last-child]:rounded-r-lg hover:[&>td]:bg-neutral-500"
+const historyTableBodyRowStaticClass =
+  "transition-colors [&>td]:bg-neutral-300 [&>td:first-child]:rounded-l-lg [&>td:last-child]:rounded-r-lg hover:[&>td]:bg-neutral-500"
+
+const sporTableHeadLabel = cn(
+  "text-left text-[12px] font-medium text-text-subtitle",
+  historyTableCellNowrap
+)
+const sporTableLeftGroup =
+  "flex w-max max-w-full items-center gap-x-6 max-md:whitespace-nowrap"
+const sporTableLeftColId = "flex min-w-[148px] shrink-0 items-center gap-2"
+const sporTableLeftColType = "min-w-[100px] shrink-0 text-left"
+const sporTableLeftColDate =
+  "min-w-[120px] shrink-0 text-left text-xs text-text-subtext whitespace-nowrap"
+const sporTableHeadColDate = cn(sporTableHeadLabel, "block min-w-[120px] text-left")
+const sporTableRightGroup =
+  "flex items-center gap-x-8 max-md:whitespace-nowrap"
+const sporTableRightCol = "flex min-w-[72px] justify-end"
+const historyTableScrollWrap =
+  "overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]"
+const sporHistoryTableClass = cn(
+  historyTableClass,
+  "w-full min-w-[820px] md:min-w-0 md:table-fixed"
+)
+const casinoHistoryTableClass = cn(historyTableClass, "w-full min-w-[640px]")
+const odemeHistoryTableClass = cn(historyTableClass, "w-full min-w-[560px]")
+
+function HistoryTableScroll({ children }: { children: React.ReactNode }) {
+  return <div className={historyTableScrollWrap}>{children}</div>
+}
+
+function HistoryTableEmptyState({ message }: { message: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-10 text-center ">
+      <div
+        className="mb-5 flex size-20 items-center justify-center rounded-full"
+        style={{
+          background:
+            "linear-gradient(135deg, #872aff 0%, #a350ff 40%, #5eb3ff 100%)",
+        }}
+      >
+        <HugeiconsIcon
+          icon={Folder02Icon}
+          className="size-9 text-white"
+          strokeWidth={1.5}
+        />
+      </div>
+      <p className="text-base font-semibold text-text-title">Buralar boş</p>
+      <p className="mt-1.5 text-sm text-text-subtext">{message}</p>
+    </div>
+  )
+}
+
+type SporKuponRow = {
+  id: string
+  type: KuponType
+  tarih: string
+  bahis: number
+  oran: number
+  maxKazanc: number
+  status: KuponStatus
+}
+
+function HistoryIdCell({
+  id,
+  ariaLabel = "Detaya git",
+}: {
+  id: string
+  ariaLabel?: string
+}) {
+  return (
+    <div className={sporTableLeftColId}>
+      <a
+        href="#"
+        onClick={(e) => e.stopPropagation()}
+        className="truncate font-mono text-xs text-text-subtext underline decoration-solid underline-offset-2 hover:text-text-main"
+      >
+        {id}
+      </a>
+      <button
+        type="button"
+        onClick={(e) => e.stopPropagation()}
+        className="shrink-0 text-[#6781FF]"
+        aria-label={ariaLabel}
+      >
+        <HugeiconsIcon icon={ArrowUpRight01Icon} className="size-3.5" />
+      </button>
+    </div>
+  )
+}
+
+function SporKuponTableHead() {
+  return (
+    <thead>
+      <tr>
+        <th className="w-px whitespace-nowrap px-4 pb-2 align-bottom">
+          <div className={sporTableLeftGroup}>
+            <span className={cn(sporTableHeadLabel, "block min-w-[148px] text-left")}>
+              KUPON ID
+            </span>
+            <span className={cn(sporTableHeadLabel, "block min-w-[100px] text-left")}>
+              TYPE
+            </span>
+            <span className={sporTableHeadColDate}>TARİH</span>
+          </div>
+        </th>
+        <th className="w-full px-4 pb-2 align-bottom">
+          <div className={cn(sporTableRightGroup, "ml-auto justify-end")}>
+            <span className={cn(sporTableHeadLabel, sporTableRightCol)}>BAHİS</span>
+            <span className={cn(sporTableHeadLabel, sporTableRightCol)}>ORAN</span>
+            <span className={cn(sporTableHeadLabel, sporTableRightCol)}>
+              MAX KAZANÇ
+            </span>
+            <span className={cn(sporTableHeadLabel, sporTableRightCol)}>DURUM</span>
+          </div>
+        </th>
+      </tr>
+    </thead>
+  )
+}
+
+function SporKuponTableRow({
+  kupon,
+  onRowClick,
+}: {
+  kupon: SporKuponRow
+  onRowClick: () => void
+}) {
+  return (
+    <tr className={historyTableBodyRowClass} onClick={onRowClick}>
+      <td className="w-px whitespace-nowrap px-4 py-3">
+        <div className={sporTableLeftGroup}>
+          <HistoryIdCell id={kupon.id} ariaLabel="Kupon detayına git" />
+          <div className={sporTableLeftColType}>
+            <KuponTypeCell t={kupon.type} />
+          </div>
+          <span className={sporTableLeftColDate}>{kupon.tarih}</span>
+        </div>
+      </td>
+      <td className={cn("w-full px-4 py-3", historyTableCellNowrap)}>
+        <div className={cn(sporTableRightGroup, "ml-auto justify-end")}>
+          <div className={sporTableRightCol}>
+            <Coin amount={kupon.bahis} />
+          </div>
+          <div className={sporTableRightCol}>
+            <span className={getOranPillClass(kupon.status)}>x {kupon.oran}</span>
+          </div>
+          <div className={sporTableRightCol}>
+            <Coin amount={kupon.maxKazanc} />
+          </div>
+          <div className={cn(sporTableRightCol, "flex justify-end")}>
+            <KuponStatusBadge s={kupon.status} />
+          </div>
+        </div>
+      </td>
+    </tr>
   )
 }
 
@@ -141,8 +424,6 @@ export default function GecmisIslemlerimPage() {
   const [selectedKupon, setSelectedKupon] = useState<SelectedKupon | null>(null)
   const [cashoutOpen, setCashoutOpen] = useState(false)
   const [cashoutAmount, setCashoutAmount] = useState("1256")
-  const isEmpty = false // set to true to see empty state
-
   const inRange = (tarih: string) => isTransactionInRange(tarih, dateRange)
 
   const filteredSporActive = useMemo(
@@ -168,6 +449,9 @@ export default function GecmisIslemlerimPage() {
 
   const rangeLabel = formatDisplayDateRange(dateRange) || "Tarih aralığı"
 
+  const filteredOdeme =
+    odemeSubTab === "yatirimlar" ? filteredYatirim : filteredCekim
+
   function openSporKupon(k: typeof sporActiveKuponlar[0]) {
     setSelectedKupon({ id: k.id, tarih: k.tarih, isActive: k.isActive, type: k.type, status: k.status, bahis: k.bahis, oran: k.oran, maxKazanc: k.maxKazanc })
     setCashoutOpen(false)
@@ -188,10 +472,16 @@ export default function GecmisIslemlerimPage() {
                 onClick={() => setMainTab(t)}
                 className={cn(
                   "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
-                  mainTab === t ? "bg-background-modal text-text-title shadow-sm" : "text-text-subtext hover:text-text-main",
+                  mainTab === t
+                    ? "bg-background-modal text-text-title shadow-sm"
+                    : "text-text-subtext hover:text-text-main"
                 )}
               >
-                {t === "spor" ? "Spor" : t === "casino" ? "Casino" : "Yatırım / Çekim"}
+                {t === "spor"
+                  ? "Spor"
+                  : t === "casino"
+                    ? "Casino"
+                    : "Yatırım / Çekim"}
               </button>
             ))}
           </div>
@@ -209,199 +499,247 @@ export default function GecmisIslemlerimPage() {
 
         {mainTab === "spor" && (
           <>
-            <div className="mb-5 flex flex-wrap gap-2">
-              {isEmpty ? (
-                <>
-                  <StatCard label="Kazanç" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="Kaybı" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="Satılık" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="İade" amount="0,00TRY" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard
-                    label="Kar/Zarar"
-                    amount="0,00TRY"
-                    sub="14 Ağustos 24 – 14 Temmuz tarihleri arası net"
-                    className="min-w-0 flex-1"
-                  />
-                </>
-              ) : (
-                <>
-                  <StatCard label="Kazanç" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="Kaybı" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="Satılık" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard label="İade" amount="$14.520" sub="8 kupon" className="max-w-[160px] flex-1" />
-                  <StatCard
-                    label="Kar/Zarar"
-                    amount="+$420.52"
-                    sub={rangeLabel}
-                    green
-                    className="min-w-0 flex-1"
-                  />
-                </>
-              )}
+            <div className="mb-5 flex flex-wrap gap-3">
+              <StatCard
+                label="Kazanç"
+                labelTone="kazanc"
+                amount="$14.520"
+                sub="8 kupon"
+                className="max-w-[160px] flex-1"
+              />
+              <StatCard
+                label="Kaybı"
+                labelTone="kayip"
+                amount="$14.520"
+                sub="8 kupon"
+                className="max-w-[160px] flex-1"
+              />
+              <StatCard
+                label="Satılık"
+                labelTone="satildi"
+                amount="$14.520"
+                sub="8 kupon"
+                className="max-w-[160px] flex-1"
+              />
+              <StatCard
+                label="İade"
+                labelTone="iade"
+                amount="$14.520"
+                sub="8 kupon"
+                className="max-w-[160px] flex-1"
+              />
+              <StatCard
+                label="Kar/Zarar"
+                labelTone="karZarar"
+                amount="+$420.52"
+                sub={rangeLabel}
+                green
+                className="min-w-0 flex-1"
+              />
             </div>
 
-            {isEmpty ? (
-              /* Empty state */
-              <div className="flex flex-col items-center justify-center rounded-2xl bg-background-main border border-element-border py-20 text-center">
-                <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-primary/20">
-                  <HugeiconsIcon icon={Clock01Icon} className="size-8 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-text-title">Buralar boş</p>
-                <p className="mt-1 text-xs text-text-subtext">Kupon bulanamadı</p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-5">
-                <div>
-                  <p className="mb-3 text-sm font-semibold text-text-title">Aktif Kuponlar</p>
-                  <div className="overflow-hidden rounded-2xl ">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-element-border">
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">KUPON ID</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">BAHİS</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">ORAN</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">MAX KAZANÇ</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">DURUM</th>
-                        </tr>
-                      </thead>
+            <div className="flex flex-col gap-5">
+              <div>
+                <p className="mb-3 text-sm font-semibold text-text-title">
+                  Aktif Kuponlar
+                </p>
+                {filteredSporActive.length === 0 ? (
+                  <HistoryTableEmptyState message="Kupon bulunmuyor" />
+                ) : (
+                  <HistoryTableScroll>
+                    <table className={sporHistoryTableClass}>
+                      <SporKuponTableHead />
                       <tbody>
                         {filteredSporActive.map((k, i) => (
-                          <tr
+                          <SporKuponTableRow
                             key={i}
-                            className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
-                            onClick={() => openSporKupon(k)}
-                          >
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-xs text-primary hover:underline">{k.id}</span>
-                                <button onClick={(e) => { e.stopPropagation(); setCashoutOpen(false) }} className="text-semantic-error">
-                                  <HugeiconsIcon icon={Cancel01Icon} className="size-3" />
-                                </button>
-                                <KuponTypeBadge t={k.type} />
-                              </div>
-                            </td>
-                            <td className="px-4 py-3 text-xs text-text-subtext">{k.tarih}</td>
-                            <td className="px-4 py-3 text-xs text-text-subtext">{k.tarih}</td>
-                            <td className="px-4 py-3"><Coin amount={k.bahis} /></td>
-                            <td className="px-4 py-3 text-sm text-text-main">x {k.oran}</td>
-                            <td className="px-4 py-3"><Coin amount={k.maxKazanc} /></td>
-                            <td className="px-4 py-3"><KuponStatusBadge s={k.status} /></td>
-                          </tr>
+                            kupon={k}
+                            onRowClick={() => openSporKupon(k)}
+                          />
                         ))}
                       </tbody>
                     </table>
-                  </div>
-                </div>
+                  </HistoryTableScroll>
+                )}
+              </div>
 
-                <div>
-                  <p className="mb-3 text-sm font-semibold text-text-title">Geçmiş Kuponlar</p>
-                  <div className="overflow-hidden ">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-element-border">
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">KUPON ID</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">BAHİS</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">ORAN</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">MAX KAZANÇ</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-medium text-text-subtext">DURUM</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredSporGecmis.map((k, i) => (
-                          <tr
-                            key={i}
-                            className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
-                            onClick={() => openSporKupon(k)}
-                          >
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-xs text-primary hover:underline">{k.id}</span>
-                                <button onClick={(e) => e.stopPropagation()} className="text-semantic-error">
-                                  <HugeiconsIcon icon={Cancel01Icon} className="size-3" />
-                                </button>
-                                <KuponTypeBadge t={k.type} />
-                              </div>
-                            </td>
-                            <td className="px-4 py-3 text-xs text-text-subtext">{k.tarih}</td>
-                            <td className="px-4 py-3 text-xs text-text-subtext">{k.tarih}</td>
-                            <td className="px-4 py-3"><Coin amount={k.bahis} /></td>
-                            <td className="px-4 py-3 text-sm text-text-main">x {k.oran}</td>
-                            <td className="px-4 py-3"><Coin amount={k.maxKazanc} /></td>
-                            <td className="px-4 py-3"><KuponStatusBadge s={k.status} /></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="flex items-center justify-end gap-1 border-t border-element-border px-4 py-3">
-                      <button className="flex size-7 items-center justify-center rounded-lg border border-element-border text-icon hover:border-primary hover:text-primary">
-                        <HugeiconsIcon icon={ArrowLeft01Icon} className="size-3.5" />
+              <div>
+                <p className="mb-3 text-sm font-semibold text-text-title">
+                  Geçmiş Kuponlar
+                </p>
+                {filteredSporGecmis.length === 0 ? (
+                  <HistoryTableEmptyState message="Kupon bulunmuyor" />
+                ) : (
+                  <>
+                    <HistoryTableScroll>
+                      <table className={sporHistoryTableClass}>
+                        <SporKuponTableHead />
+                        <tbody>
+                          {filteredSporGecmis.map((k, i) => (
+                            <SporKuponTableRow
+                              key={i}
+                              kupon={k}
+                              onRowClick={() => openSporKupon(k)}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </HistoryTableScroll>
+                    <div className="flex items-center justify-center gap-1.5 px-4 py-3 md:justify-end">
+                      <button className="flex size-10 cursor-pointer items-center justify-center rounded-[10px] bg-neutral-500 text-icon hover:border-primary hover:text-primary">
+                        <HugeiconsIcon
+                          icon={ArrowLeft01Icon}
+                          className="size-4"
+                        />
                       </button>
                       {[1, 2, 3, 14].map((p) => (
-                        <button key={p} className={cn("flex size-7 items-center justify-center rounded-lg border text-xs font-medium transition-colors", p === 1 ? "border-primary bg-primary text-white" : "border-element-border text-text-subtext hover:border-primary hover:text-primary")}>
+                        <button
+                          key={p}
+                          className={cn(
+                            "flex size-10 cursor-pointer items-center justify-center rounded-[10px] bg-neutral-500 text-sm font-medium transition duration-400",
+                            p === 1
+                              ? "bg-primary text-white"
+                              : "text-text-subtext hover:text-primary"
+                          )}
+                        >
                           {p}
                         </button>
                       ))}
-                      <button className="flex size-7 items-center justify-center rounded-lg border border-element-border text-icon hover:border-primary hover:text-primary">
-                        <HugeiconsIcon icon={ArrowRight01Icon} className="size-3.5" />
+                      <button className="flex size-10 cursor-pointer items-center justify-center rounded-[10px] bg-neutral-500 text-icon hover:border-primary hover:text-primary">
+                        <HugeiconsIcon
+                          icon={ArrowRight01Icon}
+                          className="size-4"
+                        />
                       </button>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
-            )}
+            </div>
           </>
         )}
 
         {mainTab === "casino" && (
-          <div className="overflow-hidden rounded-2xl bg-background-main border border-element-border">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-element-border">
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">ID</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">BAHİS</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">ORAN</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">KAZANÇ</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {filteredCasino.map((row, i) => (
-                  <tr
-                    key={i}
-                    className="cursor-pointer border-b border-element-border last:border-0 hover:bg-background-elements/30"
-                    onClick={() => openCasinoKupon(row)}
-                  >
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs text-primary">{row.id}</span>
-                        <span className="text-xs text-icon">↗</span>
-                      </div>
-                    </td>
-                    <td className="px-5 py-4 text-sm text-text-main">{row.game}</td>
-                    <td className="px-5 py-4 text-xs text-text-subtext">{row.tarih}</td>
-                    <td className="px-5 py-4"><Coin amount={row.bahis} /></td>
-                    <td className="px-5 py-4 text-sm text-text-main">x{row.oran}</td>
-                    <td className="px-5 py-4"><Coin amount={row.kazanc} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <>
+            {filteredCasino.length === 0 ? (
+              <HistoryTableEmptyState message="İşlem bulunmuyor" />
+            ) : (
+              <HistoryTableScroll>
+                <table className={casinoHistoryTableClass}>
+                  <thead>
+                    <tr>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        ID
+                      </th>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        TYPE
+                      </th>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        TARİH
+                      </th>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        BAHİS
+                      </th>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        ORAN
+                      </th>
+                      <th
+                        className={cn(
+                          "px-5 text-left text-[11px] font-medium text-text-subtext",
+                          historyTableCellNowrap
+                        )}
+                      >
+                        KAZANÇ
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCasino.map((row, i) => (
+                      <tr
+                        key={i}
+                        className={historyTableBodyRowClass}
+                        onClick={() => openCasinoKupon(row)}
+                      >
+                        <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                          <HistoryIdCell
+                            id={row.id}
+                            ariaLabel="İşlem detayına git"
+                          />
+                        </td>
+                        <td
+                          className={cn(
+                            "px-5 py-4 text-sm text-text-main",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          {row.game}
+                        </td>
+                        <td
+                          className={cn(
+                            "px-5 py-4 text-xs text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          {row.tarih}
+                        </td>
+                        <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                          <Coin amount={row.bahis} />
+                        </td>
+                        <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                          <span className={getOranPillClass(row.status)}>
+                            x{row.oran}
+                          </span>
+                        </td>
+                        <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                          <Coin amount={row.kazanc} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </HistoryTableScroll>
+            )}
+          </>
         )}
 
         {mainTab === "odeme" && (
           <>
-            <div className="mb-4 flex items-center gap-1 w-fit rounded-xl bg-background-elements p-1">
+            <div className="mb-4 flex w-fit items-center gap-1 rounded-xl bg-background-elements p-1">
               {(["yatirimlar", "cekinler"] as OdemeSubTab[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => setOdemeSubTab(t)}
-                  className={cn("rounded-lg px-4 py-1.5 text-sm font-medium transition-colors", odemeSubTab === t ? "bg-background-modal text-text-title shadow-sm" : "text-text-subtext hover:text-text-main")}
+                  className={cn(
+                    "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
+                    odemeSubTab === t
+                      ? "bg-background-modal text-text-title shadow-sm"
+                      : "text-text-subtext hover:text-text-main"
+                  )}
                 >
                   {t === "yatirimlar" ? "Yatırımlar" : "Çekinler"}
                 </button>
@@ -410,38 +748,117 @@ export default function GecmisIslemlerimPage() {
 
             <div className="mb-4 flex flex-wrap gap-2">
               <StatCard label="Yatırım" amount="$14.520" />
-              <StatCard label="Çekim"   amount="$14.520" />
-              <StatCard label="Fark"    amount="$14.520" />
+              <StatCard label="Çekim" amount="$14.520" />
+              <StatCard label="Fark" amount="$14.520" />
             </div>
 
-            <div className="overflow-hidden rounded-2xl bg-background-main border border-element-border">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-element-border">
-                    <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">TÜR</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">YÖNTEM</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">TARİH</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">TUTAR</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-medium text-text-subtext">DURUM</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(odemeSubTab === "yatirimlar" ? filteredYatirim : filteredCekim).map((row, i) => (
-                    <tr key={i} className="border-b border-element-border last:border-0 hover:bg-background-elements/30">
-                      <td className="px-5 py-4 text-sm text-text-main">{row.tur}</td>
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm text-text-main">{row.yontem}</span>
-                          {row.txid && <span className="cursor-pointer text-xs font-semibold text-primary hover:underline">{row.txid} ↗</span>}
-                        </div>
-                      </td>
-                      <td className="px-5 py-4 text-xs text-text-subtext">{row.tarih}</td>
-                      <td className="px-5 py-4"><Coin amount={row.tutar} /></td>
-                      <td className="px-5 py-4"><OdemeBadge s={row.status} /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="mt-8">
+              {filteredOdeme.length === 0 ? (
+                <HistoryTableEmptyState message="İşlem bulunmuyor" />
+              ) : (
+                <HistoryTableScroll>
+                  <table className={odemeHistoryTableClass}>
+                    <thead>
+                      <tr>
+                        <th
+                          className={cn(
+                            "px-5 text-left text-[11px] font-medium text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          TÜR
+                        </th>
+                        <th
+                          className={cn(
+                            "px-5 text-left text-[11px] font-medium text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          YÖNTEM
+                        </th>
+                        <th
+                          className={cn(
+                            "px-5 text-left text-[11px] font-medium text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          TARİH
+                        </th>
+                        <th
+                          className={cn(
+                            "px-5 text-left text-[11px] font-medium text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          TUTAR
+                        </th>
+                        <th
+                          className={cn(
+                            "px-5 text-left text-[11px] font-medium text-text-subtext",
+                            historyTableCellNowrap
+                          )}
+                        >
+                          DURUM
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredOdeme.map((row, i) => (
+                        <tr key={i} className={historyTableBodyRowStaticClass}>
+                          <td
+                            className={cn(
+                              "px-5 py-4 text-sm text-text-main",
+                              historyTableCellNowrap
+                            )}
+                          >
+                            {row.tur}
+                          </td>
+                          <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                            <div
+                              className={cn(
+                                "flex items-center gap-1",
+                                historyTableCellNowrap
+                              )}
+                            >
+                              <span className="text-sm text-text-main">
+                                {row.yontem}
+                              </span>
+                              {row.txid && (
+                                <span
+                                  className={cn(
+                                    "flex cursor-pointer items-center text-xs font-semibold text-text-subtext hover:underline",
+                                    historyTableCellNowrap
+                                  )}
+                                >
+                                  {row.txid}{" "}
+                                  <HugeiconsIcon
+                                    icon={ArrowUpRight01Icon}
+                                    className="size-3.5 text-[#6781FF]"
+                                  />
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td
+                            className={cn(
+                              "px-5 py-4 text-xs text-text-subtext",
+                              historyTableCellNowrap
+                            )}
+                          >
+                            {row.tarih}
+                          </td>
+                          <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                            <Coin amount={row.tutar} />
+                          </td>
+                          <td className={cn("px-5 py-4", historyTableCellNowrap)}>
+                            <OdemeBadge s={row.status} />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </HistoryTableScroll>
+              )}
             </div>
           </>
         )}
@@ -449,27 +866,43 @@ export default function GecmisIslemlerimPage() {
 
       {selectedKupon && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-          <div className="relative w-full max-w-lg rounded-2xl bg-background-main border border-element-border shadow-2xl">
+          <div className="relative w-full max-w-lg rounded-2xl border border-element-border bg-background-main shadow-2xl">
             <div className="flex items-center justify-between border-b border-element-border px-5 py-4">
               <div className="flex items-center gap-3">
                 {selectedKupon.isActive && (
                   <>
                     <button className="flex size-7 items-center justify-center rounded-lg border border-element-border hover:border-primary">
-                      <HugeiconsIcon icon={ArrowLeft01Icon} className="size-3.5 text-icon" />
+                      <HugeiconsIcon
+                        icon={ArrowLeft01Icon}
+                        className="size-3.5 text-icon"
+                      />
                     </button>
-                    <span className="text-xs text-text-subtext">Aktif Kupon 1/3</span>
+                    <span className="text-xs text-text-subtext">
+                      Aktif Kupon 1/3
+                    </span>
                     <button className="flex size-7 items-center justify-center rounded-lg border border-element-border hover:border-primary">
-                      <HugeiconsIcon icon={ArrowRight01Icon} className="size-3.5 text-icon" />
+                      <HugeiconsIcon
+                        icon={ArrowRight01Icon}
+                        className="size-3.5 text-icon"
+                      />
                     </button>
                   </>
                 )}
               </div>
-              <h3 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-text-title">Kupon Detay</h3>
+              <h3 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-text-title">
+                Kupon Detay
+              </h3>
               <button
-                onClick={() => { setSelectedKupon(null); setCashoutOpen(false) }}
+                onClick={() => {
+                  setSelectedKupon(null)
+                  setCashoutOpen(false)
+                }}
                 className="flex size-8 items-center justify-center rounded-lg bg-background-elements hover:bg-neutral-500/30"
               >
-                <HugeiconsIcon icon={Cancel01Icon} className="size-4 text-text-main" />
+                <HugeiconsIcon
+                  icon={Cancel01Icon}
+                  className="size-4 text-text-main"
+                />
               </button>
             </div>
 
@@ -477,7 +910,10 @@ export default function GecmisIslemlerimPage() {
               <div className="mb-4 flex items-center justify-between text-xs text-text-subtext">
                 <div className="flex items-center gap-1.5">
                   <span className="font-mono">{selectedKupon.id}</span>
-                  <HugeiconsIcon icon={Copy01Icon} className="size-3.5 cursor-pointer text-icon hover:text-primary" />
+                  <HugeiconsIcon
+                    icon={Copy01Icon}
+                    className="size-3.5 cursor-pointer text-icon hover:text-primary"
+                  />
                 </div>
                 <span>Oluşturma Tarihi: {selectedKupon.tarih}</span>
               </div>
@@ -491,11 +927,19 @@ export default function GecmisIslemlerimPage() {
                           <span className="text-primary">🛡️</span>
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-text-main">Cashout yap</p>
-                          <p className="text-xs text-text-subtext">Kuponu bozdurup, olası kayıpları minimize et.</p>
+                          <p className="text-sm font-medium text-text-main">
+                            Cashout yap
+                          </p>
+                          <p className="text-xs text-text-subtext">
+                            Kuponu bozdurup, olası kayıpları minimize et.
+                          </p>
                         </div>
                       </div>
-                      <Button variant="secondary" size="sm" onClick={() => setCashoutOpen(true)}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => setCashoutOpen(true)}
+                      >
                         Cashout
                       </Button>
                     </div>
@@ -506,23 +950,40 @@ export default function GecmisIslemlerimPage() {
                           <span className="text-primary">🛡️</span>
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-text-main">Cashout yap</p>
-                          <p className="text-xs text-text-subtext">Kuponu bozdurup, olası kayıpları minimize et.</p>
+                          <p className="text-sm font-medium text-text-main">
+                            Cashout yap
+                          </p>
+                          <p className="text-xs text-text-subtext">
+                            Kuponu bozdurup, olası kayıpları minimize et.
+                          </p>
                         </div>
                       </div>
                       <div className="mb-2 flex flex-col gap-1.5">
-                        <label className="text-xs text-text-subtext">Tutar</label>
-                        <input value={cashoutAmount} onChange={(e) => setCashoutAmount(e.target.value)} className="w-full rounded-xl border border-element-border bg-background-main px-4 py-2.5 text-sm text-text-main focus:border-primary focus:outline-none" />
+                        <label className="text-xs text-text-subtext">
+                          Tutar
+                        </label>
+                        <input
+                          value={cashoutAmount}
+                          onChange={(e) => setCashoutAmount(e.target.value)}
+                          className="w-full rounded-xl border border-element-border bg-background-main px-4 py-2.5 text-sm text-text-main focus:border-primary focus:outline-none"
+                        />
                       </div>
-                      <p className="mb-2 text-xs text-text-subtext">Max. Cashout: 6.520TRY</p>
+                      <p className="mb-2 text-xs text-text-subtext">
+                        Max. Cashout: 6.520TRY
+                      </p>
                       <div className="mb-3 flex gap-2">
                         {["%25", "%50", "%75", "%100"].map((p) => (
-                          <button key={p} className="flex-1 rounded-lg border border-element-border py-1.5 text-xs font-medium text-text-main hover:border-primary hover:text-primary transition-colors">
+                          <button
+                            key={p}
+                            className="flex-1 rounded-lg border border-element-border py-1.5 text-xs font-medium text-text-main transition-colors hover:border-primary hover:text-primary"
+                          >
                             {p}
                           </button>
                         ))}
                       </div>
-                      <Button variant="secondary" className="w-full">Cashout yap 14.51TRY</Button>
+                      <Button variant="secondary" className="w-full">
+                        Cashout yap 14.51TRY
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -535,19 +996,27 @@ export default function GecmisIslemlerimPage() {
 
               {selectedKupon.game && (
                 <div className="mb-4 rounded-xl bg-background-elements p-4">
-                  <p className="mb-3 text-sm font-semibold text-text-main">{selectedKupon.game}</p>
+                  <p className="mb-3 text-sm font-semibold text-text-main">
+                    {selectedKupon.game}
+                  </p>
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="mb-1 text-xs text-text-subtext">Bahis</p>
-                      {selectedKupon.bahis !== undefined && <Coin amount={selectedKupon.bahis} />}
+                      {selectedKupon.bahis !== undefined && (
+                        <Coin amount={selectedKupon.bahis} />
+                      )}
                     </div>
                     <div>
                       <p className="mb-1 text-xs text-text-subtext">Oran</p>
-                      <p className="text-sm font-semibold text-text-main">x{selectedKupon.oran}</p>
+                      <p className="text-sm font-semibold text-text-main">
+                        x{selectedKupon.oran}
+                      </p>
                     </div>
                     <div>
                       <p className="mb-1 text-xs text-text-subtext">Kazanç</p>
-                      {selectedKupon.maxKazanc !== undefined && <Coin amount={selectedKupon.maxKazanc} />}
+                      {selectedKupon.maxKazanc !== undefined && (
+                        <Coin amount={selectedKupon.maxKazanc} />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -556,15 +1025,27 @@ export default function GecmisIslemlerimPage() {
               {!selectedKupon.game && (
                 <div className="mb-4 flex flex-col gap-3">
                   {sporMatchRows.map((m, i) => (
-                    <div key={i} className="rounded-xl bg-background-elements p-3 text-sm">
+                    <div
+                      key={i}
+                      className="rounded-xl bg-background-elements p-3 text-sm"
+                    >
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-text-main">{m.home} {m.homeScore}</p>
-                          <p className="text-text-subtext">{m.away} {m.awayScore}</p>
+                          <p className="font-medium text-text-main">
+                            {m.home} {m.homeScore}
+                          </p>
+                          <p className="text-text-subtext">
+                            {m.away} {m.awayScore}
+                          </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-text-subtext">{m.market} <span className="text-primary">{m.result}</span></p>
-                          <p className="text-xs font-medium text-text-main">{m.odds}</p>
+                          <p className="text-xs text-text-subtext">
+                            {m.market}{" "}
+                            <span className="text-primary">{m.result}</span>
+                          </p>
+                          <p className="text-xs font-medium text-text-main">
+                            {m.odds}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -573,9 +1054,13 @@ export default function GecmisIslemlerimPage() {
               )}
 
               <div>
-                <p className="mb-2 text-xs text-text-subtext">Bu kuponu arkadaşın ile paylaş</p>
+                <p className="mb-2 text-xs text-text-subtext">
+                  Bu kuponu arkadaşın ile paylaş
+                </p>
                 <div className="flex items-center gap-2 rounded-xl border border-element-border bg-background-elements px-3 py-2">
-                  <span className="flex-1 truncate text-xs text-text-main">https://betnarrow992.com/cupon/xt633gfc2</span>
+                  <span className="flex-1 truncate text-xs text-text-main">
+                    https://betnarrow992.com/cupon/xt633gfc2
+                  </span>
                   <button className="shrink-0 text-icon hover:text-primary">
                     <HugeiconsIcon icon={Copy01Icon} className="size-4" />
                   </button>
