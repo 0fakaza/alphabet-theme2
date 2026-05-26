@@ -83,7 +83,7 @@ const GameSlider = ({ title, totalCount, allHref = "#", games, id, variant = "de
           onSwiper={() => setReady(true)}
           {...(variant === "compact"
             ? {
-                slidesPerView: 2.2,
+                slidesPerView: 4,
                 spaceBetween: 8,
                 breakpoints: {
                   480: { slidesPerView: 3, spaceBetween: 8 },
