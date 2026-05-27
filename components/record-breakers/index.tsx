@@ -119,7 +119,7 @@ const RecordBreakers = () => {
         >
           {records.map((record, i) => (
             <SwiperSlide key={`${record.game}-${i}`} className="md:max-w-[460px]" style={{ width: "100%" }}>
-              {/* Mobil: dikey layout */}
+              
               <div className="overflow-hidden rounded-[16px] bg-neutral-100 md:hidden">
                 <div className="relative aspect-square w-full overflow-hidden">
                   <Image src={record.image} alt={record.game} fill className="object-cover" />
@@ -143,7 +143,7 @@ const RecordBreakers = () => {
                 </div>
               </div>
 
-              {/* Desktop: yatay layout */}
+              
               <div className="hidden w-full gap-[19px] overflow-hidden rounded-[20px] bg-neutral-100 p-3 md:flex">
                 <div className="relative size-[134px] shrink-0 overflow-hidden rounded-[12px]">
                   <Image src={record.image} alt={record.game} fill className="object-cover" />

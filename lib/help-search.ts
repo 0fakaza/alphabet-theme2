@@ -18,7 +18,7 @@ export function faqItemMatches(item: { title: string; content: string }, q: stri
   return matchesQuery(item.title, q) || matchesQuery(item.content, q)
 }
 
-/** Tailwind `lg` ile uyumlu mobil üst sınır */
+
 export const HELP_MOBILE_MEDIA = "(max-width: 1023px)"
 
 export function isHelpMobileViewport() {

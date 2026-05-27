@@ -19,7 +19,7 @@ import {
 } from "@/data/promotions"
 import type { IconSvgElement } from "@hugeicons/react"
 
-/** Tüm promosyon detay popup’u — üstten alta tek yüzey. */
+
 const PROMOTION_DETAIL_MODAL_BACKGROUND =
   "radial-gradient(74.68% 73.31% at 84.54% -6.81%, var(--action-primary-default) 0%, var(--action-primary-alpha) 70%), #F5F0FB"
 

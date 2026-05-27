@@ -13,7 +13,7 @@ const VIP_INFO_ICON_BG = "/images/vip-info-back.svg"
 export function VipBenefits() {
   return (
     <section className="container px-4 pb-12 pt-10 md:px-6 md:pb-16 md:pt-14">
-      {/* Figma Frame 3840: içerik ~1401px, 2 sütun ~688.5px, satır yüksekliği 132px, dikey boşluk ~24px */}
+      
       <div className="mx-auto grid w-full max-w-[1401px] grid-cols-1 gap-6 md:grid-cols-2 md:gap-x-6 md:gap-y-6 lg:gap-x-8 lg:gap-y-6">
         {VIP_BENEFITS.map((item, index) => {
           const src = BENEFIT_ICON_SRC[index] ?? BENEFIT_ICON_SRC[0]

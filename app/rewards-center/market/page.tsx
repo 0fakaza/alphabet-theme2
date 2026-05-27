@@ -44,7 +44,7 @@ const faqItems = [
 ]
 
 const TOTAL_POINTS = 15600
-const RATE = 100 // 100 puan = 1 TRY
+const RATE = 100
 
 export default function MarketPage() {
   const [activeCategory, setActiveCategory] = useState("all")
@@ -59,10 +59,10 @@ export default function MarketPage() {
 
   return (
     <main className="min-h-screen bg-background-body">
-      {/* Hero */}
+      
       <div className=" pt-6 pb-0">
         <div className="container flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          {/* Left: title + description */}
+          
           <div>
             <h1 className="text-lg font-bold text-text-title">Market</h1>
             <p className="mt-1 max-w-[460px] text-xs text-text-subtext">
@@ -70,7 +70,7 @@ export default function MarketPage() {
             </p>
           </div>
 
-          {/* Right: puan box */}
+          
           <div className="flex items-center justify-between gap-4 rounded-xl bg-background-main p-6  md:min-w-[420px]">
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-wider text-text-main">Kazanılan Puan</p>
@@ -90,14 +90,14 @@ export default function MarketPage() {
         </div>
       </div>
 
-      {/* Nakite Çevir Modal */}
+      
       {convertOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setConvertOpen(false) }}
         >
           <div className="w-full max-w-[532px] rounded-2xl bg-background-modal p-5">
-            {/* Header */}
+            
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-base font-bold text-text-title">Nakite Çevir</h2>
               <button
@@ -108,7 +108,7 @@ export default function MarketPage() {
               </button>
             </div>
 
-            {/* Info row */}
+            
             <div className="mb-5 flex items-start gap-6">
               <div className="flex flex-col gap-1">
                 <span className="text-[11px] font-medium text-text-subtext">Toplum Puanınız</span>
@@ -124,7 +124,7 @@ export default function MarketPage() {
               </div>
             </div>
 
-            {/* Input + Çevir */}
+            
             <div className="mb-3 flex items-end gap-3">
               <div className="relative flex-1">
                 <label className="mb-1 block pl-1 text-[10px] font-medium text-text-subtext">
@@ -151,7 +151,7 @@ export default function MarketPage() {
               </Button>
             </div>
 
-            {/* Rate info */}
+            
             <p className="text-[12px] text-text-subtext">
               <span className="font-medium">100 Puan</span>{" "}
               <span className="text-[13px] text-text-main">1 TRY</span>
@@ -160,7 +160,7 @@ export default function MarketPage() {
         </div>
       )}
 
-      {/* Category Tabs */}
+      
       <section className="py-5 md:py-4">
         <div className="container">
           <div className="-mx-1 flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
@@ -186,7 +186,7 @@ export default function MarketPage() {
 
       <div className="container py-6">
 
-        {/* Items Grid */}
+        
         <div className="mb-10 grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-4">
           {filteredItems.map((item) => (
             <div key={item.id} className="overflow-hidden rounded-xl bg-background-main  p-3.5">
@@ -208,7 +208,7 @@ export default function MarketPage() {
           ))}
         </div>
 
-        {/* FAQ */}
+        
         <div className="max-w-[1100px] mx-auto">
           <h2 className="mb-4 text-base font-semibold text-text-title">Merak edilenler</h2>
           <Accordion type="single" collapsible className="flex w-full flex-col gap-3">

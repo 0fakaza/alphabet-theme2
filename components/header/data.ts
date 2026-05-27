@@ -30,7 +30,7 @@ export const categoryTabs = [
   { href: "/tournaments", label: "Turnuvalar", icon: WhistleIcon },
 ]
 
-/** True when the current page belongs to this category tab (includes sub-routes, e.g. /casino/providers). */
+
 export function isCategoryTabActive(pathname: string, href: string): boolean {
   if (pathname === href) return true
   if (href !== "/" && pathname.startsWith(`${href}/`)) return true

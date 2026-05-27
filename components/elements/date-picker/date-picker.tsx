@@ -39,7 +39,7 @@ export type DatePickerRangeProps = DatePickerSharedProps & {
   mode: "range"
   value: DateRangeValue
   onChange: (value: DateRangeValue) => void
-  /** Popover kapanır (varsayılan: true) */
+  
   closeOnRangeComplete?: boolean
 }
 
@@ -207,5 +207,5 @@ export function DatePicker(props: DatePickerProps) {
   )
 }
 
-/** @deprecated Use `DatePicker` instead */
+
 export const DatePickerField = DatePicker

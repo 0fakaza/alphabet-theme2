@@ -29,7 +29,7 @@ type Tournament = {
     joined: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const tournaments = [
     {
         id: 1,
@@ -79,7 +79,7 @@ export default function OdulYagmuruPage() {
 
     return (
         <main className="min-h-screen bg-background-body">
-            {/* Hero — şans çarkı ile aynı stil */}
+            
             <div className="bg-background-main py-7">
                 <div className="container">
                     <div className="flex flex-col md:flex-row text-center md:text-left  items-center gap-4">
@@ -102,7 +102,7 @@ export default function OdulYagmuruPage() {
 
             <div className="container py-6">
                 <Tabs defaultValue="active">
-                    {/* Tab listesi + checkbox */}
+                    
                     <div className="mb-5 flex flex-wrap items-center  gap-3">
                         <TabList
                             tabs={[
@@ -137,7 +137,7 @@ export default function OdulYagmuruPage() {
                                             key={t.id}
                                             className="flex flex-col md:flex-row overflow-hidden rounded-xl hover:bg-background-modal p-3 ring-1 ring-divider-100"
                                         >
-                                            {/* Sol: Görsel */}
+                                            
                                             <div
                                                 className="relative h-[200px] w-full md:w-2/5  max-w-[430px] shrink-0 rounded-2xl">
                                                 <Image src="/images/awars-card.jpg" alt={t.title} fill
@@ -151,7 +151,7 @@ export default function OdulYagmuruPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Sağ: Bilgi */}
+                                            
                                             <div
                                                 className="flex flex-1 flex-col justify-center gap-5  px-3 md:px-7 py-6 relative">
                                                 <h3 className="text-base font-semibold text-text-title">{t.title}</h3>
@@ -221,14 +221,14 @@ export default function OdulYagmuruPage() {
                 </Tabs>
             </div>
 
-            {/* Ödül Detayları Popup */}
+            
             {detailTournament && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
                     onClick={(e) => { if (e.target === e.currentTarget) setDetailTournament(null) }}
                 >
                     <div className="w-full max-w-[626px] rounded-2xl bg-background-modal p-5 flex flex-col gap-3">
-                        {/* Header */}
+                        
                         <div className="flex items-center justify-between">
                             <h2 className="text-base font-bold text-text-title">Ödül Detayları</h2>
                             <button
@@ -239,7 +239,7 @@ export default function OdulYagmuruPage() {
                             </button>
                         </div>
 
-                        {/* Hero image */}
+                        
                         <div className="relative h-[200px] w-full overflow-hidden rounded-2xl">
                             <Image
                                 src="/images/awars-card.jpg"
@@ -259,9 +259,9 @@ export default function OdulYagmuruPage() {
                             </div>
                         </div>
 
-                        {/* Info */}
+                        
                         <div className="flex flex-col gap-4 px-3 pt-2">
-                            {/* Dates + min deposit */}
+                            
                             <div className="flex flex-wrap items-center gap-6">
                                 <div className="flex flex-col gap-1">
                                     <div className="flex items-center gap-1.5 text-xs text-text-subtext">
@@ -292,18 +292,18 @@ export default function OdulYagmuruPage() {
                                 </div>
                             </div>
 
-                            {/* Divider */}
+                            
                             <div className="h-px w-full bg-divider-100" />
 
-                            {/* Title */}
+                            
                             <h3 className="text-xl font-semibold text-text-title">{detailTournament.title}</h3>
 
-                            {/* Description */}
+                            
                             <p className="text-sm leading-relaxed text-text-subtext">
                                 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &apos;Content here, content here&apos;, making it
                             </p>
 
-                            {/* Kapat */}
+                            
                             <div className="flex justify-center pt-1">
                                 <Button
                                     variant="outline"

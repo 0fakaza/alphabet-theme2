@@ -101,7 +101,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full bg-background-footer text-white">
-      {/* Sağlayıcılar */}
+      
       <div className="border-b border-divider-100">
         <div className="container py-8">
           <div className="mb-5 flex items-center justify-between">
@@ -138,10 +138,10 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Ana Footer İçeriği */}
+      
       <div className="md: border-b border-divider-100 ">
         <div className="container  flex flex-col gap-8 py-8 md:flex-row md:gap-16 md:py-10">
-          {/* Sol: Bilgi Alanı */}
+          
           <div className="flex w-full shrink-0 flex-col gap-6 md:w-[424px] md:gap-9">
             <div className="flex flex-col gap-4 md:gap-[22px]">
               <h2 className="text-[16px] font-medium leading-normal tracking-[0.4px] text-center md:text-left text-text-main md:text-[20px] max-w-[375px] mx-auto md:mx-0" >
@@ -207,7 +207,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col md:flex md:flex-row md:gap-[74px]">
-            {/* CASINO */}
+            
             <div className="">
               <button
                 className="flex w-full items-center justify-between py-3 md:hidden"
@@ -234,7 +234,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* SPOR */}
+            
             <div className="">
               <button
                 className="flex w-full items-center justify-between py-3 md:hidden"
@@ -261,7 +261,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* VIP */}
+            
             <div className="">
               <button
                 className="flex w-full items-center justify-between py-3 md:hidden"
@@ -291,7 +291,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Ödeme Yöntemleri */}
+      
       <div>
         <div className="container py-4 md:py-6">
           <div className="rounded-[16px] md:bg-neutral-400 bg-transparent px-4 py-0 md:rounded-[20px] md:px-8 md:py-8">
@@ -322,7 +322,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Yasal Bilgi */}
+      
       <div className="md:border-b  border-divider-100">
         <div className="container py-6">
           <p className="mx-auto max-w-[1008px] text-left md:text-center text-[12px] font-medium leading-[1.3] text-text-subtext">
@@ -333,7 +333,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Alt Bar */}
+      
       <div className="container flex  items-center gap-4 py-5  justify-between md:py-6">
         <div className="flex items-center gap-2">
           <Image

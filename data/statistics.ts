@@ -172,7 +172,7 @@ type DailyEntry = {
   games: GameStat[]
 }
 
-/** Günlük kayıtlar — özel tarih aralığı filtresi için */
+
 export const statisticsDailyEntries: DailyEntry[] = (() => {
   const entries: DailyEntry[] = []
   const categories: CategoryKey[] = ["casino", "live-casino", "other"]

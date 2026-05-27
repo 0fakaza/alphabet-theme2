@@ -15,7 +15,7 @@ export type TournamentDetail = {
   description: string
   bullets: string[]
   leaderboard: LeaderboardRow[]
-  /** Casino “Tüm oyunlar” ile aynı karo; varsayılan lobiden ilk N oyun */
+  
   eligibleGames: CasinoLobbyGame[]
 }
 
@@ -28,7 +28,7 @@ export type Tournament = {
   pool: string
   state: TournamentState
   href: string
-  /** Yoksa {@link DEFAULT_TOURNAMENT_DETAIL} kullanılır */
+  
   detail?: TournamentDetail
 }
 

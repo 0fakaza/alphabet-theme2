@@ -19,7 +19,7 @@ type ProviderRow = {
 export type FeatureFilterDef = {
   id: string
   label: string
-  /** 2 sütun gridde tam satır (Figma: Çok Konuşuanlar) */
+  
   fullWidth?: boolean
   icon: IconSvgElement
 }
@@ -28,7 +28,7 @@ type CasinoFilterModalProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   features: readonly FeatureFilterDef[]
-  /** Başka sekmede seçili özellikler (çoklu) */
+  
   selectedFeatures: Set<string>
   onSelectedFeaturesChange: (s: Set<string>) => void
   providers: readonly ProviderRow[]
@@ -36,10 +36,7 @@ type CasinoFilterModalProps = {
   onProviderQueryChange: (q: string) => void
   selectedProviderIds: Set<string>
   onSelectedProviderIdsChange: (s: Set<string>) => void
-  /**
-   * Taslak özellik + sağlayıcı setleriyle eşleşen oyun sayısı
-   * (üst barda arama, aktif lobby sekmesi, favori listesi aynı kalmalı).
-   */
+  
   getResultCount: (draftFeatures: Set<string>, draftProviders: Set<string>) => number
   onApply: () => void
 }
@@ -193,7 +190,7 @@ export function CasinoFilterModal({
               </div>
 
               <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-divider-100 overflow-hidden md:grid-cols-2 md:divide-x md:divide-y-0">
-                {/* Sol: özellik karo grid */}
+                
                 <div className="min-h-0 min-w-0 space-y-3 overflow-y-auto p-4 md:max-h-[min(50vh,420px)]">
                   <p className="text-sm font-medium tracking-wide text-text-main">Özellikler</p>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -224,7 +221,7 @@ export function CasinoFilterModal({
                   </div>
                 </div>
 
-                {/* Sağ: sağlayıcılar */}
+                
                 <div className="flex min-h-0 min-w-0 flex-col gap-3 p-4 md:max-h-[min(50vh,420px)]">
                   <p className="text-sm font-medium tracking-wide text-text-main">Sağlayıcılar</p>
                   <div className="relative shrink-0">

@@ -52,12 +52,12 @@ export const WALLET_COUNTRIES: WalletCountry[] = [
 
 export const DEFAULT_WALLET_COUNTRY_ID = "tr"
 
-/** Havale / EFT yöntemleri yalnızca Türkiye için */
+
 export function isFiatCountry(countryId: string): boolean {
   return countryId === "tr"
 }
 
-/** 1 birim kripto → fiat kur (demo) */
+
 const CRYPTO_TO_FIAT: Record<string, Record<string, number>> = {
   tether: { TRY: 34.2, EUR: 0.92, GBP: 0.79 },
   usdc: { TRY: 34.2, EUR: 0.92, GBP: 0.79 },

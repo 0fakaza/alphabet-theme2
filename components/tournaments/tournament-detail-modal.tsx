@@ -239,7 +239,7 @@ export function TournamentDetailModal({ open, onOpenChange, tournament }: Tourna
           )}
         />
 
-        {/* Üst başlık — mobil: sadece metin (Figma 4973:8394); masaüstü: görsel + bilgi */}
+        
         <div className="relative shrink-0 bg-background-modal-100 px-5  pb-7 pt-6 sm:px-4 lg:px-7 lg:pb-6 lg:pt-7">
           <button
             type="button"
@@ -294,7 +294,7 @@ export function TournamentDetailModal({ open, onOpenChange, tournament }: Tourna
           </div>
         </div>
 
-        {/* Gövde */}
+        
         <div
           className={cn(
             "flex min-h-0 flex-1 flex-col lg:max-h-[min(56vh,520px)] lg:flex-row lg:overflow-hidden",

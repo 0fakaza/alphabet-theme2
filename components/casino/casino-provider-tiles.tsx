@@ -5,7 +5,7 @@ import type { CasinoProviderRow } from "@/data/casino-providers"
 
 const CASINO_HREF = "/casino" as const
 
-/** Figma 5102:25795 — 74px hücre, 12px gap, px-5, rounded-lg, bg-background-main, logo 32, isim 15px, oyun 10px (alttan çizgisiz) */
+
 export function CasinoProviderTile({ p }: { p: CasinoProviderRow }) {
   return (
     <Link

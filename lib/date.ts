@@ -13,7 +13,7 @@ export function parseDateInputValue(value: string): Date | null {
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-/** Görüntü: gg/aa/yy (Figma) */
+
 export function formatDisplayDate(iso: string): string {
   const parsed = parseDateInputValue(iso)
   if (!parsed) return "—"
@@ -70,13 +70,13 @@ export function isDateDisabled(
 }
 
 export type DateRangeValue = {
-  /** ISO yyyy-MM-dd */
+  
   start: string
-  /** ISO yyyy-MM-dd */
+  
   end: string
 }
 
-/** Sıralı başlangıç / bitiş (aynı gün dahil) */
+
 export function normalizeDateRange(range: DateRangeValue): {
   start: Date
   end: Date
@@ -113,7 +113,7 @@ export function formatDisplayDateRange(range: DateRangeValue): string {
   return ""
 }
 
-/** Geçmiş işlemler: "14.02.2025 14:30" */
+
 export function parseTransactionDateTime(value: string): Date | null {
   const m = value.trim().match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?/)
   if (!m) return null

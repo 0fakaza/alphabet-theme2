@@ -20,7 +20,7 @@ export type Game = {
   players: number
   href?: string
   isNew?: boolean
-  /** Katalog / filtre: favori ve listeler için */
+  
   id?: string
 }
 
@@ -75,7 +75,7 @@ const GameSlider = ({ title, totalCount, allHref = "#", games, id, variant = "de
         )}
 
         <Swiper
-          modules={[Navigation]}
+          modules= {[Navigation]}
           navigation={{
             nextEl: `.${id}-next`,
             prevEl: `.${id}-prev`,

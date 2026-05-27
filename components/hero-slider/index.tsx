@@ -75,7 +75,7 @@ const HeroSlider = () => {
     return (
         <section className="relative w-full">
             <div className="relative">
-                {/* Slider (tam genişlik) */}
+                
                 <div className="relative overflow-hidden ">
                     {!ready && (
                         <div
@@ -173,7 +173,7 @@ const HeroSlider = () => {
                         ))}
                     </Swiper>
 
-                    {/* Navigation Arrows - desktop only */}
+                    
                     <div className=" container absolute right-0 left-0 top-0 z-40 hidden mt-13 gap-2 md:flex justify-end pr-96">
                         <SliderNav
                             id="hero"
@@ -189,7 +189,7 @@ const HeroSlider = () => {
 
                     <div style={{backgroundColor:"#23282C"}} className="md:absolute relative md:right-4 p-[15px] md:p-[0]  right-0 top-1/2 md:-translate-y-1/2 flex md:w-[310px] md:flex-col justify-center gap-0 md:gap-3 pointer-events-auto ">
 
-                        {/* Arkadaşını Getir Kartı */}
+                        
                         <div className="relative flex-1 flex md:h-[190px]  items-center gap-3  rounded-xl  ">
                             <Image
                                 src="/images/slider-mini.png"
@@ -216,7 +216,7 @@ const HeroSlider = () => {
                             </div>
                         </div>
 
-                        {/* VIP Club Kartı */}
+                        
                         <div className="flex flex-1  flex-col justify-center rounded-xl h-[120px] md:h-[190px] max-w-[200px] md:max-w-[100%]  pl-3 p-3 md:pl-6 md:p-5 " style={{background: "linear-gradient(236deg, #FAC363 29.86%, #FFE1AE 99.57%)"}}>
                             <div className="mb-1.5 md:mb-2 flex items-center gap-2">
 

@@ -8,7 +8,7 @@ import { HELP_HERO, HELP_POPULAR_TAGS } from "@/data/help"
 type HelpHeroSectionProps = {
   globalSearch: string
   onGlobalSearchChange: (v: string) => void
-  /** Mobilde kategori içi görünümde hero gizlenir */
+  
   hideOnMobile: boolean
 }
 

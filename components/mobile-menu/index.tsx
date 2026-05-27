@@ -19,7 +19,7 @@ export function MobileMenu() {
     <div className="fixed left-0 right-0 top-[58px] z-[55] h-[calc(100dvh-58px-64px)] overflow-y-auto bg-background-modal [&::-webkit-scrollbar]:hidden md:hidden">
       <div className="flex flex-col">
 
-        {/* Category Tabs */}
+        
         <div className="pt-4">
           <ul className="flex flex-col">
             {categoryTabs.map((tab) => {
@@ -46,7 +46,7 @@ export function MobileMenu() {
           </ul>
         </div>
 
-        {/* Bonus + Promosyon */}
+        
         <div className="pb-3">
           <Link
             href="/bonus-talep"
@@ -68,7 +68,7 @@ export function MobileMenu() {
 
         <div className="mx-4 border-t border-divider-100" />
 
-        {/* Sidebar Links */}
+        
         <div className="px-3 py-4">
           {sidebarLinks.map((link, i) => {
             if (link.type === "accordion") {
@@ -108,7 +108,7 @@ export function MobileMenu() {
 
         <div className="mx-4 border-t border-divider-100" />
 
-        {/* Crash Games */}
+        
         <div className="py-4">
           <div className="mb-3 flex items-center justify-between px-4">
             <h3 className="text-[15px] font-semibold text-text-title">Crash Games</h3>
@@ -147,7 +147,7 @@ export function MobileMenu() {
 
         <div className="mx-4 border-t border-divider-100" />
 
-        {/* Nav Links - 2 column grid */}
+        
         <div className="grid grid-cols-2 gap-x-4 px-7 py-4">
           {navLinks.map((link) => (
             <Link
@@ -167,7 +167,7 @@ export function MobileMenu() {
 
         <div className="mx-4 border-t border-divider-100" />
 
-        {/* Affiliate Section */}
+        
         <div className="Header-megaMenu-right flex flex-col justify-between px-5 py-8">
           <div className="mb-3 flex items-center gap-2">
             <HugeiconsIcon icon={Agreement02Icon} className="size-5 text-primary" />

@@ -3,7 +3,7 @@ export type HelpCategoryId = "deposit" | "bonus" | "membership" | "bets" | "affi
 export type HelpDepositStep = {
   title: string
   body: string
-  /** Opsiyonel ekran görüntüsü */
+  
   imageSrc?: string
 }
 
@@ -12,9 +12,9 @@ export type HelpDepositMethod = {
   title: string
   drawerEyebrow: string
   videoCardTitle: string
-  /** Kart başlığının solundaki ikon (ör. /images/payments/payments_1.svg) */
+  
   videoCardIcon: string
-  /** YouTube embed veya boş — boşsa kart sadece gösterim */
+  
   videoEmbedUrl: string
   steps: HelpDepositStep[]
 }

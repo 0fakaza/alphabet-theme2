@@ -94,7 +94,7 @@ export function NotificationPanel({ onClose, showCloseButton = false }: Notifica
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      {/* Header */}
+      
       <div className="flex shrink-0 items-center justify-between border-b border-divider-100 px-5 py-4">
         <div className="flex items-center gap-2">
           <HugeiconsIcon icon={Notification01Icon} className="size-5 text-text-main" />
@@ -125,7 +125,7 @@ export function NotificationPanel({ onClose, showCloseButton = false }: Notifica
         </div>
       </div>
 
-      {/* Tabs */}
+      
       <div className="flex shrink-0 items-center gap-1 px-4 py-2">
         <button
           onClick={() => setActiveTab("all")}
@@ -154,7 +154,7 @@ export function NotificationPanel({ onClose, showCloseButton = false }: Notifica
         </button>
       </div>
 
-      {/* List */}
+      
       <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden">
         {filteredNotifications.length === 0 ? (
           <EmptyState />

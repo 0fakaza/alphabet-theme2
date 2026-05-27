@@ -170,7 +170,7 @@ export default function CuzdanlarimPage() {
       )}
       <AccountPageLayout title="Cüzdanlarım" icon={Wallet01Icon}>
         {isEmpty ? (
-          /* Empty state */
+          
           <div className="flex flex-col items-center justify-center rounded-2xl bg-background-main py-20 text-center">
             <div className="mb-5 flex size-20 items-center justify-center rounded-full bg-primary/20">
               <HugeiconsIcon icon={Wallet01Icon} className="size-9 text-primary" />

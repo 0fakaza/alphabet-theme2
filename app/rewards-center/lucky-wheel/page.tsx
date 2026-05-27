@@ -27,10 +27,10 @@ const poolPrizes = Array.from({ length: 11 }, (_, i) => ({
 const CARD_WIDTH = 180
 const CARD_GAP = 12
 const CARD_TOTAL = CARD_WIDTH + CARD_GAP
-// 20 tekrar — animasyon sırasında asla bitmeyecek kadar
+
 const REPEAT = 20
 const extendedPrizes = Array.from({ length: REPEAT }, () => prizes).flat()
-// Başlangıç: ortadan başla (ilk 10 tur yeterli)
+
 const INITIAL_POS = prizes.length * (REPEAT / 2) * CARD_TOTAL
 
 export default function SansCarki() {
@@ -41,7 +41,7 @@ export default function SansCarki() {
   const animRef = useRef<number | null>(null)
   const posRef = useRef(INITIAL_POS)
 
-  // İlk render'da başlangıç pozisyonunu uygula
+
   useEffect(() => {
     if (stripRef.current) {
       stripRef.current.style.transform = `translateX(-${INITIAL_POS}px)`
@@ -60,12 +60,10 @@ export default function SansCarki() {
     const winnerPrize = prizes[winIndex]
 
     const startPos = posRef.current
-    // paddingLeft = 50% - CARD_WIDTH/2 sayesinde card[N] ortalamak için
-    // translateX = N * CARD_TOTAL yeterli.
-    // Şu an hangi karttayız (loop içinde)?
+
     const currentCardOffset = startPos % (prizes.length * CARD_TOTAL)
     const targetCardOffset  = winIndex * CARD_TOTAL
-    // Kazanana kalan mesafe — her zaman ileri gider
+
     const toWinner = ((targetCardOffset - currentCardOffset) + prizes.length * CARD_TOTAL) % (prizes.length * CARD_TOTAL)
     const totalDistance = 4 * prizes.length * CARD_TOTAL + toWinner
 
@@ -101,7 +99,7 @@ export default function SansCarki() {
 
   return (
     <main className="min-h-screen bg-background-body">
-      {/* Hero */}
+      
       <div className="bg-background-main py-7">
         <div className="container ">
           <div className=" flex flex-col md:flex-row items-center gap-4    ">
@@ -125,27 +123,23 @@ export default function SansCarki() {
 
 
 
-        {/* Wheel / Strip */}
+        
         <div className="mb-4  ">
-          {/* Arrow indicator */}
+          
           <div className="relative  flex justify-center z-20">
             <div className="flex flex-col items-center translate-y-6">
              <Image src="/images/icons/point.svg" alt={""} width="40" height="59" className="object-contain"  />
             </div>
           </div>
 
-          {/* Strip container */}
+          
           <div className="relative overflow-hidden">
-            {/* Sol gölge */}
+            
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-background-body to-transparent" />
-            {/* Sağ gölge */}
+            
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-background-body to-transparent" />
 
-            {/*
-              paddingLeft = 50% - CARD_WIDTH/2
-              → kart[N] ortalamak için translateX = N * CARD_TOTAL yeterli,
-                modulo veya container width ölçümüne gerek yok.
-            */}
+            
             <div
               className="overflow-hidden"
               style={{ paddingLeft: `calc(50% - ${CARD_WIDTH / 2}px)` }}
@@ -170,10 +164,10 @@ export default function SansCarki() {
                   </div>
                 ))}
               </div>
-            </div>{/* overflow-hidden + paddingLeft */}
-          </div>{/* relative */}
+            </div>
+          </div>
 
-          {/* Spin Button */}
+          
           <div className="mt-5 flex flex-col items-center gap-1.5">
             <button
               onClick={handleSpin}
@@ -191,7 +185,7 @@ export default function SansCarki() {
           </div>
         </div>
 
-        {/* Ödül Havuzu */}
+        
         <div className="">
           <h2 className="mb-4 text-base font-bold text-text-title">Ödül Havuzu</h2>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-6 md:grid-cols-7">
@@ -213,7 +207,7 @@ export default function SansCarki() {
         </div>
       </div>
 
-      {/* Kazandınız Popup */}
+      
       {winner && (
         <div className="fixed inset-0 p-4 z-[300] flex items-center justify-center bg-black/50 backdrop-blur-xs" onClick={() => setWinner(null)}>
 
@@ -225,7 +219,7 @@ export default function SansCarki() {
               </button>
             </div>
 
-            {/* Prize Card */}
+            
             <div className="relative mx-4 overflow-hidden rounded-2xl" style={{ aspectRatio: "3/2" }}>
               <Image
                 src={winner.img}

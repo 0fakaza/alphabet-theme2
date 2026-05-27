@@ -46,9 +46,9 @@ export default function ButtonsOverviewPage() {
         Projede kullanilan tum buton varyantlari ve kullanim ornekleri.
       </p>
 
-      {/* ================================================================ */}
-      {/* BUTTONS MEDIUM (md) */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>Buttons Medium</SectionTitle>
 
       <SubTitle>Primary</SubTitle>
@@ -215,9 +215,9 @@ export default function ButtonsOverviewPage() {
         </Button>
       </Row>
 
-      {/* ================================================================ */}
-      {/* BUTTONS SMALL (sm) */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>Buttons Small</SectionTitle>
 
       <SubTitle>Primary</SubTitle>
@@ -337,9 +337,9 @@ export default function ButtonsOverviewPage() {
         </Button>
       </Row>
 
-      {/* ================================================================ */}
-      {/* ICON BUTTONS (md) */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>Button Icon</SectionTitle>
 
       <SubTitle>Primary</SubTitle>
@@ -432,9 +432,9 @@ export default function ButtonsOverviewPage() {
         />
       </Row>
 
-      {/* ================================================================ */}
-      {/* ICON BUTTONS SMALL (sm) */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>Button Icon Small</SectionTitle>
 
       <SubTitle>Primary</SubTitle>
@@ -527,9 +527,9 @@ export default function ButtonsOverviewPage() {
         />
       </Row>
 
-      {/* ================================================================ */}
-      {/* BUTTON LINK VARIANTS */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>ButtonLink (a etiketi olarak)</SectionTitle>
 
       <SubTitle>Cesitli Varyantlar</SubTitle>
@@ -574,9 +574,9 @@ export default function ButtonsOverviewPage() {
         </ButtonLink>
       </Row>
 
-      {/* ================================================================ */}
-      {/* ICON BUTTON LINK VARIANTS */}
-      {/* ================================================================ */}
+      
+      
+      
       <SectionTitle>IconButtonLink (a etiketi olarak)</SectionTitle>
 
       <Row>

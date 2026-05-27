@@ -9,10 +9,7 @@ function nameSlug(name: string): string {
     .replace(/^-|-$/g, "")
 }
 
-/**
- * Recently played: popular slot images from the home page; catalog matches by game name
- * go via `/casino/{id}`, others use `href` (slot).
- */
+
 export function getRecentlyPlayedGames(excludeGameId: string): CasinoLobbyGame[] {
   const byName = new Map(CASINO_LOBBY_CATALOG.map((g) => [g.name, g] as const))
   const out: CasinoLobbyGame[] = []

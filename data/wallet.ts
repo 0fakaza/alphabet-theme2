@@ -14,9 +14,9 @@ export interface PaymentMethod {
   disabled?: boolean
   comingSoon?: boolean
   iconBg?: string
-  /** Hesaplama sol select etiketi */
+  
   cryptoSymbol?: string
-  /** Çekilebilir tutar gösterimi */
+  
   withdrawable?: string
 }
 

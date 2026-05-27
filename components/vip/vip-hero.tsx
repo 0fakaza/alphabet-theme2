@@ -3,9 +3,9 @@ import Link from "next/link"
 import { VIP_HERO_IMAGES } from "@/data/vip"
 
 type VipHeroProps = {
-  /** Varsayılan: VIP Club */
+  
   ariaLabel?: string
-  /** Verilirse tüm hero alanı bu adrese gider */
+  
   href?: string
 }
 

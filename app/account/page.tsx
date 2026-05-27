@@ -44,9 +44,7 @@ const phoneCodes = [
 const selectTriggerCls =
   "h-auto data-[size=default]:h-auto w-full rounded-xl border-element-border bg-background-elements px-4 py-3 text-sm text-text-main [&>span]:text-text-main focus:ring-0 focus:border-primary"
 
-/* ─────────────────────────────────────────────────────────
-   Kişisel Bilgiler Panel
-───────────────────────────────────────────────────────── */
+
 type KisiselProps = {
   form: {
     ad: string; soyad: string; ikinciAd: string; dogumTarihi: string
@@ -142,9 +140,7 @@ function KisiselBilgilerPanel({ form, update, set }: KisiselProps) {
   )
 }
 
-/* ─────────────────────────────────────────────────────────
-   Kullanıcı Bilgileri Panel
-───────────────────────────────────────────────────────── */
+
 type KullaniciProps = {
   form: { kullaniciAdi: string; eposta: string; telefon: string }
   update: (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
@@ -306,9 +302,7 @@ function KullaniciBilgilerPanel({ form, update, setForm, privacy, setPrivacy, em
   )
 }
 
-/* ─────────────────────────────────────────────────────────
-   Page
-───────────────────────────────────────────────────────── */
+
 export default function HesabimPage() {
   const [form, setForm] = useState({
     ad: "", soyad: "", ikinciAd: "", dogumTarihi: "", dogumYeri: "",

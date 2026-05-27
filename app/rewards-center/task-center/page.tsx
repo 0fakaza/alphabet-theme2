@@ -55,7 +55,7 @@ export default function GorevMerkeziPage() {
     return (
         <main className="min-h-screen bg-background-header-menu">
             <div className="bg-background-main">
-                {/* Hero */}
+                
                 <div className="border-divider-100 border-b">
                     <div className="container ">
                         <div className=" flex flex-col md:flex-row items-center gap-4   py-6 ">
@@ -89,7 +89,7 @@ export default function GorevMerkeziPage() {
                     </div>
                 </div>
 
-                {/* Market Banner */}
+                
                 <div className="container">
                     <div className="mb-6 flex items-center justify-between   py-5 ">
                         <div className="flex items-center gap-2.5">
@@ -104,7 +104,7 @@ export default function GorevMerkeziPage() {
             </div>
             <div className="container mx-auto px-4 md:py-6 py-3">
 
-                {/* Streak */}
+                
                 <div className="mb-12  text-center md:text-left ">
                     <h2 className="mb-1.5 text-base font-bold text-text-title">İstikrarlı bir duruş sergile, ödüllerini al</h2>
                     <p className=" text-xs text-text-subtext max-w-[460px]">Ödüleri almak için her gün düzenli giriş yapman
@@ -156,7 +156,7 @@ export default function GorevMerkeziPage() {
 
                 </div>
 
-                {/* Günlük Görevler */}
+                
                 <div className=" md:mb-10">
 
                     <h2 className="mb-4 text-lg font-medium text-text-main text-center md:text-left">Günlük görevler</h2>
@@ -168,7 +168,7 @@ export default function GorevMerkeziPage() {
                             return (
                                 <div key={task.id} className="flex flex-col justify-center gap-5 rounded-xl bg-background-main px-5.5 py-5">
 
-                                    {/* Top row: title + status */}
+                                    
                                     <div className="flex items-start justify-between gap-3">
                                         <div className="flex flex-col gap-1">
                                             <p className="text-lg font-medium leading-tight text-text-main">{task.title}</p>
@@ -200,10 +200,10 @@ export default function GorevMerkeziPage() {
                                         </div>
                                     </div>
 
-                                    {/* Divider */}
+                                    
                                     <div className="h-px w-full bg-divider-100"/>
 
-                                    {/* Bottom row: date + points */}
+                                    
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col gap-1.5">
                                             <div className="flex items-center gap-1 text-xs text-text-subtext">

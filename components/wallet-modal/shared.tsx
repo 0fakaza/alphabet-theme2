@@ -71,7 +71,7 @@ export function WalletModalHeader({
   onToggleBonus,
   onClose,
 }: {
-  /** Para çek yöntem seçici — mobil bottom sheet (Figma 5062-16808) */
+  
   compact?: boolean
   hideMain: boolean
   hideBonus: boolean
@@ -191,13 +191,13 @@ export function MethodChip({
   )
 }
 
-/** Figma sağ panel (masaüstü) / tam genişlik form (mobil çekim detayı) */
+
 export function DetailPanelShell({
   children,
   mobileSheet,
 }: {
   children: React.ReactNode
-  /** Mobil para çek detay — Figma 5062-18940 */
+  
   mobileSheet?: boolean
 }) {
   return (
@@ -230,7 +230,7 @@ export function WithdrawDetailHeader({
 }: {
   method: PaymentMethod
   mode: WalletMode
-  /** Mobil: yöntem listesine dön (Figma 5062-18940) */
+  
   onBack?: () => void
 }) {
   const title =
@@ -285,7 +285,7 @@ export function WithdrawDetailHeader({
   )
 }
 
-/** Mobil detay altı — Figma 5062-19624 */
+
 export function WithdrawDetailHelpLink({ mode }: { mode: WalletMode }) {
   return (
     <button

@@ -55,10 +55,10 @@ export function LoginModal() {
         className="relative flex h-full max-h-[650px] w-full max-w-[1273px] overflow-hidden rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ─── Sol: Form Alanı ─── */}
+        
         <div className="login-modal-scroll relative flex w-full flex-col justify-between overflow-y-auto bg-background-modal px-8 py-10 md:w-[420px] md:shrink-0 md:px-10">
 
-          {/* Kapat butonu (mobil) */}
+          
           <button
             onClick={close}
             className="absolute right-4 top-4 flex size-8 items-center justify-center rounded-full bg-neutral-700/60 text-text-subtext transition-colors hover:bg-neutral-700 hover:text-text-main md:hidden"
@@ -67,7 +67,7 @@ export function LoginModal() {
             <HugeiconsIcon icon={Cancel01Icon} className="size-4" />
           </button>
 
-          {/* Hero görseli */}
+          
           <div className="pointer-events-none absolute left-1/2 top-0 h-[270px] w-[326px] -translate-x-1/2 -translate-y-1/5">
             <Image
               src="/images/header-icon-dots.png"
@@ -77,9 +77,9 @@ export function LoginModal() {
             />
           </div>
 
-          {/* Üst Blok */}
+          
           <div>
-            {/* Başlık */}
+            
             <div className="mb-8 mt-16 text-center">
               <h2 className="mb-1.5 text-[17px] font-bold tracking-wide text-text-title">
                 Tekrar hoşgeldin,
@@ -89,7 +89,7 @@ export function LoginModal() {
               </p>
             </div>
 
-            {/* Tabs — underline stili */}
+            
             <div className="mb-5 flex w-full">
               <button
                 onClick={() => setTab("email")}
@@ -117,10 +117,10 @@ export function LoginModal() {
               </button>
             </div>
 
-            {/* E-posta Formu */}
+            
             {tab === "email" && (
               <form className="flex flex-col gap-3" onSubmit={handleLogin}>
-                {/* E-posta */}
+                
                 <div className="flex flex-col gap-1">
                   <label className="flex items-center gap-1 pl-1.5 text-[10px] font-medium text-text-subtitle">
                     E-Posta <span className="text-red-500">*</span>
@@ -141,7 +141,7 @@ export function LoginModal() {
                   </div>
                 </div>
 
-                {/* Parola */}
+                
                 <div className="flex flex-col gap-1">
                   <label className="flex items-center gap-1 pl-1.5 text-[10px] font-medium text-text-subtitle">
                     Parola <span className="text-red-500">*</span>
@@ -172,7 +172,7 @@ export function LoginModal() {
                   </div>
                 </div>
 
-                {/* Parolamı Unuttum + Beni Hatırla */}
+                
                 <div className="flex items-center justify-between py-0.5">
                   <button
                     type="button"
@@ -202,7 +202,7 @@ export function LoginModal() {
               </form>
             )}
 
-            {/* SMS Formu */}
+            
             {tab === "sms" && (
               <form className="flex flex-col gap-3" onSubmit={handleLogin}>
                 <div className="flex flex-col gap-1">
@@ -253,11 +253,11 @@ export function LoginModal() {
               </form>
             )}
 
-            {/* veya + Sosyal Giriş */}
+            
             <div className="mt-4 flex flex-col gap-3">
               <p className="text-center text-[13px] text-white/30">veya</p>
               <div className="flex gap-2">
-                {/* Google */}
+                
                 <button
                   type="button"
                   className="flex flex-1 items-center justify-center rounded-lg bg-background-main py-2.5 transition-opacity hover:opacity-80"
@@ -270,7 +270,7 @@ export function LoginModal() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                   </svg>
                 </button>
-                {/* Facebook */}
+                
                 <button
                   type="button"
                   className="flex flex-1 items-center justify-center rounded-lg bg-background-main py-2.5 transition-opacity hover:opacity-80"
@@ -280,7 +280,7 @@ export function LoginModal() {
                     <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
                   </svg>
                 </button>
-                {/* Apple */}
+                
                 <button
                   type="button"
                   className="flex flex-1 items-center justify-center rounded-lg bg-background-main py-2.5 transition-opacity hover:opacity-80"
@@ -294,7 +294,7 @@ export function LoginModal() {
             </div>
           </div>
 
-          {/* Alt link */}
+          
           <p className="mt-4 text-center text-[13px] text-white/60">
             Hesabınız yok mu?{" "}
             <button
@@ -307,7 +307,7 @@ export function LoginModal() {
           </p>
         </div>
 
-        {/* ─── Sağ: Görsel ─── */}
+        
         <div className="relative hidden flex-1  md:block">
           <Image
             src="/images/login-back.jpg"
@@ -317,10 +317,10 @@ export function LoginModal() {
             priority
           />
 
-          {/* Alttan gradient */}
+          
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 to-transparent" />
 
-          {/* Kapat butonu */}
+          
           <button
             onClick={close}
             className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-lg bg-[#191d1f] text-white transition-colors hover:bg-black/70"
@@ -329,7 +329,7 @@ export function LoginModal() {
             <HugeiconsIcon icon={Cancel01Icon} className="size-4" />
           </button>
 
-          {/* Üst metin */}
+          
           <div className="absolute left-10 top-[90px] flex max-w-[347px] flex-col gap-3.5">
             <p className="text-[21px] font-light leading-snug text-white/60">
               Cömert bonuslar, Kayıplarınız için discountlar ve spor&apos;da en yüksek oranlar
@@ -339,25 +339,25 @@ export function LoginModal() {
             </p>
           </div>
 
-          {/* Alt sosyal linkler */}
+          
           <div className="absolute bottom-24 left-10 flex flex-col gap-3">
             <p className="text-[13px] font-medium text-white">
               Temasta kalın, <br/> Bonusları kaçırmayın
             </p>
             <div className="flex items-center gap-2.5">
-              {/* Twitter / X */}
+              
               <a href="#" aria-label="Twitter" className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-opacity hover:opacity-80">
                 <svg viewBox="0 0 16 16" className="size-4" fill="currentColor">
                   <path d="M12.6 0h2.454l-5.36 6.131L16 16h-4.937l-3.867-5.055L2.771 16H.316l5.733-6.554L0 0h5.063l3.495 4.633L12.601 0zm-.86 14.376h1.36L4.323 1.394H2.865l8.875 12.982z"/>
                 </svg>
               </a>
-              {/* Instagram */}
+              
               <a href="#" aria-label="Instagram" className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-opacity hover:opacity-80">
                 <svg viewBox="0 0 16 16" className="size-4" fill="currentColor">
                   <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0H8zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
                 </svg>
               </a>
-              {/* YouTube */}
+              
               <a href="#" aria-label="YouTube" className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-opacity hover:opacity-80">
                 <svg viewBox="0 0 16 16" className="size-4" fill="currentColor">
                   <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/>

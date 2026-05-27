@@ -22,7 +22,7 @@ const tabs: { id: TabId; label: string }[] = [
 const inputCls =
   "w-full rounded-xl border border-element-border bg-background-elements px-4 py-3 text-sm text-text-main placeholder:text-text-subtext focus:outline-none focus:border-primary transition-colors"
 
-/* ─── Tek limit kartı ─── */
+
 function LimitCard({
   title,
   desc,
@@ -180,7 +180,7 @@ function LimitCard({
   )
 }
 
-/* ─── Her sekmenin limit kartları ─── */
+
 const tabContent: Record<TabId, { key: string; title: string; desc: string; initialSaved?: boolean }[]> = {
   genel: [
     { key: "para-yatirma", title: "Para Yatırma Limiti", desc: "Günlük, haftalık veya aylık yatırım miktarınızı sınırlayın." },
@@ -210,7 +210,7 @@ export default function SinirlarPage() {
     setExpandedKey((p) => (p === key ? null : key))
   }
 
-  /* Sekme değişince expanded card'ı sıfırla */
+  
   function handleTabChange(id: TabId) {
     setActiveTab(id)
     setExpandedKey(null)

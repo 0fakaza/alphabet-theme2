@@ -1,17 +1,14 @@
-/**
- * Figma 4624:41027 — Tüm sağlayıcılar: üst sekmelere göre filtrelenen tek, tekrar etmeyen liste.
- * Logo yolları `public/images/providers/`.
- */
+
 export type CasinoProviderRow = {
   id: string
   name: string
   games: number
   logo: string
-  /** “Slot” sekmesinde listelensin */
+  
   slot: boolean
-  /** “Canlı Casino” sekmesinde listelensin */
+  
   live: boolean
-  /** “Crash” sekmesinde listelensin */
+  
   crash: boolean
 }
 
@@ -79,7 +76,7 @@ export const casinoProviderRows: readonly CasinoProviderRow[] = [
     live: false,
     crash: true,
   },
-  // Aşağısı: yer tutucu veri; logolar 7 adet @public/images/providers SVG ile dönüştürülüyor
+
   { id: "1x2", name: "1x2 gaming", games: 128, logo: "/images/providers/pp.svg", slot: true, live: true, crash: true },
   { id: "3oaks", name: "3 Oaks Gaming", games: 62, logo: "/images/providers/netent.svg", slot: true, live: false, crash: true },
   { id: "7mojos", name: "7Mojos", games: 34, logo: "/images/providers/egt.svg", slot: true, live: true, crash: false },
@@ -102,5 +99,5 @@ export const casinoProviderRows: readonly CasinoProviderRow[] = [
   { id: "booongo", name: "Booongo", games: 78, logo: "/images/providers/wazdan.svg", slot: true, live: true, crash: true },
 ] as const
 
-/** Figma sağlayıcı arama placeholder: “N sağlayıcı içinden ara” (toplam katalog) */
+
 export const CASINO_PROVIDERS_PLACEHOLDER_TOTAL = 1425

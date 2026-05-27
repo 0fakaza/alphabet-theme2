@@ -1,5 +1,5 @@
 export const VIP_HERO_IMAGES = {
-  /** Geniş ekran (~1920×437). Tasarım görseliyle değiştirin. */
+  
   desktop: "/images/sliders/is.jpg",
   mobile: "/images/sliders/mobil-is.jpg",
 } as const
@@ -34,13 +34,13 @@ export const VIP_BENEFITS: VipBenefitCopy[] = [
 
 export type VipLevelStatus = "claimed" | "completed" | "in_progress" | "locked"
 
-/** Kart üst şeridi (Figma: Emerald yeşil, Diamond mavi–mor) */
+
 export type VipTierAccent = "emerald" | "diamond"
 
 export type VipLevel = {
   id: string
   name: string
-  /** `/images/vip/…` — seviye rozeti (SVG) */
+  
   iconSrc: string
   tierAccent: VipTierAccent
   status: VipLevelStatus

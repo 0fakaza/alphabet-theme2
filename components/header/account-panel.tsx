@@ -79,7 +79,7 @@ export function AccountPanel({ showCloseButton = false }: AccountPanelProps) {
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xxl">
-      {/* User Info Header */}
+      
       <div className="flex shrink-0 items-center justify-between px-5 py-5">
         <div className="flex items-center gap-3">
           <span
@@ -106,7 +106,7 @@ export function AccountPanel({ showCloseButton = false }: AccountPanelProps) {
         )}
       </div>
 
-      {/* Scrollable Menu */}
+      
       <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden">
         {sections.map((section, si) => (
           <div key={section.title}>
@@ -140,7 +140,7 @@ export function AccountPanel({ showCloseButton = false }: AccountPanelProps) {
           </div>
         ))}
 
-        {/* Logout */}
+        
         <div className="px-5 pb-6 pt-4">
           <button
             className="flex items-center gap-3 rounded-lg px-2 py-2.5 outline-none transition-opacity hover:opacity-70"

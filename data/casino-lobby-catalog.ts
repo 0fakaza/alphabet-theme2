@@ -2,7 +2,7 @@ import type { CasinoLobbyGame } from "@/lib/casino-lobby-filters"
 
 const img = (n: number) => `/images/casino/${n}.jpg`
 
-/** Görüntü + filtre: lobby sekmeleri, özellik / sağlayıcı etiketleri (demo) */
+
 export const CASINO_LOBBY_CATALOG: CasinoLobbyGame[] = [
   { id: "c1", name: "DRAGON GATES", provider: "PRAGMATIC PLAY", image: img(1), players: 105, isNew: true, providerId: "pp", categories: ["slots"], featureTags: ["new", "high"] },
   { id: "c2", name: "5 LIONS MEGAWAYS", provider: "PRAGMATIC PLAY", image: img(2), players: 892, providerId: "pp", categories: ["slots"], featureTags: ["high", "buy"] },

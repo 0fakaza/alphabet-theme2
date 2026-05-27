@@ -4,7 +4,7 @@ export const PROMOTIONS_HERO = {
   title: "Promosyonlar",
 } as const
 
-/** Hero slider görselleri (`components/promotions/promotions-hero.tsx`). */
+
 export const PROMOTIONS_SLIDER_IMAGES = {
   desktop: "/images/sliders/promosyonlar.jpg",
   mobile: "/images/sliders/mobil-promosyonlar.jpg",
@@ -23,7 +23,7 @@ export const PROMOTION_FILTERS: {
 ]
 
 export type PromotionDetail = {
-  /** Modal başlığı; verilmezse kart başlığı kullanılır (Figma örneği gibi uzun başlık için). */
+  
   modalTitle?: string
   sections: { title: string; paragraphs: string[] }[]
   gamesSection?: { title: string; body: string }

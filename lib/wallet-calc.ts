@@ -1,4 +1,4 @@
-/** Virgül/nokta ve para birimi sembolleri ile sayı parse */
+
 export function parseAmountInput(value: string): number | null {
   let t = value.trim().replace(/[₺€£$]/g, "").replace(/\s/g, "")
   if (!t) return null

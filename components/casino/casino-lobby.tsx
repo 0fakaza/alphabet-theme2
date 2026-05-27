@@ -25,18 +25,20 @@ import {
   SparklesIcon,
   Tick02Icon,
 } from "@/lib/icons"
+import { MenuCircleIcon } from "@hugeicons-pro/core-solid-rounded"
+import { CasinoFilterModal } from "@/components/casino/casino-filter-modal"
 import {
-  Cards01Icon as NavCards01Icon,
-  Cards02Icon,
-  CherryIcon,
-  Home04Icon,
-  MenuCircleIcon,
-  PoolTableIcon,
-  StarIcon as NavStarIcon,
-  Target01Icon,
-  UserFullViewIcon,
-} from "@hugeicons-pro/core-solid-rounded"
-import { CasinoFilterModal, type FeatureFilterDef } from "@/components/casino/casino-filter-modal"
+  lobbyFilterTabs,
+  CASINO_PROVIDERS_PAGE_HREF,
+  casinoFeatureFilters,
+  toolbarQuickChips,
+  PROVIDER_CATEGORY_TABS,
+  type ProviderCategoryId,
+  RIGHT_PROMO_BACK_IMAGE,
+  JACKPOT_MONEY_BADGE,
+  rightPromoSlides,
+  LOBBY_SECTION_TITLES,
+} from "./casino-lobby/constants"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,82 +60,9 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
-/** Lobby üst sekmeleri (oyun listesi filtreleri). Sağlayıcılar ayrı sayfa linki. Tümü @hugeicons-pro/core-solid-rounded. */
-const lobbyFilterTabs = [
-  { id: "lobby", label: "Lobby", icon: Home04Icon },
-  { id: "favorites", label: "Favoriler(12)", icon: NavStarIcon },
-  { id: "slots", label: "Slotlar", icon: CherryIcon },
-  { id: "live", label: "Canlı Krupiye", icon: UserFullViewIcon },
-  { id: "poker", label: "Poker", icon: NavCards01Icon },
-  { id: "baccarat", label: "Baccarat", icon: PoolTableIcon },
-  { id: "blackjack", label: "Blackjack", icon: Cards02Icon },
-  { id: "roulette", label: "Rulet", icon: Target01Icon },
-] as const
-
-const CASINO_PROVIDERS_PAGE_HREF = "/casino/providers" as const
-
-/** Figma 5521:7573 — Filtrele sol kolon (2 sütun + altta tam genişlik) */
-const casinoFeatureFilters: FeatureFilterDef[] = [
-  { id: "rtp", label: "Yüksek RTP", icon: SparklesIcon },
-  { id: "bonus", label: "Bonus Turlar", icon: GiftIcon },
-  { id: "buy", label: "Buy Bonus", icon: SparklesIcon },
-  { id: "feature", label: "Özellik satın alma", icon: Cards01Icon },
-  { id: "high", label: "Yüksek Oynayanlar", icon: Cards01Icon },
-  { id: "new", label: "Yeni", icon: NavCards01Icon },
-  { id: "trending", label: "Çok Konuşulanlar", fullWidth: true, icon: SparklesIcon },
-]
-
-/** Araç çubukundaki hızlı chip’ler: modal’daki id + ikon (solda) */
-const TOOLBAR_QUICK_IDS = ["rtp", "buy", "new", "high", "feature"] as const
-const toolbarQuickChips = TOOLBAR_QUICK_IDS.map((id) => {
-  const f = casinoFeatureFilters.find((x) => x.id === id)
-  if (!f) {
-    throw new Error(`Unknown feature id: ${id}`)
-  }
-  const label = id === "feature" ? "Özellik Satın alma" : f.label
-  return { id: f.id, label, icon: f.icon }
-})
-
-/** Figma: Tüm sağlayıcılar dropdown — üst hızlı sekmeler */
-const PROVIDER_CATEGORY_TABS = [
-  { id: "all" as const, label: "Tümü" },
-  { id: "slot" as const, label: "Slot" },
-  { id: "live" as const, label: "Canlı Casino" },
-  { id: "crash" as const, label: "Crash" },
-] as const
-
-type ProviderCategoryId = (typeof PROVIDER_CATEGORY_TABS)[number]["id"]
-
-/** Arka plan sabit; alanlar slide ile değişir (ileride data’ya taşınabilir) */
-const RIGHT_PROMO_BACK_IMAGE = "/images/jackpot-back.jpg"
-/** Sağ slider tutar satırı — 243×64 (Figma) */
-const JACKPOT_MONEY_BADGE = "/images/jackpot-money-back.svg"
-
-const rightPromoSlides = [
-  { id: "r1", game: "FRUIT PARTY", subtitle: "Jackpot Ödülü", amount: "₺1.415.210,00", mult: "24.520X" },
-  { id: "r2", game: "GATES OF OLYMPUS", subtitle: "Mega ödül", amount: "₺892.400,00", mult: "18.200X" },
-  { id: "r3", game: "SWEET BONANZA", subtitle: "Jackpot Ödülü", amount: "₺2.100.000,00", mult: "32.100X" },
-] as const
-
-const LOBBY_SECTION_TITLES: Record<string, string> = {
-  lobby: "Tüm oyunlar",
-  favorites: "Favori oyunlarınız",
-  slots: "Pragmatic Play Oyunları",
-  live: "Canlı casino",
-  poker: "Poker",
-  baccarat: "Baccarat",
-  blackjack: "Blackjack",
-  roulette: "Rulet",
-}
-
 type CasinoLobbyProps = {
   gamesSource?: CasinoLobbyGame[]
-  /** Sol promosyon slider; verilmezse `defaultCasinoLeftPromoSlides` (API’den de geçirilebilir) */
   leftPromoSlides?: CasinoLeftPromoSlide[]
-  /**
-   * `providers`: Figma 5102:23660 — aynı promos + sekmeler (Sağlayıcılar mor), oyun aracı yok;
-   * tam genişlik “N sağlayıcı içinden ara” + 7 sütun sağlayıcı ızgarası; oyun listesi yok.
-   */
   variant?: "default" | "providers"
 }
 
@@ -254,7 +183,6 @@ export function CasinoLobby({
 
   return (
     <div className="w-full">
-      {/* Promosyonlar: lg’de 2 sütunlu grid — başlık+sol nav yalnızca sol kolonda; sağ üst hücre boş */}
       <section
         className={cn(
           "md:pb-6 pt-4 md:pt-6",
@@ -398,7 +326,6 @@ export function CasinoLobby({
         </div>
       </section>
 
-      {/* Lobby sekmeleri */}
       <section
         className={cn(
           isProvidersView
@@ -476,7 +403,6 @@ export function CasinoLobby({
         </div>
       </section>
 
-      {/* Sağlayıcılar sayfası (Figma): sekmelerin altında yalnızca tam geniş arama — oyun aracı yok */}
       {isProvidersView && (
         <section className="border-b border-divider-100/60 pt-1.5 pb-3 md:pt-2 md:pb-4">
           <div className="container max-w-[1400px]">
@@ -499,7 +425,6 @@ export function CasinoLobby({
         </section>
       )}
 
-      {/* Araç çubuğu: arama, ikonlar, hızlı chip’ler, sağda sağlayıcılar + Figma filtre modal (LayoutGrid) */}
       {!isProvidersView && (
       <section className="border-b border-divider-100/60 py-4">
         <div className="container">

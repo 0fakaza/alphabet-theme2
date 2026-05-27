@@ -71,7 +71,7 @@ export function RegisterModal() {
         className="relative w-full max-w-[410px] rounded-2xl bg-background-modal shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Kapat butonu */}
+        
         <button
           onClick={handleClose}
           className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background-element text-text-subtext transition-colors hover:bg-neutral-700 hover:text-text-main"
@@ -80,10 +80,10 @@ export function RegisterModal() {
           <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
         </button>
 
-        {/* ─── Başarı ekranı ─── */}
+        
         {submitted ? (
           <>
-            {/* Hoşgeldin hero görseli */}
+            
             <div className="pointer-events-none absolute left-1/2 top-6 h-[226px] w-[213px] -translate-x-1/2 -translate-y-1/5">
               <Image
                 src="/images/success-icon-dots.png"
@@ -112,7 +112,7 @@ export function RegisterModal() {
 
         <div className="login-modal-scroll overflow-y-auto px-8 pb-8 pt-10">
 
-          {/* Kayıt formu hero görseli */}
+          
           <div className="pointer-events-none absolute left-1/2 top-4 h-[226px] w-[213px] -translate-x-1/2 -translate-y-1/5">
             <Image
               src="/images/key-icon-dots.png"
@@ -122,7 +122,7 @@ export function RegisterModal() {
             />
           </div>
 
-          {/* Başlık */}
+          
           <div className="mb-7 pt-16 text-center">
             <h2 className="mb-1.5 text-[17px] font-bold tracking-wide text-text-title">
               Hesap Oluşturun
@@ -132,12 +132,12 @@ export function RegisterModal() {
             </p>
           </div>
 
-          {/* Form */}
+          
           <form
             className="flex flex-col gap-3"
             onSubmit={handleSubmit}
           >
-            {/* Kullanıcı adı */}
+            
             <FormField label="Kullanıcı adı" required>
               <div className="relative">
                 <FieldIcon>
@@ -155,7 +155,7 @@ export function RegisterModal() {
               </div>
             </FormField>
 
-            {/* E-Posta */}
+            
             <FormField label="E-Posta" required>
               <div className="relative">
                 <FieldIcon>
@@ -173,7 +173,7 @@ export function RegisterModal() {
               </div>
             </FormField>
 
-            {/* Parola */}
+            
             <FormField label="Parola" required>
               <div className="relative">
                 <FieldIcon>
@@ -202,7 +202,7 @@ export function RegisterModal() {
               </div>
             </FormField>
 
-            {/* Parola Tekrar */}
+            
             <FormField
               label="Parola Tekrar"
               required
@@ -239,7 +239,7 @@ export function RegisterModal() {
               </div>
             </FormField>
 
-            {/* Para Birimi */}
+            
             <FormField label="Para Birimi">
               <div className="relative ">
                 <button
@@ -305,7 +305,7 @@ export function RegisterModal() {
             </Button>
           </form>
 
-          {/* Alt link */}
+          
           <p className="mt-5 text-center text-[13px] text-text-subtitle">
             Kayıtlı hesabınız var mı?{" "}
             <button
@@ -318,14 +318,14 @@ export function RegisterModal() {
           </p>
         </div>
 
-        )} {/* submitted ? ... : ( ... ) */}
+        )} 
 
       </div>
     </div>
   )
 }
 
-/* ─── Yardımcı alt bileşenler ─── */
+
 
 function FormField({
   label,

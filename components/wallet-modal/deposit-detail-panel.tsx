@@ -62,7 +62,7 @@ export function DepositDetailPanel({
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
-      /* clipboard unavailable */
+      
     }
   }
 

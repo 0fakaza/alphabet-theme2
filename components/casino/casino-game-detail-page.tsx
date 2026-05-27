@@ -67,7 +67,7 @@ const STAT_ICONS = {
   risk: DashboardSpeed01Icon,
 } as const
 
-/** Son kazananlar (WinsTable) ile aynı `DataTable` + sütun stilleri */
+
 function recordBadgeIcon(badge: GameTopRecord["badge"]) {
   const base = "size-5 shrink-0"
   switch (badge) {

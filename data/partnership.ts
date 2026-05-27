@@ -2,7 +2,7 @@ export type PartnershipFeatureCard = {
   id: string
   title: string
   description: string
-  /** Kart üstü — yalnızca görsel; metin alt başlık ve açıklamada */
+  
   imageSrc: string
 }
 

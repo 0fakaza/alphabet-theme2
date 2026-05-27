@@ -17,7 +17,7 @@ export function VipLevelsSection() {
 
   return (
     <section className="container px-4 pb-14 md:px-6 md:pb-20">
-      {/* Figma Frame 2924 + 3772: başlık + oklar ~1399px içerik */}
+      
       <div className="mx-auto mb-6 flex w-full max-w-[1401px] items-center justify-between gap-4 md:mb-8">
         <h2 className="text-lg font-semibold leading-6 tracking-wide text-text-title md:text-xl">
           Seviyeler

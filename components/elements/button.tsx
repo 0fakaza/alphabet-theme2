@@ -3,9 +3,7 @@ import Link from "next/link"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-// ---------------------------------------------------------------------------
-// CVA — Regular buttons (with text, optional icons)
-// ---------------------------------------------------------------------------
+
 
 const buttonVariants = cva(
   [
@@ -60,9 +58,7 @@ const buttonVariants = cva(
   },
 )
 
-// ---------------------------------------------------------------------------
-// CVA — Icon-only buttons
-// ---------------------------------------------------------------------------
+
 
 const iconButtonVariants = cva(
   [
@@ -108,9 +104,7 @@ const iconButtonVariants = cva(
   },
 )
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+
 
 type ButtonVariant =
   | "primary"
@@ -165,16 +159,12 @@ interface IconButtonLinkProps
   disabled?: boolean
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+
 
 const iconSizeClass = (size: ButtonSize) =>
   size === "sm" ? "[&>svg]:size-4" : "[&>svg]:size-5"
 
-// ---------------------------------------------------------------------------
-// Button  —  <button> with text (+ optional left/right icons)
-// ---------------------------------------------------------------------------
+
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -218,9 +208,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 )
 Button.displayName = "Button"
 
-// ---------------------------------------------------------------------------
-// ButtonLink  —  <a> with text (+ optional left/right icons)
-// ---------------------------------------------------------------------------
+
 
 const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
   (
@@ -268,9 +256,7 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
 )
 ButtonLink.displayName = "ButtonLink"
 
-// ---------------------------------------------------------------------------
-// IconButton  —  <button> with only an icon (no text)
-// ---------------------------------------------------------------------------
+
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ variant = "primary", size = "md", icon, className, ...props }, ref) => {
@@ -287,9 +273,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 )
 IconButton.displayName = "IconButton"
 
-// ---------------------------------------------------------------------------
-// IconButtonLink  —  <a> with only an icon (no text)
-// ---------------------------------------------------------------------------
+
 
 const IconButtonLink = React.forwardRef<
   HTMLAnchorElement,
@@ -318,9 +302,7 @@ const IconButtonLink = React.forwardRef<
 )
 IconButtonLink.displayName = "IconButtonLink"
 
-// ---------------------------------------------------------------------------
-// Exports
-// ---------------------------------------------------------------------------
+
 
 export {
   Button,

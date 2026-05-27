@@ -16,7 +16,7 @@ export function ForgotPasswordModal() {
   const [sent, setSent] = useState(false)
   const [countdown, setCountdown] = useState(RESEND_SECONDS)
 
-  /* Geri sayım — sadece `sent` aktifken çalışır */
+  
   useEffect(() => {
     if (!sent) return
     setCountdown(RESEND_SECONDS)
@@ -63,7 +63,7 @@ export function ForgotPasswordModal() {
         className="relative w-full max-w-[410px] overflow-hidden rounded-2xl bg-background-modal shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Kapat butonu */}
+        
         <button
           onClick={handleClose}
           className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background-element text-text-subtext transition-colors hover:bg-neutral-700 hover:text-text-main"
@@ -72,7 +72,7 @@ export function ForgotPasswordModal() {
           <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
         </button>
 
-        {/* Hero görseli */}
+        
         <div className="pointer-events-none absolute left-1/2 top-2 h-[220px] w-[160px] -translate-x-1/2 -translate-y-1/5">
           <Image
               src="/images/email-icon-dots.png"
@@ -83,11 +83,11 @@ export function ForgotPasswordModal() {
         </div>
 
         {sent ? (
-          /* ─── Başarı Ekranı ─── */
+          
           <div className="px-8 pb-8 pt-10">
 
 
-            {/* Başlık */}
+            
             <div className="mb-6 pt-13 text-center">
               <h2 className="mb-3 text-[17px] font-bold tracking-wide text-text-title">
                 Sıfırlama bağlantısı gönderildi
@@ -98,10 +98,10 @@ export function ForgotPasswordModal() {
               </p>
             </div>
 
-            {/* Ayraç */}
+            
             <div className="mb-4 h-px bg-divider-100" />
 
-            {/* Tekrar gönder satırı */}
+            
             <div className="flex items-center justify-between">
               <span className="text-sm text-text-subtext">
                 Maili almadınız mı?
@@ -124,9 +124,9 @@ export function ForgotPasswordModal() {
             </div>
           </div>
         ) : (
-          /* ─── Form Ekranı ─── */
+          
           <div className="px-8 pb-8 pt-10">
-            {/* Hero görseli */}
+            
             <div className="pointer-events-none absolute left-1/2 top-3 h-[183px] w-[129px] -translate-x-1/2 -translate-y-1/5">
               <Image
                 src="/images/key-icon-dots.png"
@@ -138,7 +138,7 @@ export function ForgotPasswordModal() {
 
 
 
-            {/* Başlık */}
+            
             <div className="mb-7 mt-12 text-center">
               <h2 className="mb-1.5 text-[17px] font-bold tracking-wide text-text-title">
                 Parola sıfırlayın
@@ -179,7 +179,7 @@ export function ForgotPasswordModal() {
               </button>
             </form>
 
-            {/* Alt link */}
+            
             <p className="mt-5 text-center text-[13px] text-text-subtext/70">
               Parolanı hatırladın mı?{" "}
               <button

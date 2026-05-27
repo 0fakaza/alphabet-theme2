@@ -53,7 +53,7 @@ export function WalletModal() {
     setSearch("")
     setSelectedCountry(defaultCountry)
     if (mode === "deposit") {
-      // Mobil: önce yöntem listesi; masaüstü: varsayılan Tether ile split görünüm
+
       setSelectedMethod(isMobileViewport() ? null : DEFAULT_DEPOSIT)
     } else {
       setSelectedMethod(null)
@@ -86,7 +86,7 @@ export function WalletModal() {
     (isWithdrawFlow || isDepositFlow) && !showDetail
   const isSplitDetail = showDetail && (isWithdrawFlow || isDepositFlow)
   const isMobileDetailSheet = isMobileSheetFlow && showDetail
-  /** Bakiye popover hariç — wallet modal mobil sheet’leri yüksek */
+  
   const isMobileTallSheet =
     isMobileSheetFlow && (isCompactPicker || isMobileDetailSheet)
 

@@ -8,7 +8,7 @@ type SliderNavProps = {
   className?: string
   iconClassName?: string
   style?: React.CSSProperties
-  /** Ok düğmeleri arası boşluk (varsayılan: gap-2.5) */
+  
   buttonGapClassName?: string
 }
 

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { FootballIcon, HugeiconsIcon, MenuCollapseIcon } from "@/lib/icons"
-/** Hugeicons: Games → solid · standard; Education/Users → bulk · rounded */
+
 import { Cards02Icon } from "@hugeicons-pro/core-solid-standard"
 import { GiftIcon, User03Icon } from "@hugeicons-pro/core-bulk-rounded"
 import { useAccountPanel } from "@/components/providers/account-panel-provider"
@@ -17,7 +17,7 @@ const navItems = [
   { href: "/account", label: "Profil", icon: User03Icon, isProfile: true },
 ]
 
-/** /casino + (bulk) hediye & profil: primary/secondary; bulk=iki dolgu katmanı, solid·standard=ön dolgu + arka hat */
+
 const duotoneBarPaths = new Set<string>(["/casino", "/promotions", "/account"])
 
 const duotoneColors = (active: boolean) =>
