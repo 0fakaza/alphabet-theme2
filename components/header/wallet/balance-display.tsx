@@ -69,7 +69,7 @@ export function WalletBalanceHeader({
   gapClassName?: string
 }) {
   return (
-    <div className="relative bg-neutral-100 p-3 md:px-10 md:py-6">
+    <div className="relative bg-neutral-200 p-3 md:px-10 md:py-6">
       <div className={cn("flex flex-wrap gap-y-3 md:pr-10", gapClassName)}>
         {items.map((item) => {
           const hidden = hiddenByKey[item.key]

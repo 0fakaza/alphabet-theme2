@@ -137,10 +137,10 @@ export function WalletActionPopover({
 
   return (
     <>
-      <div
+      <span
         role="button"
         tabIndex={0}
-        className="cursor-pointer outline-none"
+        className="inline-flex cursor-pointer outline-none"
         onClick={() => setOpen(true)}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
@@ -150,7 +150,7 @@ export function WalletActionPopover({
         }}
       >
         {children}
-      </div>
+      </span>
       {typeof document !== "undefined" && createPortal(panel, document.body)}
       <WalletTransferModal
         open={transferOpen}

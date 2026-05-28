@@ -138,6 +138,10 @@
     --color-header-text-secondary: var(--headerText-Secondary);
     --color-header-text-secondary-hover: var(--headerText-Secondary-Hover);
     --color-header-wallet: var(--headerWallet);
+
+    /* Wallet action cards (deposit / withdraw) */
+    --color-wallet-action-card: var(--wallet-action-card-bg);
+    --color-wallet-action-card-border: var(--wallet-action-card-border);
 }
 
 
@@ -241,6 +245,10 @@
     --headerWallet: #1F2326;
     --popupHead:#1F2332;
     --popup:#2B3042;
+    --wallet-card-dot: rgba(255, 255, 255, 0.12);
+    --wallet-action-card-bg: #22272c;
+    --wallet-action-card-border: rgba(255, 255, 255, 0.1);
+    --wallet-action-card-inset: rgba(255, 255, 255, 0.1);
 
 }
 
@@ -344,11 +352,20 @@
     --headerWallet: #FFFFFF;
     --popupHead:#F3F5F8;
     --popup:#ffffff;
+    --wallet-card-dot: rgba(0, 0, 0, 0.08);
+    --wallet-action-card-bg: #F3F6F8;
+    --wallet-action-card-border: #DDE4E9;
+    --wallet-action-card-inset: rgba(255, 255, 255, 0.85);
 }
 
 
 
 
+
+@utility bg-wallet-card-dots {
+  background-image: radial-gradient(circle, var(--wallet-card-dot) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
 
 @utility container {
   margin-inline: auto;

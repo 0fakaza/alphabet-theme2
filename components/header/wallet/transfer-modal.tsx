@@ -38,12 +38,14 @@ function TransferPartyCard({
   currencyBadge,
 }: TransferPartyCardProps) {
   return (
-    <div className="w-full rounded-xl">
-      <div className="relative bg-background-elements px-6 pb-6 pt-6">
+    <div className="w-full rounded-xl bg-neutral-500">
+      <div className="relative px-6 pt-6 pb-6">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="truncate text-xl font-bold tracking-[0.4px] text-text-main">{amount}</p>
-            <p className="mt-0.5 truncate text-[11px] font-medium leading-[17px] tracking-[0.22px] text-text-subtext">
+            <p className="truncate text-xl font-bold tracking-[0.4px] text-text-main">
+              {amount}
+            </p>
+            <p className="mt-0.5 truncate text-[11px] leading-[17px] font-medium tracking-[0.22px] text-text-subtext">
               {subAmount}
             </p>
           </div>
@@ -52,24 +54,27 @@ function TransferPartyCard({
             {currencyBadge}
           </div>
         </div>
-        <p className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[8px] font-medium uppercase tracking-[0.16px] text-text-subtext">
+        <p className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8px] font-medium tracking-[0.16px] text-text-subtext uppercase">
           {role === "sender" ? "GÖNDEREN" : "ALICI"}
         </p>
       </div>
-      <div className="flex items-center justify-between border-t border-element-border bg-background-elements px-6 py-3">
-        <p className="text-[11px] font-medium leading-[17px] tracking-[0.22px] text-text-subtext">
+      <div className="flex items-center justify-between border-t border-element-border px-6 py-3">
+        <p className="text-[11px] leading-[17px] font-medium tracking-[0.22px] text-text-subtext">
           {availableText}
         </p>
         {showMax ? (
           <button
             type="button"
             onClick={onMax}
-            className="text-[11px] font-medium leading-[17px] tracking-[0.22px] text-text-subtext underline underline-offset-2 transition-colors hover:text-text-main"
+            className="text-[11px] leading-[17px] font-medium tracking-[0.22px] text-text-subtext underline underline-offset-2 transition-colors hover:text-text-main"
           >
             Tümü
           </button>
         ) : (
-          <span className="text-[11px] font-medium leading-[17px] text-transparent" aria-hidden>
+          <span
+            className="text-[11px] leading-[17px] font-medium text-transparent"
+            aria-hidden
+          >
             Tümü
           </span>
         )}
@@ -196,7 +201,7 @@ export function WalletTransferModal({
               type="button"
               onClick={handleSwap}
               className={cn(
-                "relative z-10 -my-3 flex size-14 items-center justify-center rounded-full",
+                "relative z-10 -my-3 flex size-14 items-center justify-center cursor-pointer rounded-full",
                 "border-[6px] border-background-modal bg-action-secondary-default text-white",
                 "transition-colors hover:bg-action-secondary-hover"
               )}
@@ -208,7 +213,7 @@ export function WalletTransferModal({
             {swapped ? senderCard : recipientCard}
           </div>
 
-          <div className="mt-10 flex flex-col items-center gap-4">
+          <div className="mt-5 flex flex-col items-center gap-4">
             <p className="text-center text-[10px] font-medium leading-[17px] tracking-[0.2px] text-text-subtext">
               İşlem sonrası cüzdan bakiyesi:{" "}
               <span className="text-sm font-bold tracking-[0.28px] text-text-main">

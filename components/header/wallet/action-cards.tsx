@@ -3,9 +3,13 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import type { WalletMode } from "@/components/providers/wallet-modal-provider"
+import { WalletCardDotPattern } from "./wallet-card-dot-pattern"
 
 const DEPOSIT_ACTION_ICON = "/images/icons/depozit.svg"
 const WITHDRAW_ACTION_ICON = "/images/icons/withdrawal.svg"
+
+const walletActionCardSurface =
+  "border border-wallet-action-card-border bg-wallet-action-card shadow-[inset_1px_1px_1px_var(--wallet-action-card-inset)]"
 
 type WalletActionCardProps = {
   mode: WalletMode
@@ -57,22 +61,14 @@ function WalletActionCardMobile({ mode, onSelect }: WalletActionCardProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "relative flex min-h-[97px] w-full items-center overflow-hidden rounded-lg border border-white/10 bg-[#22272c] text-left outline-none transition-all md:hidden",
-        "shadow-[inset_1px_1px_1px_rgba(255,255,255,0.1)]",
+        "relative flex min-h-[97px] w-full items-center overflow-hidden rounded-lg text-left outline-none transition-all md:hidden",
+        walletActionCardSurface,
         "ring-0 ring-transparent focus-visible:ring-0",
         "hover:ring-2",
         isDeposit ? "hover:ring-[#9bbc14]" : "hover:ring-[#f40000]"
       )}
     >
-      <div
-        className="pointer-events-none absolute left-0 top-0 h-full w-[162px] opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)",
-          backgroundSize: "10px 10px",
-        }}
-        aria-hidden
-      />
+      <WalletCardDotPattern variant="mobile" />
       <div
         className={cn(
           "pointer-events-none absolute inset-0 opacity-20",
@@ -88,10 +84,10 @@ function WalletActionCardMobile({ mode, onSelect }: WalletActionCardProps) {
       </div>
 
       <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-center gap-1 py-4 pr-4">
-        <p className="text-[15px] font-medium leading-snug text-white">
+        <p className="text-[15px] font-medium leading-snug text-text-title">
           {isDeposit ? "Para yatırmak istiyorum" : "Para çekmek istiyorum"}
         </p>
-        <p className="text-xs leading-4 text-white/60">
+        <p className="text-xs leading-4 text-text-subtext">
           {isDeposit
             ? "20sn'ye varan yatırım süreleri ile hemen yatır bonuslar ile kazançları katlayarak başla."
             : "Hızlı, kolay, zahmetsiz çekim yapın."}
@@ -109,9 +105,8 @@ function WalletActionCardDesktop({ mode, onSelect }: WalletActionCardProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "relative hidden min-h-[227px] min-w-0 flex-1 cursor-pointer flex-col items-center overflow-hidden rounded-2xl border " +
-        "border-white/10 px-4 pb-5 pt-1.5 text-center outline-none transition-all md:flex md:max-w-[341px]",
-        "bg-[#22272c] shadow-[inset_1px_1px_1px_rgba(255,255,255,0.1)]",
+        "relative hidden min-h-[227px] min-w-0 flex-1 cursor-pointer flex-col items-center overflow-hidden rounded-2xl px-4 pb-5 pt-1.5 text-center outline-none transition-all md:flex md:max-w-[341px]",
+        walletActionCardSurface,
         "before:pointer-events-none before:absolute before:inset-0 before:rounded-2xl before:opacity-20",
         "ring-0 ring-transparent focus-visible:ring-0",
         isDeposit
@@ -119,19 +114,11 @@ function WalletActionCardDesktop({ mode, onSelect }: WalletActionCardProps) {
           : "before:bg-[radial-gradient(ellipse_at_20%_0%,#e94b4b_0%,transparent_55%)] hover:ring-2 hover:ring-[#f40000]"
       )}
     >
-      <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[129px] w-[183px] -translate-x-1/2 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)",
-          backgroundSize: "10px 10px",
-        }}
-        aria-hidden
-      />
+      <WalletCardDotPattern variant="desktop" />
 
       {!isDeposit && (
-        <p className="absolute right-3 top-3 text-[11px] tracking-wide text-white/60">
-          Tahmini süreler <span className="text-white">5dk</span>
+        <p className="absolute right-3 top-3 text-[11px] tracking-wide text-text-subtext">
+          Tahmini süreler <span className="text-text-title">5dk</span>
         </p>
       )}
 
@@ -140,10 +127,10 @@ function WalletActionCardDesktop({ mode, onSelect }: WalletActionCardProps) {
       </div>
 
       <div className="relative z-10 mt-6 flex max-w-[270px] flex-col gap-1.5">
-        <p className="text-[15px] font-medium tracking-wide text-white">
+        <p className="text-[15px] font-medium tracking-wide text-text-title">
           {isDeposit ? "Para yatırmak istiyorum" : "Para çekmek istiyorum"}
         </p>
-        <p className="text-xs leading-[17px] tracking-wide text-white/60">
+        <p className="text-xs leading-[17px] tracking-wide text-text-subtext">
           {isDeposit ? (
             <>
               20sn&apos;ye varan yatırım süreleri ile hemen yatır

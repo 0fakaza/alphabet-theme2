@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/elements/button"
 import { CurrencyBadge } from "@/components/elements/currency-badge"
 import { WalletActionPopover } from "./wallet-action-popover"
+import { WalletCurrencyPopover } from "./wallet-currency-popover"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -95,26 +96,36 @@ const Header = () => {
             </nav>
           </div>
 
-          <div>
+          <div className="flex h-[40px] w-[163px] items-center justify-between rounded-full border border-neutral-300 bg-neutral-100 py-[6px] pl-[9px] pr-[6px] md:h-auto md:border-transparent md:bg-header-wallet md:py-1.5 md:pl-1.5 md:pr-1.5">
+            <WalletCurrencyPopover
+              hideBalances={hideMainBalance}
+              onToggleHide={() => setHideMainBalance((v) => !v)}
+            >
+              <button
+                type="button"
+                className="flex min-w-0 flex-1 items-center gap-1.5 cursor-pointer outline-none"
+              >
+                <CurrencyBadge currency="TRY" />
+                <span className="text-[13px] font-medium tracking-[0.26px] text-header-text-primary">
+                  {hideMainBalance ? "••••" : "3.520,52"}
+                </span>
+                <HugeiconsIcon
+                  icon={ArrowDown01Icon}
+                  className="size-4 shrink-0 text-header-text-secondary md:text-white"
+                />
+              </button>
+            </WalletCurrencyPopover>
             <WalletActionPopover
               hideMain={hideMainBalance}
               onToggleMain={() => setHideMainBalance((v) => !v)}
             >
-              <div className="flex h-[40px] w-[163px] cursor-pointer items-center justify-between rounded-full border border-neutral-300 bg-neutral-100 py-[6px] pl-[9px] pr-[6px] md:h-auto md:border-transparent md:bg-header-wallet md:py-1.5 md:pl-1.5 md:pr-1.5">
-                <div className="flex items-center gap-1.5">
-                  <CurrencyBadge currency="TRY" />
-                  <span className="text-[13px] font-medium tracking-[0.26px] text-header-text-primary">
-                    {hideMainBalance ? "••••" : "3.520,52"}
-                  </span>
-                  <HugeiconsIcon
-                    icon={ArrowDown01Icon}
-                    className="size-4 shrink-0 text-white"
-                  />
-                </div>
-                <span className="flex size-7 items-center justify-center rounded-full bg-deposit text-white transition-colors duration-400 group-hover:brightness-110">
-                  <HugeiconsIcon icon={PlusSignIcon} className="size-4" />
-                </span>
-              </div>
+              <button
+                type="button"
+                className="flex size-7 shrink-0 items-center cursor-pointer justify-center rounded-full bg-deposit text-white transition-colors duration-400 hover:brightness-110"
+                aria-label="Para yatır veya çek"
+              >
+                <HugeiconsIcon icon={PlusSignIcon} className="size-4" />
+              </button>
             </WalletActionPopover>
           </div>
 

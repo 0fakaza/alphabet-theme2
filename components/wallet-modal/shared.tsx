@@ -82,7 +82,7 @@ export function WalletModalHeader({
   return (
     <div
       className={cn(
-        "relative shrink-0 bg-neutral-100",
+        "relative shrink-0 bg-neutral-200",
         compact
           ? "px-3 pb-6 pt-6 md:h-[90px] md:pb-0 md:pl-[39px] md:pt-[27px]"
           : "h-[90px] pl-[39px] pt-[27px]"
@@ -111,14 +111,15 @@ export function WalletModalHeader({
         type="button"
         onClick={onClose}
         className={cn(
-          "absolute flex size-8 items-center justify-center rounded-lg border border-element-border p-2 text-text-subtext transition-colors hover:text-text-main",
+          "absolute flex size-8 text-lg items-center justify-center rounded-lg border border-divider-100 p-2 cursor-pointer " +
+          "text-text-subtext transition-colors hover:text-text-main",
           compact
             ? "right-3 top-5 md:right-[23px] md:top-[29px]"
             : "right-[23px] top-[29px]"
         )}
         aria-label="Kapat"
       >
-        <HugeiconsIcon icon={Cancel01Icon} className="size-4" />
+        <HugeiconsIcon icon={Cancel01Icon} className="size-6" />
       </button>
     </div>
   )
